@@ -3,13 +3,16 @@ package com.kohoh.kavatarloader;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+
+import jgravatar.Gravatar;
+import jgravatar.GravatarDefaultImage;
+import jgravatar.GravatarRating;
 
 /**
  * Created by kohoh on 14-7-28.
@@ -40,5 +43,14 @@ public class KAvatarLoader {
         }
         Log.e(TAG, "bind failed");
         return false;
+    }
+
+    public Avatar loadAvatar(String email) {
+        Gravatar gravatar = new Gravatar();
+        gravatar.setSize(50);
+        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
+        gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
+        byte[] jpg = gravatar.download(email);
+        return new Avatar(jpg, email);
     }
 }
