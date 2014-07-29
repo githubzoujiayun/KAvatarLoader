@@ -6,6 +6,7 @@
         android:icon="@drawable/ic_launcher"
         android:theme="@style/AppTheme">
 
+        <activity android:name=".SingleBindViewActivity" />
     </application>
 
 </manifest>
