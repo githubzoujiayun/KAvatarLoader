@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
+
 import com.kohoh.KAvatarLoader.example.R;
+import com.kohoh.kavatarloader.KAvatarLoader;
 
 public class SingleBindViewActivity extends Activity {
 
@@ -12,6 +15,11 @@ public class SingleBindViewActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_bind_view);
+        KAvatarLoader avatarLoader = new KAvatarLoader(this);
+        ImageView imageView = (ImageView) findViewById(R.id.iv_avatar);
+        String email = "qxw2012@hotmail.com";
+
+        avatarLoader.bind(imageView, email, null);
     }
 
 

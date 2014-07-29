@@ -1,14 +1,9 @@
 package com.kohoh.kavatarloader;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import jgravatar.Gravatar;
 import jgravatar.GravatarDefaultImage;
@@ -25,24 +20,28 @@ public class KAvatarLoader {
         this.context = context;
     }
 
-    public boolean bind(ImageView imageView, String email) {
-        File avatar1 = new File(context.getFilesDir().getPath() + "/avatar1.jpg");
-        if (avatar1.exists()) {
-            try {
-                FileInputStream inputStream = new FileInputStream(avatar1);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                imageView.setImageBitmap(bitmap);
-                imageView.setTag(email);
+    public void bind(final ImageView imageView, final String email, final BindListener bindListener) {
 
-            } catch (FileNotFoundException e) {
-                Log.e(TAG, "bind failed");
-                e.printStackTrace();
+        class Task extends AsyncTask<String, Integer, Avatar> {
+
+            @Override
+            protected Avatar doInBackground(String... params) {
+                Log.d(TAG, "start loading avatar");
+                return loadAvatar(params[0]);
             }
-            return true;
 
-        }
-        Log.e(TAG, "bind failed");
-        return false;
+            @Override
+            protected void onPostExecute(Avatar avatar) {
+                Log.d(TAG, "finish loading avatar");
+                imageView.setImageDrawable(avatar.getDrawable());
+                imageView.setTag(avatar.getTag());
+                if (bindListener != null) {
+                    bindListener.onBindFinished();
+                }
+            }
+        };
+
+        new Task().execute(email);
     }
 
     public Avatar loadAvatar(String email) {
@@ -54,3 +53,5 @@ public class KAvatarLoader {
         return new Avatar(jpg, email);
     }
 }
+
+

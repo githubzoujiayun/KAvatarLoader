@@ -20,7 +20,7 @@ public class LoadAvatarFromGravatarTest extends AndroidTestCase {
     }
 
     public void testLoadAvatarFromGravatar() {
-        String email = "qxw2012@hotamilc.com";
+        String email = "qxw2012@hotamil.com";
         Avatar avatar = avatarLoader.loadAvatar(email);
 
         assertNotNull("avatar is null", avatar);
