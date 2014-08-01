@@ -1,4 +1,4 @@
-package jgravatar;
+package com.kohoh.gravatar;
 
 public class GravatarDownloadException extends RuntimeException {
 

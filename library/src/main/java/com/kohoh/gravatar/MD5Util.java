@@ -1,4 +1,4 @@
-package jgravatar;
+package com.kohoh.gravatar;
 
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;

@@ -1,4 +1,4 @@
-package jgravatar;
+package com.kohoh.gravatar;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;

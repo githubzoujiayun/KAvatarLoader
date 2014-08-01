@@ -5,9 +5,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
-import jgravatar.Gravatar;
-import jgravatar.GravatarDefaultImage;
-import jgravatar.GravatarRating;
+import com.kohoh.gravatar.Gravatar;
+import com.kohoh.gravatar.GravatarDefaultImage;
+import com.kohoh.gravatar.GravatarRating;
 
 /**
  * Created by kohoh on 14-7-28.

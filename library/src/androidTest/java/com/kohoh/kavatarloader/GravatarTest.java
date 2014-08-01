@@ -4,9 +4,9 @@ import android.util.Log;
 
 import junit.framework.TestCase;
 
-import jgravatar.Gravatar;
-import jgravatar.GravatarDefaultImage;
-import jgravatar.GravatarRating;
+import com.kohoh.gravatar.Gravatar;
+import com.kohoh.gravatar.GravatarDefaultImage;
+import com.kohoh.gravatar.GravatarRating;
 
 /**
  * Created by kohoh on 14-8-1.
