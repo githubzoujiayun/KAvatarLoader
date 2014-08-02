@@ -1,5 +1,6 @@
 package com.kohoh.kavatarloader;
 
+import android.test.AndroidTestCase;
 import android.util.Log;
 
 import junit.framework.TestCase;
@@ -8,10 +9,16 @@ import com.kohoh.gravatar.Gravatar;
 import com.kohoh.gravatar.GravatarDefaultImage;
 import com.kohoh.gravatar.GravatarRating;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * Created by kohoh on 14-8-1.
  */
-public class GravatarTest extends TestCase {
+public class GravatarTest extends AndroidTestCase {
     private Gravatar gravatar;
 
     static public final String TAG = GravatarTest.class.getSimpleName() + "_TAG";
@@ -260,8 +267,8 @@ public class GravatarTest extends TestCase {
         Log.d(TAG, "----------------------------");
     }
 
-    public void testAvatarEqual() {
-        byte[] bytes1 = gravatar.download(EXIST_EMAIL2);
+    public void testAvatarEqual() throws IOException {
+        byte[] bytes1 = gravatar.download(EXIST_EMAIL1);
         byte[] bytes2 = gravatar.download(EXIST_EMAIL2);
 
         Log.d(TAG, bytes1.equals(bytes2) ? "equals" : "not equals");
@@ -274,6 +281,34 @@ public class GravatarTest extends TestCase {
 
         Log.d(TAG, "bytes1= " + bytes1.toString());
         Log.d(TAG, "bytes2= " + bytes2.toString());
+    }
+
+//    public void testDonloadAndSave() throws IOException {
+//        gravatar.setSize(100);
+//        byte[] bytes_email1_size100 = gravatar.download(EXIST_EMAIL1);
+//        byte[] bytes_email2_size100 = gravatar.download(EXIST_EMAIL2);
+//        gravatar.setSize(200);
+//        byte[] bytes_email1_size200 = gravatar.download(EXIST_EMAIL1);
+//        byte[] bytes_email2_size200 = gravatar.download(EXIST_EMAIL2);
+//
+//        saveBytes(EXIST_EMAIL1 + "_size100_bytes", bytes_email1_size100);
+//        saveBytes(EXIST_EMAIL1 + "_size200_bytes", bytes_email1_size200);
+//        saveBytes(EXIST_EMAIL2 + "_size100_bytes", bytes_email2_size100);
+//        saveBytes(EXIST_EMAIL2 + "_size200_bytes", bytes_email2_size200);
+//    }
+
+    private void saveBytes(String file_name, byte[] bytes) throws IOException {
+        File filesDir = getContext().getFilesDir();
+        File byteFile = new File(filesDir, file_name);
+        if (byteFile.exists()) {
+            byteFile.delete();
+        }
+
+        FileOutputStream outputStream = new FileOutputStream(byteFile);
+        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
+        bufferedOutputStream.write(bytes);
+        bufferedOutputStream.flush();
+        bufferedOutputStream.close();
     }
 
 }
