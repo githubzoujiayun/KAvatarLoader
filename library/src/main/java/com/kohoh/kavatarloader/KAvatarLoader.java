@@ -9,6 +9,8 @@ import com.kohoh.gravatar.Gravatar;
 import com.kohoh.gravatar.GravatarDefaultImage;
 import com.kohoh.gravatar.GravatarRating;
 
+import java.util.Objects;
+
 /**
  * Created by kohoh on 14-7-28.
  */
@@ -22,12 +24,29 @@ public class KAvatarLoader {
 
     public void bind(final ImageView imageView, final String email, final BindListener bindListener) {
 
-        class Task extends AsyncTask<String, Integer, Avatar> {
+        if (imageView == null) {
+            return;
+        }
+
+        //计算头像的尺寸
+        final int height = imageView.getHeight();
+        final int width = imageView.getWidth();
+        final int avatar_size;
+        if (height != width) {
+            avatar_size = height < width ? height : width;
+        } else if (height != 0) {
+            avatar_size = height;
+        } else {
+            avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
+        }
+
+
+        class Task extends AsyncTask<Objects, Objects, Avatar> {
 
             @Override
-            protected Avatar doInBackground(String... params) {
+            protected Avatar doInBackground(Objects... params) {
                 Log.d(TAG, "start loading avatar");
-                return loadAvatar(params[0]);
+                return loadAvatar(email,avatar_size);
             }
 
             @Override
@@ -39,14 +58,15 @@ public class KAvatarLoader {
                     bindListener.onBindFinished();
                 }
             }
-        };
+        }
+        ;
 
-        new Task().execute(email);
+        new Task().execute();
     }
 
-    public Avatar loadAvatar(String email) {
+    public Avatar loadAvatar(String email,int avatar_size) {
         Gravatar gravatar = new Gravatar();
-        gravatar.setSize(50);
+        gravatar.setSize(avatar_size);
         gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
         gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
         byte[] jpg = gravatar.download(email);
