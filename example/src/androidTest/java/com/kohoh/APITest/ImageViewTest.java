@@ -40,7 +40,7 @@ public class ImageViewTest extends ActivityInstrumentationTestCase2<SingleBindVi
         iv_avatar_actionbar_size = (ImageView) activity.findViewById(R.id.iv_avatar_actionbar_size);
     }
 
-    public void testImageSize() {
+    public void logImageSize() {
         printDpi();
 
         printSize(iv_avatar_no_size);

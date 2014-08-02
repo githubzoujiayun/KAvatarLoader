@@ -22,18 +22,18 @@ public class SavingFilesTest extends AndroidTestCase {
         context = getContext();
     }
 
-    public void testGetFilesDir() throws IOException {
+    public void logGetFilesDir() throws IOException {
         File root = context.getFilesDir();
         logFileInf(root,"root");
     }
 
-    public void testGetCacheDir() throws IOException {
+    public void logGetCacheDir() throws IOException {
         File cacheDir = context.getCacheDir();
         logFileInf(cacheDir,"cacheDir");
 
     }
 
-    public void testGetExternal() throws IOException {
+    public void logGetExternal() throws IOException {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
             Log.d(TAG, "External storage exists");
             File externalRoot = context.getExternalFilesDir(null);
