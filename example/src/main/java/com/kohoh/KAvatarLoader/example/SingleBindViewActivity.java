@@ -16,7 +16,7 @@ public class SingleBindViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_bind_view);
         KAvatarLoader avatarLoader = new KAvatarLoader(this);
-        ImageView imageView = (ImageView) findViewById(R.id.iv_avatar);
+        ImageView imageView = (ImageView) findViewById(R.id.iv_avatar_no_size);
         String email = "qxw2012@hotmail.com";
 
         avatarLoader.bind(imageView, email, null);

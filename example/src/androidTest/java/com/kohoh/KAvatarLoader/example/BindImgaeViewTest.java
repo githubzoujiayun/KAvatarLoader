@@ -30,7 +30,7 @@ public class BindImgaeViewTest extends ActivityInstrumentationTestCase2<SingleBi
     //TestCase001 给KAvatarLoader#bind(),穿入一个ImageView和一个Email地址，
     // 根据这个Email地址加载正确的头像到ImageV上
     public void testBindImageViewByEmail() throws InterruptedException {
-        final ImageView img_avatar = (ImageView) activity.findViewById(R.id.iv_avatar);
+        final ImageView img_avatar = (ImageView) activity.findViewById(R.id.iv_avatar_no_size);
         final String email = "qxw2012@hotamil.com";
 
         avatarLoader.bind(img_avatar, email, new BindListener() {
