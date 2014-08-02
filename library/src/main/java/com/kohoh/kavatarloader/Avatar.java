@@ -10,15 +10,23 @@ import android.graphics.drawable.Drawable;
  */
 public class Avatar {
     final private String TAG;
-    final private Bitmap bitmap;
+    final private byte[] raw_avatar;
 
     public Avatar(byte[] raw_avatar,String TAG) {
-        bitmap = BitmapFactory.decodeByteArray(raw_avatar, 0, raw_avatar.length);
+        this.raw_avatar = raw_avatar;
         this.TAG = TAG;
     }
 
     public Drawable getDrawable() {
-        return new BitmapDrawable(null, bitmap);
+        return new BitmapDrawable(null, getBitmap());
+    }
+
+    public Bitmap getBitmap() {
+        return BitmapFactory.decodeByteArray(raw_avatar, 0, raw_avatar.length);
+    }
+
+    public byte[] getBytes() {
+        return raw_avatar;
     }
 
     public String getTag() {

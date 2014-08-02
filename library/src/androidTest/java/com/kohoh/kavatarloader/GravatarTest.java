@@ -17,8 +17,8 @@ public class GravatarTest extends TestCase {
     static public final String TAG = GravatarTest.class.getSimpleName() + "_TAG";
 
     private final String DOSENT_EXIST_EMAIL = "doesntexist@example.com";
-    private final String EXIST_EMAIL1 = "info@ralfebert.de";
-    private final String EXIST_EMAIL2 = "qxw2012@hotmail.com";
+    private final String EXIST_EMAIL1 = "kavatarloader1@126.com";
+    private final String EXIST_EMAIL2 = "kavatarloader2@126.com";
 
 
     @Override
@@ -39,10 +39,10 @@ public class GravatarTest extends TestCase {
         Log.d(TAG, "url_exist_email2= " + url_exist_email2);
 
         gravatar = new Gravatar();
-        String url_exist_email1_with_whitespace1 = gravatar.getUrl("info@ralfebert.de   ");
-        String url_exist_email1_with_whitespace2 = gravatar.getUrl("  info@ralfebert.de");
-        String url_exist_email1_with_hith_case1 = gravatar.getUrl("INFO@ralfebert.DE");
-        String url_exist_email1_with_hith_case2 = gravatar.getUrl("InFo@RaLfebeRt.dE");
+        String url_exist_email1_with_whitespace1 = gravatar.getUrl("kavatarloader1@126.com   ");
+        String url_exist_email1_with_whitespace2 = gravatar.getUrl("  kavatarloader1@126.com");
+        String url_exist_email1_with_hith_case1 = gravatar.getUrl("kaVatArlOader1@126.com");
+        String url_exist_email1_with_hith_case2 = gravatar.getUrl("KavaTarloaDer1@126.cOm");
 
         Log.d(TAG, "url_exist_email1_with_hith_case1= " + url_exist_email1_with_hith_case1);
         Log.d(TAG, "url_exist_email1_with_hith_case2= " + url_exist_email1_with_hith_case2);
@@ -88,23 +88,23 @@ public class GravatarTest extends TestCase {
     }
 
     public void testGetImageUrlTrimLeadingAndTrailingWhitespace() {
-        assertEquals("http://www.gravatar.com/avatar/fa8771dec9da9299afed9ffce70c2c18.jpg?d=404", gravatar.getUrl("info@ralfebert.de   "));
-        assertEquals("http://www.gravatar.com/avatar/fa8771dec9da9299afed9ffce70c2c18.jpg?d=404", gravatar.getUrl("   info@ralfebert.de"));
-        assertEquals("http://www.gravatar.com/avatar/fa8771dec9da9299afed9ffce70c2c18.jpg?d=404", gravatar.getUrl("   info@ralfebert.de   "));
+        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404", gravatar.getUrl("kavatarloader1@126.com   "));
+        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404", gravatar.getUrl("   kavatarloader1@126.com"));
+        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404", gravatar.getUrl("   kavatarloader1@126.com   "));
     }
 
     public void testGetImageUrlForceAllCharactersToLowerCase() {
-        assertEquals("http://www.gravatar.com/avatar/fa8771dec9da9299afed9ffce70c2c18.jpg?d=404", gravatar.getUrl("INFO@rAlFeBeRt.DE"));
-        assertEquals("http://www.gravatar.com/avatar/fa8771dec9da9299afed9ffce70c2c18.jpg?d=404", gravatar.getUrl("info@ralFEBert.dE"));
+        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404", gravatar.getUrl("kaVatArloAdEr1@126.Com"));
+        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404", gravatar.getUrl("kAvaTarlOadeR1@126.COM"));
 
     }
 
     public void testGetImageUrlDefaults() {
         assertEquals("http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=404",
                 gravatar.getUrl(DOSENT_EXIST_EMAIL));
-        assertEquals("http://www.gravatar.com/avatar/fa8771dec9da9299afed9ffce70c2c18.jpg?d=404",
+        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404",
                 gravatar.getUrl(EXIST_EMAIL1));
-        assertEquals("http://www.gravatar.com/avatar/93c7566a00a574b94e73565fa74bbbc9.jpg?d=404",
+        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404",
                 gravatar.getUrl(EXIST_EMAIL2));
     }
 
@@ -113,10 +113,10 @@ public class GravatarTest extends TestCase {
         assertEquals("http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?s=100&d=404",
                 gravatar.getUrl(DOSENT_EXIST_EMAIL));
         gravatar.setSize(123);
-        assertEquals("http://www.gravatar.com/avatar/fa8771dec9da9299afed9ffce70c2c18.jpg?s=123&d=404",
+        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=123&d=404",
                 gravatar.getUrl(EXIST_EMAIL1));
         gravatar.setSize(321);
-        assertEquals("http://www.gravatar.com/avatar/93c7566a00a574b94e73565fa74bbbc9.jpg?s=321&d=404",
+        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?s=321&d=404",
                 gravatar.getUrl(EXIST_EMAIL2));
     }
 
@@ -132,13 +132,13 @@ public class GravatarTest extends TestCase {
         assertEquals("http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?r=pg&d=404",
                 gravatar.getUrl(DOSENT_EXIST_EMAIL));
         gravatar.setRating(GravatarRating.RESTRICTED);
-        assertEquals("http://www.gravatar.com/avatar/fa8771dec9da9299afed9ffce70c2c18.jpg?r=r&d=404",
+        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?r=r&d=404",
                 gravatar.getUrl(EXIST_EMAIL1));
         gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
-        assertEquals("http://www.gravatar.com/avatar/93c7566a00a574b94e73565fa74bbbc9.jpg?d=404",
+        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404",
                 gravatar.getUrl(EXIST_EMAIL2));
         gravatar.setRating(GravatarRating.XPLICIT);
-        assertEquals("http://www.gravatar.com/avatar/93c7566a00a574b94e73565fa74bbbc9.jpg?r=x&d=404",
+        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?r=x&d=404",
                 gravatar.getUrl(EXIST_EMAIL2));
     }
 
@@ -146,13 +146,13 @@ public class GravatarTest extends TestCase {
         gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
         assertEquals("http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=identicon", gravatar.getUrl(DOSENT_EXIST_EMAIL));
         gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
-        assertEquals("http://www.gravatar.com/avatar/fa8771dec9da9299afed9ffce70c2c18.jpg", gravatar.getUrl(EXIST_EMAIL1));
+        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg", gravatar.getUrl(EXIST_EMAIL1));
         gravatar.setDefaultImage(GravatarDefaultImage.MONSTERID);
-        assertEquals("http://www.gravatar.com/avatar/93c7566a00a574b94e73565fa74bbbc9.jpg?d=monsterid", gravatar.getUrl(EXIST_EMAIL2));
+        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=monsterid", gravatar.getUrl(EXIST_EMAIL2));
         gravatar.setDefaultImage(GravatarDefaultImage.WAVATAR);
-        assertEquals("http://www.gravatar.com/avatar/93c7566a00a574b94e73565fa74bbbc9.jpg?d=wavatar", gravatar.getUrl(EXIST_EMAIL2));
+        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=wavatar", gravatar.getUrl(EXIST_EMAIL2));
         gravatar.setDefaultImage(GravatarDefaultImage.HTTP_404);
-        assertEquals("http://www.gravatar.com/avatar/93c7566a00a574b94e73565fa74bbbc9.jpg?d=404", gravatar.getUrl(EXIST_EMAIL2));
+        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404", gravatar.getUrl(EXIST_EMAIL2));
 
     }
 
@@ -160,11 +160,11 @@ public class GravatarTest extends TestCase {
         gravatar.setSize(123);
         gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
         gravatar.setRating(GravatarRating.XPLICIT);
-        assertEquals("http://www.gravatar.com/avatar/93c7566a00a574b94e73565fa74bbbc9.jpg?s=123&r=x&d=identicon", gravatar.getUrl(EXIST_EMAIL2));
+        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?s=123&r=x&d=identicon", gravatar.getUrl(EXIST_EMAIL2));
         gravatar.setSize(321);
         gravatar.setDefaultImage(GravatarDefaultImage.MONSTERID);
         gravatar.setRating(GravatarRating.RESTRICTED);
-        assertEquals("http://www.gravatar.com/avatar/fa8771dec9da9299afed9ffce70c2c18.jpg?s=321&r=r&d=monsterid", gravatar.getUrl(EXIST_EMAIL1));
+        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=321&r=r&d=monsterid", gravatar.getUrl(EXIST_EMAIL1));
 
     }
 
@@ -177,6 +177,103 @@ public class GravatarTest extends TestCase {
         gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
         bytes = gravatar.download(DOSENT_EXIST_EMAIL);
         assertTrue("content present", bytes.length > 100);
+    }
+
+    public void testAvatarSize() {
+        sameAvatarDiffSize(EXIST_EMAIL1);
+        sameAvatarDiffSize(EXIST_EMAIL2);
+        sameAvatarDiffSize(DOSENT_EXIST_EMAIL);
+
+        sameAvatarDiffDefaultAvatar(EXIST_EMAIL1);
+        sameAvatarDiffDefaultAvatar(EXIST_EMAIL2);
+        sameAvatarDiffDefaultAvatar(DOSENT_EXIST_EMAIL);
+
+        sameAvatarDiffRating(EXIST_EMAIL1);
+        sameAvatarDiffRating(EXIST_EMAIL2);
+        sameAvatarDiffRating(DOSENT_EXIST_EMAIL);
+
+    }
+
+    private void sameAvatarDiffDefaultAvatar(String email) {
+        Log.d(TAG, email);
+        gravatar.setSize(100);
+        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
+        byte[] bytes;
+
+        gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
+        bytes = gravatar.download(email);
+        Log.d(TAG, "defaultImage=GRAVATAR_ICON bytes length= " + bytes.length);
+
+        gravatar.setDefaultImage(GravatarDefaultImage.MONSTERID);
+        bytes = gravatar.download(email);
+        Log.d(TAG, "defaultImage=MONSTERID bytes length= " + bytes.length);
+
+        gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
+        bytes = gravatar.download(email);
+        Log.d(TAG, "defaultImage=IDENTICON bytes length= " + bytes.length);
+
+        Log.d(TAG, "----------------------------");
+    }
+
+    private void sameAvatarDiffRating(String email) {
+
+        Log.d(TAG, email);
+        gravatar.setSize(100);
+        gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
+        byte[] bytes;
+
+        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
+        bytes = gravatar.download(email);
+        Log.d(TAG, "rating=GENERAL_AUDIENCES bytes length= " + bytes.length);
+
+        gravatar.setRating(GravatarRating.PARENTAL_GUIDANCE_SUGGESTED);
+        bytes = gravatar.download(email);
+        Log.d(TAG, "rating=PARENTAL_GUIDANCE_SUGGESTEDS bytes length= " + bytes.length);
+
+        gravatar.setRating(GravatarRating.XPLICIT);
+        bytes = gravatar.download(email);
+        Log.d(TAG, "rating=XPLICIT bytes length= " + bytes.length);
+
+        Log.d(TAG, "----------------------------");
+
+    }
+
+    private void sameAvatarDiffSize(String email) {
+        byte[] bytes;
+
+        Log.d(TAG, email);
+        gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
+        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
+
+        gravatar.setSize(50);
+        bytes = gravatar.download(email);
+        Log.d(TAG, "size=50 bytes length= " + bytes.length);
+
+        gravatar.setSize(100);
+        bytes = gravatar.download(email);
+        Log.d(TAG, "size=100 bytes length= " + bytes.length);
+
+        gravatar.setSize(200);
+        bytes = gravatar.download(email);
+        Log.d(TAG, "size= 200 bytes length= " + bytes.length);
+
+        Log.d(TAG, "----------------------------");
+    }
+
+    public void testAvatarEqual() {
+        byte[] bytes1 = gravatar.download(EXIST_EMAIL2);
+        byte[] bytes2 = gravatar.download(EXIST_EMAIL2);
+
+        Log.d(TAG, bytes1.equals(bytes2) ? "equals" : "not equals");
+
+        Log.d(TAG, "bytes1 hash= " + bytes1.hashCode());
+        Log.d(TAG, "bytes2 hash= " + bytes2.hashCode());
+
+        Log.d(TAG, "bytes1 length= " + bytes1.length);
+        Log.d(TAG, "bytes2 length= " + bytes2.length);
+
+        Log.d(TAG, "bytes1= " + bytes1.toString());
+        Log.d(TAG, "bytes2= " + bytes2.toString());
     }
 
 }
