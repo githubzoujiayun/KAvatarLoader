@@ -2,6 +2,7 @@ package com.kohoh.APITest;
 
 import android.app.Activity;
 import android.test.ActivityInstrumentationTestCase2;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -40,6 +41,8 @@ public class ImageViewTest extends ActivityInstrumentationTestCase2<SingleBindVi
     }
 
     public void testImageSize() {
+        printDpi();
+
         printSize(iv_avatar_no_size);
         printSize(iv_avatar_small_size);
         printSize(iv_avatar_medium_size);
@@ -58,5 +61,16 @@ public class ImageViewTest extends ActivityInstrumentationTestCase2<SingleBindVi
         } else {
             Log.e(TAG, "view is null");
         }
+    }
+
+    private void printDpi() {
+        DisplayMetrics display_metrics = activity.getResources().getDisplayMetrics();
+        int densityDpi = display_metrics.densityDpi;
+        float density = display_metrics.density;
+
+        Log.d(TAG, "densityDpi= " + densityDpi);
+        Log.d(TAG, "density= " + density);
+        Log.d(TAG, "------------------------------------");
+
     }
 }
