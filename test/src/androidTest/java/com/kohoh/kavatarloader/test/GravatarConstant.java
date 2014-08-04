@@ -1,4 +1,4 @@
-package com.kohoh.kavatarloader;
+package com.kohoh.kavatarloader.test;
 
 /**
  * Created by kohoh on 14-8-2.

@@ -1,4 +1,4 @@
-package com.kohoh.kavatarloader;
+package com.kohoh.kavatarloader.test;
 
 import android.content.res.AssetManager;
 import android.test.AndroidTestCase;

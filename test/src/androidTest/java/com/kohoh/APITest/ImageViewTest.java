@@ -6,8 +6,9 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.kohoh.KAvatarLoader.example.R;
-import com.kohoh.KAvatarLoader.example.SingleBindViewActivity;
+import com.kohoh.KAvatarLoader.test.R;
+import com.kohoh.KAvatarLoader.test.SingleBindViewActivity;
+
 
 /**
  * Created by kohoh on 14-8-2.

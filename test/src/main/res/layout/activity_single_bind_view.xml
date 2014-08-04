@@ -1,0 +1,39 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.kohoh.KAvatarLoader.example.SingleBindViewActivity">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_avatar_no_size"
+        android:layout_margin="20dp"/>
+
+    <ImageView
+        android:id="@+id/iv_avatar_small_size"
+        style="@style/AvatarSmall"
+        android:layout_margin="20dp"/>
+
+    <ImageView
+        android:id="@+id/iv_avatar_medium_size"
+        style="@style/AvatarMedium"
+        android:layout_margin="20dp"/>
+
+    <ImageView
+        android:id="@+id/iv_avatar_large_size"
+        style="@style/AvatarLarge"
+        android:layout_margin="20dp"/>
+
+    <ImageView
+        android:id="@+id/iv_avatar_xlarge_size"
+        style="@style/AvatarXLarge"
+        android:layout_margin="20dp"/>
+
+    <ImageView
+        android:id="@+id/iv_avatar_actionbar_size"
+        style="@style/AvatarActionBar"
+        android:layout_margin="20dp"/>
+
+</LinearLayout>
