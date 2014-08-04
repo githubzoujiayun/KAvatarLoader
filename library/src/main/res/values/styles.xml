@@ -1,9 +1,5 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-    </style>
-
     <style name="AvatarActionBar">
         <item name="android:layout_width">28dp</item>
         <item name="android:layout_height">28dp</item>
