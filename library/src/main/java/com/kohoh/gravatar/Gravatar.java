@@ -79,7 +79,8 @@ public final class Gravatar {
 	}
 
     public String getUrlByHashCode(String hash_code) {
-        return "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404";
+        String params = formatUrlParameters();
+        return GRAVATAR_URL + hash_code + ".jpg" + params;
     }
 
 	/**

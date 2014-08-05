@@ -18,5 +18,7 @@ public class GravatarConstant {
     public static final String EXIST_EMAIL2_HASH_CODE = "228ff1d1d1910536d99790691eb45882";
 
     public static final String EXIST_EMAIL1_DEFAULT_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404";
-
+    public static final String EXIST_EMAIL2_DEFAULT_URL = "http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404";
+    public static final String EXIST_EMAIL1_SIZE100_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=100&d=404";
+    public static final String EXIST_EMAIL2_DEFAULT_IMAGE_WAVATAR_URL = "http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=wavatar";
 }

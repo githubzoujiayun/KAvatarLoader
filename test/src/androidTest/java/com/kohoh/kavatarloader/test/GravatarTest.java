@@ -346,4 +346,23 @@ public class GravatarTest extends AndroidTestCase {
         bufferedOutputStream.close();
     }
 
+    //TestCase018 测试Gravatar#getUrlByHashCode能否正确提供url
+    public void testGetUrlByHashCode() {
+        testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_DEFAULT_URL);
+        testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_DEFAULT_URL);
+
+        gravatar.setSize(100);
+        testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE100_URL);
+
+        //TODO 增加Gravatar#reset功能，实现恢复初始化设置
+        gravatar = new Gravatar();
+        gravatar.setDefaultImage(GravatarDefaultImage.WAVATAR);
+        testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_DEFAULT_IMAGE_WAVATAR_URL);
+    }
+
+    private void testGetUrlByHashCode(String hash_code, String url_expect) {
+        String url_actural = gravatar.getUrlByHashCode(hash_code);
+        assertEquals("url not equal", url_expect, url_actural);
+    }
+
 }
