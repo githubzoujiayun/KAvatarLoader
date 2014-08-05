@@ -78,6 +78,10 @@ public final class Gravatar {
 		return GRAVATAR_URL + emailHash + ".jpg" + params;
 	}
 
+    public String getUrlByHashCode(String hash_code) {
+        return "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404";
+    }
+
 	/**
 	 * Downloads the gravatar for the given URL using Java {@link URL} and
 	 * returns a byte array containing the gravatar jpg, returns null if no

@@ -119,13 +119,6 @@ public class GravatarTest extends AndroidTestCase {
                 gravatar.getUrl(EXIST_EMAIL2));
     }
 
-    //TODO 测试ImageSize的范围1-2048
-    //TODO 测试自定义DefaultImage
-    //TODO 增加DefalutImage的测试，因为Gravatar增加了DefaultImage
-    //TODO 增加DefaultImage的force load 测试
-    //TODO 增加对ssl的加载方式 也就是使用https://secure.gravatar.com/加载。
-
-
     public void testGetImageUrlRating() {
         gravatar.setRating(GravatarRating.PARENTAL_GUIDANCE_SUGGESTED);
         assertEquals("http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?r=pg&d=404",
