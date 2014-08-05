@@ -26,6 +26,9 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     private ImageView iv_size100;
     private ImageView iv_size200;
+    private ImageView iv_no_size;
+    private ImageView iv_not_square_size99;
+    private ImageView iv_not_square_size222;
 
 
     @Override
@@ -36,6 +39,9 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
         iv_size100 = (ImageView) activity.findViewById(R.id.iv_size_100);
         iv_size200 = (ImageView) activity.findViewById(R.id.iv_size_200);
+        iv_no_size = (ImageView) activity.findViewById(R.id.iv_no_size);
+        iv_not_square_size99 = (ImageView) activity.findViewById(R.id.iv_not_square_size_99);
+        iv_not_square_size222 = (ImageView) activity.findViewById(R.id.iv_not_square_size_222);
     }
 
     //TestCase28 测试KAvatatLoader#loadAvatarByEmail是否正常工作
@@ -66,7 +72,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     private void testLoadAvatarByEmail(String email, int size, String tag_expect) {
-        Avatar avatar = avatar_loader.loadAvatar(email, size);
+        Avatar avatar = avatar_loader.loadAvatarByEmail(email, size);
         assertLoadAvatar(avatar, tag_expect);
     }
 
@@ -76,17 +82,15 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
 
-    //TODO 需要重构
-    public void testLoadSuitableSizeAvatar() {
-        Avatar avatar_email1_size100 = avatar_loader.loadAvatar(GravatarConstant.EXIST_EMAIL1, 100);
-        Avatar avatar_email1_size200 = avatar_loader.loadAvatar(GravatarConstant.EXIST_EMAIL1, 200);
-        Avatar avatar_email2_size100 = avatar_loader.loadAvatar(GravatarConstant.EXIST_EMAIL2, 100);
-        Avatar avatar_email2_size200 = avatar_loader.loadAvatar(GravatarConstant.EXIST_EMAIL2, 200);
-
-        assertEquals(GravatarConstant.EMAIL1_SIZE100_LENGTH, avatar_email1_size100.getBytes().length);
-        assertEquals(GravatarConstant.EMAIL1_SIZE200_LENGTH, avatar_email1_size200.getBytes().length);
-        assertEquals(GravatarConstant.EMAIL2_SIZE100_LENGTH, avatar_email2_size100.getBytes().length);
-        assertEquals(GravatarConstant.EMAIL2_SIZE200_LENGTH, avatar_email2_size200.getBytes().length);
+    //TestCase029 测试是否能够根据ImageView计算出正确的AvatarSize
+    public void testCalculateAvatarSize() {
+        assertEquals("avatar's size not equal", 100, avatar_loader.calculateAvatarSize(iv_size100));
+        assertEquals("avatar's size not equal", 200, avatar_loader.calculateAvatarSize(iv_size200));
+        assertEquals("avatar's size not equal",
+                activity.getResources().getDimensionPixelSize(R.dimen.default_avatar_size),
+                avatar_loader.calculateAvatarSize(iv_no_size));
+        assertEquals("avatar's size not equal", 99, avatar_loader.calculateAvatarSize(iv_not_square_size99));
+        assertEquals("avatar's size not equal", 222, avatar_loader.calculateAvatarSize(iv_not_square_size222));
     }
 
     //    TestCase001 给KAvatarLoader#bind(),穿入一个ImageView和一个Email地址，

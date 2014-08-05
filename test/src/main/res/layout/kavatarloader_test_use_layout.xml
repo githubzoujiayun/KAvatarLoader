@@ -15,4 +15,19 @@
         android:layout_width="200px"
         android:layout_height="200px"/>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/iv_no_size"/>
+
+    <ImageView
+        android:layout_width="111px"
+        android:layout_height="99px"
+        android:id="@+id/iv_not_square_size_99"/>
+
+    <ImageView
+        android:layout_width="333px"
+        android:layout_height="222px"
+        android:id="@+id/iv_not_square_size_222"/>
+
 </LinearLayout>

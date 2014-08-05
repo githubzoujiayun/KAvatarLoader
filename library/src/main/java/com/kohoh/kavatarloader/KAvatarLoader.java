@@ -22,12 +22,7 @@ public class KAvatarLoader {
         this.gravatar = new Gravatar();
     }
 
-    public void bind(final ImageView imageView, final String email, final BindListener bindListener) {
-
-        if (imageView == null) {
-            return;
-        }
-
+    public int calculateAvatarSize(ImageView imageView) {
         //计算头像的尺寸
         final int height = imageView.getHeight();
         final int width = imageView.getWidth();
@@ -40,13 +35,23 @@ public class KAvatarLoader {
             avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
         }
 
+        return avatar_size;
+    }
+
+    public void bind(final ImageView imageView, final String email, final BindListener bindListener) {
+
+        if (imageView == null) {
+            return;
+        }
+
+        final int avatar_size = calculateAvatarSize(imageView);
 
         class Task extends AsyncTask<Objects, Objects, Avatar> {
 
             @Override
             protected Avatar doInBackground(Objects... params) {
                 Log.d(TAG, "start loading avatar");
-                return loadAvatar(email, avatar_size);
+                return loadAvatarByEmail(email, avatar_size);
             }
 
             @Override
@@ -106,7 +111,6 @@ public class KAvatarLoader {
 //        return this;
 //    }
 
-    //    TODO 待完成
     public Avatar loadAvatarByHashCode(String hash_code, int avatar_size) {
         gravatar.setSize(avatar_size);
         byte[] raw_gravatar = gravatar.downloadByHashCode(hash_code);
@@ -114,12 +118,11 @@ public class KAvatarLoader {
         return new Avatar(raw_gravatar, tag);
     }
 
-    public Avatar loadAvatar(String email, int avatar_size) {
-        Gravatar gravatar = new Gravatar();
+    public Avatar loadAvatarByEmail(String email, int avatar_size) {
         gravatar.setSize(avatar_size);
-        byte[] jpg = gravatar.downloadByEmail(email);
+        byte[] raw_gravatar = gravatar.downloadByEmail(email);
         String tag = gravatar.getUrlByEmail(email);
-        return new Avatar(jpg, tag);
+        return new Avatar(raw_gravatar, tag);
     }
 
 }
