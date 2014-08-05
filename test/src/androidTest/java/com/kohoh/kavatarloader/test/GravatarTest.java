@@ -2,16 +2,12 @@ package com.kohoh.kavatarloader.test;
 
 import android.content.res.AssetManager;
 import android.test.AndroidTestCase;
-import android.util.Log;
 
 import com.kohoh.gravatar.Gravatar;
 import com.kohoh.gravatar.GravatarDefaultImage;
 import com.kohoh.gravatar.GravatarRating;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -23,171 +19,98 @@ public class GravatarTest extends AndroidTestCase {
 
     static public final String TAG = GravatarTest.class.getSimpleName() + "_TAG";
 
-    private final String DOSENT_EXIST_EMAIL = GravatarConstant.DOSENT_EXIST_EMAIL;
-    private final String EXIST_EMAIL1 = GravatarConstant.EXIST_EMAIL1;
-    private final String EXIST_EMAIL2 = GravatarConstant.EXIST_EMAIL2;
-
-
     @Override
     protected void setUp() throws Exception {
         gravatar = new Gravatar();
     }
 
-    public void logAPI() {
-        String url_doesnt_exit_email = gravatar.getUrl(DOSENT_EXIST_EMAIL);
-        String url_exist_email1 = gravatar.getUrl(EXIST_EMAIL1);
-        String url_exist_email2 = gravatar.getUrl(EXIST_EMAIL2);
-        Log.d(TAG, "url_doesnt_exit_email= " + url_doesnt_exit_email);
-        Log.d(TAG, "url_exist_email1= " + url_exist_email1);
-        Log.d(TAG, "url_exist_email2= " + url_exist_email2);
 
-        gravatar = new Gravatar();
-        String url_exist_email1_with_whitespace1 = gravatar.getUrl("kavatarloader1@126.com   ");
-        String url_exist_email1_with_whitespace2 = gravatar.getUrl("  kavatarloader1@126.com");
-        String url_exist_email1_with_hith_case1 = gravatar.getUrl("kaVatArlOader1@126.com");
-        String url_exist_email1_with_hith_case2 = gravatar.getUrl("KavaTarloaDer1@126.cOm");
-        Log.d(TAG, "url_exist_email1_with_hith_case1= " + url_exist_email1_with_hith_case1);
-        Log.d(TAG, "url_exist_email1_with_hith_case2= " + url_exist_email1_with_hith_case2);
-        Log.d(TAG, "url_exist_email1_with_whitespace1= " + url_exist_email1_with_whitespace1);
-        Log.d(TAG, "url_exist_email1_with_whitespace2= " + url_exist_email1_with_whitespace2);
-
-        gravatar = new Gravatar();
-        gravatar.setSize(100);
-        String url_exist_mail1_with_size100 = gravatar.getUrl(EXIST_EMAIL1);
-        gravatar.setSize(321);
-        String url_exist_mail2_with_size321 = gravatar.getUrl(EXIST_EMAIL2);
-        Log.d(TAG, "url_exist_mail1_with_size100= " + url_exist_mail1_with_size100);
-        Log.d(TAG, "url_exist_mail2_with_size321= " + url_exist_mail2_with_size321);
-
-        gravatar = new Gravatar();
-        gravatar.setRating(GravatarRating.XPLICIT);
-        String url_exist_mail1_with_rating_xplicit = gravatar.getUrl(EXIST_EMAIL1);
-        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
-        String url_exist_mail1_with_rating_general_audiences = gravatar.getUrl(EXIST_EMAIL1);
-        gravatar.setRating(GravatarRating.RESTRICTED);
-        String url_exist_mail1_with_rating_restricted = gravatar.getUrl(EXIST_EMAIL1);
-        gravatar.setRating(GravatarRating.PARENTAL_GUIDANCE_SUGGESTED);
-        String url_exist_mail1_with_rating_parental_guidance_suggested = gravatar.getUrl(EXIST_EMAIL1);
-        Log.d(TAG, "url_exist_mail1_with_rating_xplicit= " + url_exist_mail1_with_rating_xplicit);
-        Log.d(TAG, "url_exist_mail1_with_rating_restricted= " + url_exist_mail1_with_rating_restricted);
-        Log.d(TAG, "url_exist_mail1_with_rating_general_audiences= " + url_exist_mail1_with_rating_general_audiences);
-        Log.d(TAG, "url_exist_mail1_with_rating_parental_guidance_suggested= " + url_exist_mail1_with_rating_parental_guidance_suggested);
-
-        gravatar = new Gravatar();
-        gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
-        String url_exist_mail1_with_default_image_gravatar_icon = gravatar.getUrl(EXIST_EMAIL1);
-        Log.d(TAG, "url_exist_mail1_with_default_image_gravatar_icon= " + url_exist_mail1_with_default_image_gravatar_icon);
-
-        gravatar = new Gravatar();
-        gravatar.setSize(123);
-        gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
-        gravatar.setRating(GravatarRating.XPLICIT);
-        String url_exist_mail1_combined = gravatar.getUrl(EXIST_EMAIL1);
-        Log.d(TAG, "url_exist_mail1_combined= " + url_exist_mail1_combined);
-    }
-
+    //TestCase019 测试Gravatar#getUrl输入的email前后有空格的情况下能否正常工作
     public void testGetImageUrlTrimLeadingAndTrailingWhitespace() {
-        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404", gravatar.getUrl("kavatarloader1@126.com   "));
-        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404", gravatar.getUrl("   kavatarloader1@126.com"));
-        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404", gravatar.getUrl("   kavatarloader1@126.com   "));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl("kavatarloader1@126.com   "));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl("   kavatarloader1@126.com"));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl("   kavatarloader1@126.com   "));
     }
-
+    //TestCase020 测试Gravatar#getUrl输入的email存在大写字母的情况下能否正常工作
     public void testGetImageUrlForceAllCharactersToLowerCase() {
-        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404", gravatar.getUrl("kaVatArloAdEr1@126.Com"));
-        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404", gravatar.getUrl("kAvaTarlOadeR1@126.COM"));
-
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl("kaVatArloAdEr1@126.Com"));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl("kAvaTarlOadeR1@126.COM"));
     }
 
+    //TestCase021 测试Gravatar#getUrl能否正常工作
     public void testGetImageUrlDefaults() {
-        assertEquals("http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=404",
-                gravatar.getUrl(DOSENT_EXIST_EMAIL));
-        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404",
-                gravatar.getUrl(EXIST_EMAIL1));
-        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404",
-                gravatar.getUrl(EXIST_EMAIL2));
+        assertEquals(GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_URL,gravatar.getUrl(GravatarConstant.DOSENT_EXIST_EMAIL));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL,gravatar.getUrl(GravatarConstant.EXIST_EMAIL1));
+        assertEquals(GravatarConstant.EXIST_EMAIL2_DEFAULT_URL,gravatar.getUrl(GravatarConstant.EXIST_EMAIL2));
     }
 
+    //TestCase021 测试Gravatar#getUrl设置size之后能否正确工作
     public void testGetImageUrlSize() {
+        gravatar.setSize(300);
+        assertEquals(GravatarConstant.DOSENT_EXIST_EMAIL_SIZE_300_URL,gravatar.getUrl(GravatarConstant.DOSENT_EXIST_EMAIL));
         gravatar.setSize(100);
-        assertEquals("http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?s=100&d=404",
-                gravatar.getUrl(DOSENT_EXIST_EMAIL));
-        gravatar.setSize(123);
-        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=123&d=404",
-                gravatar.getUrl(EXIST_EMAIL1));
-        gravatar.setSize(321);
-        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?s=321&d=404",
-                gravatar.getUrl(EXIST_EMAIL2));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_SIZE_100_URL,gravatar.getUrl(GravatarConstant.EXIST_EMAIL1));
+        gravatar.setSize(200);
+        assertEquals(GravatarConstant.EXIST_EMAIL2_SIZE_200_URL,gravatar.getUrl(GravatarConstant.EXIST_EMAIL2));
     }
 
+    //TestCase022 测试Gravatar#getUrl设置rating之后能否正确工作
     public void testGetImageUrlRating() {
         gravatar.setRating(GravatarRating.PARENTAL_GUIDANCE_SUGGESTED);
-        assertEquals("http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?r=pg&d=404",
-                gravatar.getUrl(DOSENT_EXIST_EMAIL));
-        gravatar.setRating(GravatarRating.RESTRICTED);
-        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?r=r&d=404",
-                gravatar.getUrl(EXIST_EMAIL1));
-        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
-        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404",
-                gravatar.getUrl(EXIST_EMAIL2));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_RATING_PARENTAL_GUIDANCE_SUGGESTED_URL,gravatar.getUrl(GravatarConstant.EXIST_EMAIL1));
         gravatar.setRating(GravatarRating.XPLICIT);
-        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?r=x&d=404",
-                gravatar.getUrl(EXIST_EMAIL2));
+        assertEquals(GravatarConstant.EXIST_EMAIL2_RATING_XPLICIT_URL,gravatar.getUrl(GravatarConstant.EXIST_EMAIL2));
     }
 
+    //TestCase023 测试Gravatar#getUrl设置deafult_image之后能否正确工作
     public void testGetImageUrlDefaultImage() {
-        gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
-        assertEquals("http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=identicon", gravatar.getUrl(DOSENT_EXIST_EMAIL));
         gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
-        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg", gravatar.getUrl(EXIST_EMAIL1));
-        gravatar.setDefaultImage(GravatarDefaultImage.MONSTERID);
-        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=monsterid", gravatar.getUrl(EXIST_EMAIL2));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_IMAGE_GRAVATAR_ICON_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL1));
         gravatar.setDefaultImage(GravatarDefaultImage.WAVATAR);
-        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=wavatar", gravatar.getUrl(EXIST_EMAIL2));
-        gravatar.setDefaultImage(GravatarDefaultImage.HTTP_404);
-        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404", gravatar.getUrl(EXIST_EMAIL2));
-
+        assertEquals(GravatarConstant.EXIST_EMAIL2_DEFAULT_IMAGE_WAVATAR_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL2));
     }
 
+    //TestCase024 测试Gravatar#getUrl设置deafult_image,size,rating之后能否正确工作
     public void testGetImageUrlCombined() {
         gravatar.setSize(123);
         gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
-        gravatar.setRating(GravatarRating.XPLICIT);
-        assertEquals("http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?s=123&r=x&d=identicon", gravatar.getUrl(EXIST_EMAIL2));
+        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
+        assertEquals(GravatarConstant.EXIST_EMAIL2_123_GENERAL_AUDIENCES_IDENTICON_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL2));
         gravatar.setSize(321);
         gravatar.setDefaultImage(GravatarDefaultImage.MONSTERID);
         gravatar.setRating(GravatarRating.RESTRICTED);
-        assertEquals("http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=321&r=r&d=monsterid", gravatar.getUrl(EXIST_EMAIL1));
-
+        assertEquals(GravatarConstant.EXIST_EMAIL1_321_RESTRICTED_MONSTERID_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL1));
     }
 
+    //TestCase024 测试Gravatar#download是否正常工作
     public void testDownload() throws IOException {
         gravatar.setSize(100);
-        byte[] bytes_email1_size100_actural = gravatar.download(EXIST_EMAIL1);
-        byte[] bytes_email2_size100_actural = gravatar.download(EXIST_EMAIL2);
+        byte[] bytes_email1_size100_actural = gravatar.download(GravatarConstant.EXIST_EMAIL1);
+        byte[] bytes_email2_size100_actural = gravatar.download(GravatarConstant.EXIST_EMAIL2);
         gravatar.setSize(200);
-        byte[] bytes_email1_size200_actural = gravatar.download(EXIST_EMAIL1);
-        byte[] bytes_email2_size200_actural = gravatar.download(EXIST_EMAIL2);
+        byte[] bytes_email1_size200_actural = gravatar.download(GravatarConstant.EXIST_EMAIL1);
+        byte[] bytes_email2_size200_actural = gravatar.download(GravatarConstant.EXIST_EMAIL2);
 
         AssetManager asset_manager = getContext().getAssets();
         InputStream inputStream;
         BufferedInputStream bufferedInputStream;
 
-        inputStream = asset_manager.open("kavatarloader1@126.com_size100_bytes");
+        inputStream = asset_manager.open(GravatarConstant.EXIST_EMAIL1_SIZE_100_BYTE_FILE_NAME);
         byte[] bytes_email1_size100_expect = new byte[inputStream.available()];
         bufferedInputStream = new BufferedInputStream(inputStream);
         bufferedInputStream.read(bytes_email1_size100_expect);
 
-        inputStream = asset_manager.open("kavatarloader1@126.com_size200_bytes");
+        inputStream = asset_manager.open(GravatarConstant.EXIST_EMAIL1_SIZE_200_BYTE_FILE_NAME);
         byte[] bytes_email1_size200_expect = new byte[inputStream.available()];
         bufferedInputStream = new BufferedInputStream(inputStream);
         bufferedInputStream.read(bytes_email1_size200_expect);
 
-        inputStream = asset_manager.open("kavatarloader2@126.com_size100_bytes");
+        inputStream = asset_manager.open(GravatarConstant.EXIST_EMAIL2_SIZE_100_BYTE_FILE_NAME);
         byte[] bytes_email2_size100_expect = new byte[inputStream.available()];
         bufferedInputStream = new BufferedInputStream(inputStream);
         bufferedInputStream.read(bytes_email2_size100_expect);
 
-        inputStream = asset_manager.open("kavatarloader2@126.com_size200_bytes");
+        inputStream = asset_manager.open(GravatarConstant.EXIST_EMAIL2_SIZE_200_BYTE_FILE_NAME);
         byte[] bytes_email2_size200_expect = new byte[inputStream.available()];
         bufferedInputStream = new BufferedInputStream(inputStream);
         bufferedInputStream.read(bytes_email2_size200_expect);
@@ -222,142 +145,22 @@ public class GravatarTest extends AndroidTestCase {
         return true;
     }
 
-    public void logAvatarSize() {
-        sameAvatarDiffSize(EXIST_EMAIL1);
-        sameAvatarDiffSize(EXIST_EMAIL2);
-        sameAvatarDiffSize(DOSENT_EXIST_EMAIL);
-
-        sameAvatarDiffDefaultAvatar(EXIST_EMAIL1);
-        sameAvatarDiffDefaultAvatar(EXIST_EMAIL2);
-        sameAvatarDiffDefaultAvatar(DOSENT_EXIST_EMAIL);
-
-        sameAvatarDiffRating(EXIST_EMAIL1);
-        sameAvatarDiffRating(EXIST_EMAIL2);
-        sameAvatarDiffRating(DOSENT_EXIST_EMAIL);
-    }
-
-    private void sameAvatarDiffDefaultAvatar(String email) {
-        Log.d(TAG, email);
-        gravatar.setSize(100);
-        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
-        byte[] bytes;
-
-        gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
-        bytes = gravatar.download(email);
-        Log.d(TAG, "defaultImage=GRAVATAR_ICON bytes length= " + bytes.length);
-
-        gravatar.setDefaultImage(GravatarDefaultImage.MONSTERID);
-        bytes = gravatar.download(email);
-        Log.d(TAG, "defaultImage=MONSTERID bytes length= " + bytes.length);
-
-        gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
-        bytes = gravatar.download(email);
-        Log.d(TAG, "defaultImage=IDENTICON bytes length= " + bytes.length);
-
-        Log.d(TAG, "----------------------------");
-    }
-
-    private void sameAvatarDiffRating(String email) {
-
-        Log.d(TAG, email);
-        gravatar.setSize(100);
-        gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
-        byte[] bytes;
-
-        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
-        bytes = gravatar.download(email);
-        Log.d(TAG, "rating=GENERAL_AUDIENCES bytes length= " + bytes.length);
-
-        gravatar.setRating(GravatarRating.PARENTAL_GUIDANCE_SUGGESTED);
-        bytes = gravatar.download(email);
-        Log.d(TAG, "rating=PARENTAL_GUIDANCE_SUGGESTEDS bytes length= " + bytes.length);
-
-        gravatar.setRating(GravatarRating.XPLICIT);
-        bytes = gravatar.download(email);
-        Log.d(TAG, "rating=XPLICIT bytes length= " + bytes.length);
-
-        Log.d(TAG, "----------------------------");
-
-    }
-
-    private void sameAvatarDiffSize(String email) {
-        byte[] bytes;
-
-        Log.d(TAG, email);
-        gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
-        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
-
-        gravatar.setSize(50);
-        bytes = gravatar.download(email);
-        Log.d(TAG, "size=50 bytes length= " + bytes.length);
-
-        gravatar.setSize(100);
-        bytes = gravatar.download(email);
-        Log.d(TAG, "size=100 bytes length= " + bytes.length);
-
-        gravatar.setSize(200);
-        bytes = gravatar.download(email);
-        Log.d(TAG, "size= 200 bytes length= " + bytes.length);
-
-        Log.d(TAG, "----------------------------");
-    }
-
-    public void logAvatarEqual() throws IOException {
-        byte[] bytes1 = gravatar.download(EXIST_EMAIL1);
-        byte[] bytes2 = gravatar.download(EXIST_EMAIL2);
-
-        Log.d(TAG, bytes1.equals(bytes2) ? "equals" : "not equals");
-
-        Log.d(TAG, "bytes1 hash= " + bytes1.hashCode());
-        Log.d(TAG, "bytes2 hash= " + bytes2.hashCode());
-
-        Log.d(TAG, "bytes1 length= " + bytes1.length);
-        Log.d(TAG, "bytes2 length= " + bytes2.length);
-
-        Log.d(TAG, "bytes1= " + bytes1.toString());
-        Log.d(TAG, "bytes2= " + bytes2.toString());
-    }
-
-    public void downloadAndSave() throws IOException {
-        gravatar.setSize(100);
-        byte[] bytes_email1_size100 = gravatar.download(EXIST_EMAIL1);
-        byte[] bytes_email2_size100 = gravatar.download(EXIST_EMAIL2);
-        gravatar.setSize(200);
-        byte[] bytes_email1_size200 = gravatar.download(EXIST_EMAIL1);
-        byte[] bytes_email2_size200 = gravatar.download(EXIST_EMAIL2);
-
-        saveBytes(EXIST_EMAIL1 + "_size100_bytes", bytes_email1_size100);
-        saveBytes(EXIST_EMAIL1 + "_size200_bytes", bytes_email1_size200);
-        saveBytes(EXIST_EMAIL2 + "_size100_bytes", bytes_email2_size100);
-        saveBytes(EXIST_EMAIL2 + "_size200_bytes", bytes_email2_size200);
-    }
-
-    private void saveBytes(String file_name, byte[] bytes) throws IOException {
-        File filesDir = getContext().getFilesDir();
-        File byteFile = new File(filesDir, file_name);
-        if (byteFile.exists()) {
-            byteFile.delete();
-        }
-
-        FileOutputStream outputStream = new FileOutputStream(byteFile);
-        BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(outputStream);
-        bufferedOutputStream.write(bytes);
-        bufferedOutputStream.flush();
-        bufferedOutputStream.close();
-    }
-
     //TestCase018 测试Gravatar#getUrlByHashCode能否正确提供url
     public void testGetUrlByHashCode() {
         testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_DEFAULT_URL);
         testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_DEFAULT_URL);
 
         gravatar.setSize(100);
-        testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE100_URL);
+        testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
 
         //TODO 增加Gravatar#reset功能，实现恢复初始化设置
         gravatar = new Gravatar();
         gravatar.setDefaultImage(GravatarDefaultImage.WAVATAR);
         testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_DEFAULT_IMAGE_WAVATAR_URL);
+
+        gravatar = new Gravatar();
+        gravatar.setRating(GravatarRating.PARENTAL_GUIDANCE_SUGGESTED);
+        testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_RATING_PARENTAL_GUIDANCE_SUGGESTED_URL);
     }
 
     private void testGetUrlByHashCode(String hash_code, String url_expect) {
