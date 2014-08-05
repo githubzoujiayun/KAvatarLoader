@@ -7,7 +7,6 @@ import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.KAvatarLoader.test.R;
-import com.kohoh.gravatar.Gravatar;
 import com.kohoh.kavatarloader.Avatar;
 import com.kohoh.kavatarloader.BindListener;
 import com.kohoh.kavatarloader.KAvatarLoader;
@@ -107,7 +106,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     private void testBindImageViewByEmail(final ImageView image_view, final String email, final String tag_expect) {
-        avatar_loader.bind(image_view, email, new AssertBindImageViewListener(image_view, tag_expect));
+        avatar_loader.bindImageViewByEmail(image_view, email, new AssertBindImageViewListener(image_view, tag_expect));
     }
 
     private void testBindImageViewByHashCode(final ImageView image_view, final String hash_code, final String tag_expect) {
@@ -134,8 +133,4 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
             assertEquals("tag not equal", tag_expect, tag_actural);
         }
     };
-
-
-
-
 }

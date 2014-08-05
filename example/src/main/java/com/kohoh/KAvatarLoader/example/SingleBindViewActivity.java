@@ -6,7 +6,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.kohoh.KAvatarLoader.example.R;
 import com.kohoh.kavatarloader.KAvatarLoader;
 
 public class SingleBindViewActivity extends Activity {
@@ -37,12 +36,12 @@ public class SingleBindViewActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        avatarLoader.bind(iv_avatar_no_size, email, null);
-        avatarLoader.bind(iv_avatar_small_size, email, null);
-        avatarLoader.bind(iv_avatar_medium_size, email, null);
-        avatarLoader.bind(iv_avatar_large_size, email, null);
-        avatarLoader.bind(iv_avatar_xlarge_size, email, null);
-        avatarLoader.bind(iv_avatar_actionbar_size, email, null);
+        avatarLoader.bindImageViewByEmail(iv_avatar_no_size, email, null);
+        avatarLoader.bindImageViewByEmail(iv_avatar_small_size, email, null);
+        avatarLoader.bindImageViewByEmail(iv_avatar_medium_size, email, null);
+        avatarLoader.bindImageViewByEmail(iv_avatar_large_size, email, null);
+        avatarLoader.bindImageViewByEmail(iv_avatar_xlarge_size, email, null);
+        avatarLoader.bindImageViewByEmail(iv_avatar_actionbar_size, email, null);
     }
 
     @Override

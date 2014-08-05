@@ -38,11 +38,7 @@ public class KAvatarLoader {
         return avatar_size;
     }
 
-    public void bind(final ImageView imageView, final String email, final BindListener bindListener) {
-
-        if (imageView == null) {
-            return;
-        }
+    public KAvatarLoader bindImageViewByEmail(final ImageView imageView, final String email, final BindListener bindListener) {
 
         final int avatar_size = calculateAvatarSize(imageView);
 
@@ -64,26 +60,14 @@ public class KAvatarLoader {
                 }
             }
         }
-        ;
 
         new Task().execute();
+        return this;
     }
 
-    //TODO 待完成
-    public KAvatarLoader bindImageViewByHashCode(final ImageView image_view, final String hash_code,final BindListener bind_listener) {
+    public KAvatarLoader bindImageViewByHashCode(final ImageView image_view, final String hash_code, final BindListener bind_listener) {
 
-        //计算头像的尺寸
-        final int height = image_view.getHeight();
-        final int width = image_view.getWidth();
-        final int avatar_size;
-        if (height != width) {
-            avatar_size = height < width ? height : width;
-        } else if (height != 0) {
-            avatar_size = height;
-        } else {
-            avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
-        }
-
+        final int avatar_size = calculateAvatarSize(image_view);
 
         class Task extends AsyncTask<Objects, Objects, Avatar> {
 
@@ -103,10 +87,8 @@ public class KAvatarLoader {
                 }
             }
         }
-        ;
 
         new Task().execute();
-
         return this;
     }
 
