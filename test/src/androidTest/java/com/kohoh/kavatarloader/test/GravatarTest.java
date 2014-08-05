@@ -168,4 +168,31 @@ public class GravatarTest extends AndroidTestCase {
         assertEquals("url not equal", url_expect, url_actural);
     }
 
+    //TestCase25 测试Gravatar#downloadByHashCode能否正常运行
+    public void testDownloadByHashCode() throws IOException {
+        gravatar.setSize(100);
+        testDownloadByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE_100_BYTE_FILE_NAME);
+        testDownloadByHashCode(GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_SIZE_100_BYTE_FILE_NAME);
+        gravatar.setSize(200);
+        testDownloadByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE_200_BYTE_FILE_NAME);
+        testDownloadByHashCode(GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_SIZE_200_BYTE_FILE_NAME);
+    }
+
+    private void testDownloadByHashCode(String hash_code, String raw_gravatar_expect_file_name) throws IOException {
+        byte[] raw_gravatar_actural = gravatar.downloadByHashCode(hash_code);
+
+        AssetManager asset_manager = getContext().getAssets();
+        InputStream inputStream;
+        BufferedInputStream bufferedInputStream;
+
+        inputStream = asset_manager.open(raw_gravatar_expect_file_name);
+        byte[] raw_gravatar_expect = new byte[inputStream.available()];
+        bufferedInputStream = new BufferedInputStream(inputStream);
+        bufferedInputStream.read(raw_gravatar_expect);
+
+        assertNotNull("raw_gravatar_actural is null", raw_gravatar_actural);
+        assertNotNull("raw_gravatar_expect is null", raw_gravatar_expect);
+        assertTrue("raw_gravatar not equals,raw_gravatar_expect_file_name="+raw_gravatar_expect_file_name, isBytesEqual(raw_gravatar_actural, raw_gravatar_expect));
+    }
+
 }
