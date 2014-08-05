@@ -5,8 +5,8 @@ import android.graphics.drawable.Drawable;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.ImageView;
 
+import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.KAvatarLoader.test.R;
-import com.kohoh.KAvatarLoader.test.SingleBindViewActivity;
 import com.kohoh.kavatarloader.Avatar;
 import com.kohoh.kavatarloader.BindListener;
 import com.kohoh.kavatarloader.KAvatarLoader;
@@ -16,27 +16,16 @@ import java.io.IOException;
 /**
  * Created by kohoh on 14-7-29.
  */
-public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<SingleBindViewActivity> {
+public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarLoaderTestUseActivity> {
     public KAvatarLoaderTest() {
-        super(SingleBindViewActivity.class);
+        super(KAvatarLoaderTestUseActivity.class);
     }
 
     private Activity activity;
     private KAvatarLoader avatar_loader;
-    final private String EMAIL1 = GravatarConstant.EXIST_EMAIL1;
-    final private String EMAIL2 = GravatarConstant.EXIST_EMAIL2;
-    final private int EMAIL1_SIZE100_LENGTH = GravatarConstant.EMAIL1_SIZE100_LENGTH;
-    final private int EMAIL1_SIZE200_LENGTH = GravatarConstant.EMAIL1_SIZE200_LENGTH;
-    final private int EMAIL2_SIZE100_LENGTH = GravatarConstant.EMAIL2_SIZE100_LENGTH;
-    final private int EMAIL2_SIZE200_LENGTH = GravatarConstant.EMAIL2_SIZE200_LENGTH;
 
-
-    private ImageView iv_avatar_no_size;
-    private ImageView iv_avatar_small_size;
-    private ImageView iv_avatar_medium_size;
-    private ImageView iv_avatar_large_size;
-    private ImageView iv_avatar_xlarge_size;
-    private ImageView iv_avatar_actionbar_size;
+    private ImageView iv_size100;
+    private ImageView iv_size200;
 
 
     @Override
@@ -45,78 +34,78 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<SingleBi
         activity = getActivity();
         avatar_loader = new KAvatarLoader(activity);
 
-        iv_avatar_no_size = (ImageView) activity.findViewById(R.id.iv_avatar_no_size);
-        iv_avatar_small_size = (ImageView) activity.findViewById(R.id.iv_avatar_small_size);
-        iv_avatar_medium_size = (ImageView) activity.findViewById(R.id.iv_avatar_medium_size);
-        iv_avatar_large_size = (ImageView) activity.findViewById(R.id.iv_avatar_large_size);
-        iv_avatar_xlarge_size = (ImageView) activity.findViewById(R.id.iv_avatar_xlarge_size);
-        iv_avatar_actionbar_size = (ImageView) activity.findViewById(R.id.iv_avatar_actionbar_size);
+        iv_size100 = (ImageView) activity.findViewById(R.id.iv_size_100);
+        iv_size200 = (ImageView) activity.findViewById(R.id.iv_size_200);
     }
 
-    public void testLoadAvatar() throws IOException {
-        Avatar avatar_email1_size100 = avatar_loader.loadAvatar(EMAIL1, 100);
-        Avatar avatar_email1_size200 = avatar_loader.loadAvatar(EMAIL1, 200);
-        Avatar avatar_email2_size100 = avatar_loader.loadAvatar(EMAIL2, 100);
-        Avatar avatar_email2_size200 = avatar_loader.loadAvatar(EMAIL2, 200);
+    //TestCase28 测试KAvatatLoader#loadAvatarByEmail是否正常工作
+    public void testLoadAvatarByEmail() throws IOException {
+        testLoadAvatarByEmail(GravatarConstant.EXIST_EMAIL1, 100,
+                GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
 
-        assertNotNull("avatar is null", avatar_email1_size100);
-        assertNotNull("avatar is null", avatar_email1_size200);
-        assertNotNull("avatar is null", avatar_email2_size100);
-        assertNotNull("avatar is null", avatar_email2_size200);
-
-        assertNotNull("avatar's drawable is null", avatar_email1_size100.getDrawable());
-        assertNotNull("avatar's drawable is null", avatar_email1_size200.getDrawable());
-        assertNotNull("avatar's drawable is null", avatar_email2_size100.getDrawable());
-        assertNotNull("avatar's drawable is null", avatar_email2_size200.getDrawable());
-
-        assertNotNull("avatar's bitmap is null", avatar_email1_size100.getBitmap());
-        assertNotNull("avatar's bitmap is null", avatar_email1_size200.getBitmap());
-        assertNotNull("avatar's bitmap is null", avatar_email2_size100.getBitmap());
-        assertNotNull("avatar's bitmap is null", avatar_email2_size200.getBitmap());
-
-        assertNotNull("avatar's raw bytes is null", avatar_email1_size100.getBytes());
-        assertNotNull("avatar's raw bytes is null", avatar_email1_size200.getBytes());
-        assertNotNull("avatar's raw bytes is null", avatar_email2_size100.getBytes());
-        assertNotNull("avatar's raw bytes is null", avatar_email2_size200.getBytes());
-
-        assertEquals("avatar's tag not right", EMAIL1, avatar_email1_size100.getTag());
-        assertEquals("avatar's tag not right", EMAIL1, avatar_email1_size200.getTag());
-        assertEquals("avatar's tag not right", EMAIL2, avatar_email2_size100.getTag());
-        assertEquals("avatar's tag not right", EMAIL2, avatar_email2_size200.getTag());
+        testLoadAvatarByEmail(GravatarConstant.EXIST_EMAIL2, 200,
+                GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
     }
 
+    //TestCase27 测试KAvatarLoader#loadAvatarByHashCode是否正常工作
+    public void testLoadAvatarByHashCode() throws IOException {
+        testLoadAvatarByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, 100,
+                GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+
+        testLoadAvatarByHashCode(GravatarConstant.EXIST_EMAIL2_HASH_CODE, 200,
+                GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
+    }
+
+    private void assertLoadAvatar(Avatar avatar, String tag_expect) {
+        assertNotNull("avatar is null", avatar);
+        assertNotNull("avatar's drawable is null", avatar.getDrawable());
+        assertNotNull("avatar's bitmap is null", avatar.getBitmap());
+        assertNotNull("avatar's byte is null", avatar.getBytes());
+        assertNotNull("avatar's tag is null", avatar.getTag());
+        assertEquals("avatar's tag not equal", tag_expect, avatar.getTag());
+    }
+
+    private void testLoadAvatarByEmail(String email, int size, String tag_expect) {
+        Avatar avatar = avatar_loader.loadAvatar(email, size);
+        assertLoadAvatar(avatar, tag_expect);
+    }
+
+    private void testLoadAvatarByHashCode(String hash_code, int size, String tag_expect) {
+        Avatar avatar = avatar_loader.loadAvatarByHashCode(hash_code, size);
+        assertLoadAvatar(avatar, tag_expect);
+    }
+
+
+    //TODO 需要重构
     public void testLoadSuitableSizeAvatar() {
-        Avatar avatar_email1_size100 = avatar_loader.loadAvatar(EMAIL1, 100);
-        Avatar avatar_email1_size200 = avatar_loader.loadAvatar(EMAIL1, 200);
-        Avatar avatar_email2_size100 = avatar_loader.loadAvatar(EMAIL2, 100);
-        Avatar avatar_email2_size200 = avatar_loader.loadAvatar(EMAIL2, 200);
+        Avatar avatar_email1_size100 = avatar_loader.loadAvatar(GravatarConstant.EXIST_EMAIL1, 100);
+        Avatar avatar_email1_size200 = avatar_loader.loadAvatar(GravatarConstant.EXIST_EMAIL1, 200);
+        Avatar avatar_email2_size100 = avatar_loader.loadAvatar(GravatarConstant.EXIST_EMAIL2, 100);
+        Avatar avatar_email2_size200 = avatar_loader.loadAvatar(GravatarConstant.EXIST_EMAIL2, 200);
 
-        assertEquals(EMAIL1_SIZE100_LENGTH, avatar_email1_size100.getBytes().length);
-        assertEquals(EMAIL1_SIZE200_LENGTH, avatar_email1_size200.getBytes().length);
-        assertEquals(EMAIL2_SIZE100_LENGTH, avatar_email2_size100.getBytes().length);
-        assertEquals(EMAIL2_SIZE200_LENGTH, avatar_email2_size200.getBytes().length);
+        assertEquals(GravatarConstant.EMAIL1_SIZE100_LENGTH, avatar_email1_size100.getBytes().length);
+        assertEquals(GravatarConstant.EMAIL1_SIZE200_LENGTH, avatar_email1_size200.getBytes().length);
+        assertEquals(GravatarConstant.EMAIL2_SIZE100_LENGTH, avatar_email2_size100.getBytes().length);
+        assertEquals(GravatarConstant.EMAIL2_SIZE200_LENGTH, avatar_email2_size200.getBytes().length);
     }
 
-//    TestCase001 给KAvatarLoader#bind(),穿入一个ImageView和一个Email地址，
+    //    TestCase001 给KAvatarLoader#bind(),穿入一个ImageView和一个Email地址，
 //    根据这个Email地址加载正确的头像到ImageV上
     public void testBindImageViewByEmail() throws InterruptedException {
-        bindImageView(iv_avatar_no_size,GravatarConstant.EXIST_EMAIL1);
-        bindImageView(iv_avatar_actionbar_size,GravatarConstant.EXIST_EMAIL1);
-        bindImageView(iv_avatar_small_size,GravatarConstant.EXIST_EMAIL1);
-        bindImageView(iv_avatar_medium_size,GravatarConstant.EXIST_EMAIL2);
-        bindImageView(iv_avatar_large_size,GravatarConstant.EXIST_EMAIL2);
-        bindImageView(iv_avatar_xlarge_size,GravatarConstant.EXIST_EMAIL2);
+        testBindImageView(iv_size100, GravatarConstant.EXIST_EMAIL1, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+        testBindImageView(iv_size200, GravatarConstant.EXIST_EMAIL2, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
     }
 
-    private void bindImageView(final ImageView imageView, final String email) {
+    private void testBindImageView(final ImageView imageView, final String email, final String tag_expect) {
         avatar_loader.bind(imageView, email, new BindListener() {
             @Override
             public void onBindFinished() {
                 Drawable drawable = imageView.getDrawable();
                 assertNotNull("drawable is null", drawable);
 
-                String tag = (String) imageView.getTag();
-                assertEquals("bind failed", email, tag);
+                String tag_actural = (String) imageView.getTag();
+                assertEquals("tag not equal", tag_expect, tag_actural);
+
             }
         });
     }
@@ -142,22 +131,5 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<SingleBi
 //        });
 //    }
 
-    //TestCase27 测试KAvatarLoader#loadAvatarByHashCode是否正常工作
-    public void testLoadAvatarByHashCode() throws IOException {
-        String hash_code = GravatarConstant.EXIST_EMAIL1_HASH_CODE;
-        int avatar_size = 100;
-        Avatar avatar = avatar_loader.loadAvatarByHashCode(hash_code, avatar_size);
 
-        assertNotNull("avatar is null", avatar);
-        assertNotNull("bitmap is null", avatar.getBitmap());
-        assertNotNull("drawable is null", avatar.getDrawable());
-        assertNotNull("bytes is null", avatar.getBytes());
-        assertNotNull("tag is null", avatar.getTag());
-        assertEquals("tag not equal", GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, avatar.getTag());
-
-        GravatarTestUtils gravatar_test_utils = new GravatarTestUtils(this.getActivity());
-        byte[] raw_gravatar_expect = gravatar_test_utils.loadExpectRawGravatar(GravatarConstant.EXIST_EMAIL1_SIZE_100_BYTE_FILE_NAME);
-        byte[] raw_gravatar_actural = avatar.getBytes();
-        gravatar_test_utils.assertRawGravatarEquals(raw_gravatar_expect, raw_gravatar_actural);
-    }
 }

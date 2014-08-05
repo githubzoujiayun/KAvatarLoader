@@ -7,25 +7,21 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.R;
-import com.kohoh.KAvatarLoader.test.SingleBindViewActivity;
+import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 
 
 /**
  * Created by kohoh on 14-8-2.
  */
-public class ImageViewTest extends ActivityInstrumentationTestCase2<SingleBindViewActivity> {
+public class ImageViewTest extends ActivityInstrumentationTestCase2<KAvatarLoaderTestUseActivity> {
 
     public ImageViewTest() {
-        super(SingleBindViewActivity.class);
+        super(KAvatarLoaderTestUseActivity.class);
     }
 
     private Activity activity;
-    private ImageView iv_avatar_no_size;
-    private ImageView iv_avatar_small_size;
-    private ImageView iv_avatar_medium_size;
-    private ImageView iv_avatar_large_size;
-    private ImageView iv_avatar_xlarge_size;
-    private ImageView iv_avatar_actionbar_size;
+    private ImageView iv_size100;
+    private ImageView iv_size200;
 
     static public final String TAG = ImageViewTest.class.getSimpleName() + "_TAG";
 
@@ -33,23 +29,15 @@ public class ImageViewTest extends ActivityInstrumentationTestCase2<SingleBindVi
     protected void setUp() throws Exception {
         super.setUp();
         activity = getActivity();
-        iv_avatar_no_size = (ImageView) activity.findViewById(R.id.iv_avatar_no_size);
-        iv_avatar_small_size = (ImageView) activity.findViewById(R.id.iv_avatar_small_size);
-        iv_avatar_medium_size = (ImageView) activity.findViewById(R.id.iv_avatar_medium_size);
-        iv_avatar_large_size = (ImageView) activity.findViewById(R.id.iv_avatar_large_size);
-        iv_avatar_xlarge_size = (ImageView) activity.findViewById(R.id.iv_avatar_xlarge_size);
-        iv_avatar_actionbar_size = (ImageView) activity.findViewById(R.id.iv_avatar_actionbar_size);
+        iv_size100 = (ImageView) activity.findViewById(R.id.iv_size_100);
+        iv_size200 = (ImageView) activity.findViewById(R.id.iv_size_200);
     }
 
     public void logImageSize() {
         printDpi();
 
-        printSize(iv_avatar_no_size);
-        printSize(iv_avatar_small_size);
-        printSize(iv_avatar_medium_size);
-        printSize(iv_avatar_large_size);
-        printSize(iv_avatar_xlarge_size);
-        printSize(iv_avatar_actionbar_size);
+        printSize(iv_size100);
+        printSize(iv_size200);
     }
 
     private void printSize(ImageView view) {

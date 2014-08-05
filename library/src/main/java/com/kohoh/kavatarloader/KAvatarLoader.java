@@ -6,8 +6,6 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.kohoh.gravatar.Gravatar;
-import com.kohoh.gravatar.GravatarDefaultImage;
-import com.kohoh.gravatar.GravatarRating;
 
 import java.util.Objects;
 
@@ -48,7 +46,7 @@ public class KAvatarLoader {
             @Override
             protected Avatar doInBackground(Objects... params) {
                 Log.d(TAG, "start loading avatar");
-                return loadAvatar(email,avatar_size);
+                return loadAvatar(email, avatar_size);
             }
 
             @Override
@@ -108,22 +106,22 @@ public class KAvatarLoader {
 //        return this;
 //    }
 
-//    TODO 待完成
+    //    TODO 待完成
     public Avatar loadAvatarByHashCode(String hash_code, int avatar_size) {
         gravatar.setSize(avatar_size);
-        byte[] raw_gravatar=gravatar.downloadByHashCode(hash_code);
+        byte[] raw_gravatar = gravatar.downloadByHashCode(hash_code);
         String tag = gravatar.getUrlByHashCode(hash_code);
         return new Avatar(raw_gravatar, tag);
     }
 
-    public Avatar loadAvatar(String email,int avatar_size) {
+    public Avatar loadAvatar(String email, int avatar_size) {
         Gravatar gravatar = new Gravatar();
         gravatar.setSize(avatar_size);
-        gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
-        gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
         byte[] jpg = gravatar.downloadByEmail(email);
-        return new Avatar(jpg, email);
+        String tag = gravatar.getUrlByEmail(email);
+        return new Avatar(jpg, tag);
     }
+
 }
 
 
