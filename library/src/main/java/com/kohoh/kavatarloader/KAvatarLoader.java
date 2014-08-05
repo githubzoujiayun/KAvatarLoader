@@ -70,46 +70,45 @@ public class KAvatarLoader {
     }
 
     //TODO 待完成
-//    public KAvatarLoader bindImageViewByHashCode(final ImageView image_view, final String hash_code,final BindListener bind_listener) {
-//
-//        //计算头像的尺寸
-//        final int height = image_view.getHeight();
-//        final int width = image_view.getWidth();
-//        final int avatar_size;
-//        if (height != width) {
-//            avatar_size = height < width ? height : width;
-//        } else if (height != 0) {
-//            avatar_size = height;
-//        } else {
-//            avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
-//        }
-//
-//
-//        class Task extends AsyncTask<Objects, Objects, Avatar> {
-//
-//            @Override
-//            protected Avatar doInBackground(Objects... params) {
-//                Log.d(TAG, "start loading avatar");
-//                return loadAvatarByHashCode(hash_code, avatar_size);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Avatar avatar) {
-//                Log.d(TAG, "finish loading avatar");
-//                image_view.setImageDrawable(avatar.getDrawable());
-//                //TODO 伪实现
-//                image_view.setTag("http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=404");
-//                if (bind_listener != null) {
-//                    bind_listener.onBindFinished();
-//                }
-//            }
-//        }
-//        ;
-//
-//        new Task().execute();
-//
-//        return this;
-//    }
+    public KAvatarLoader bindImageViewByHashCode(final ImageView image_view, final String hash_code,final BindListener bind_listener) {
+
+        //计算头像的尺寸
+        final int height = image_view.getHeight();
+        final int width = image_view.getWidth();
+        final int avatar_size;
+        if (height != width) {
+            avatar_size = height < width ? height : width;
+        } else if (height != 0) {
+            avatar_size = height;
+        } else {
+            avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
+        }
+
+
+        class Task extends AsyncTask<Objects, Objects, Avatar> {
+
+            @Override
+            protected Avatar doInBackground(Objects... params) {
+                Log.d(TAG, "start loading avatar");
+                return loadAvatarByHashCode(hash_code, avatar_size);
+            }
+
+            @Override
+            protected void onPostExecute(Avatar avatar) {
+                Log.d(TAG, "finish loading avatar");
+                image_view.setImageDrawable(avatar.getDrawable());
+                image_view.setTag(gravatar.getUrlByHashCode(hash_code));
+                if (bind_listener != null) {
+                    bind_listener.onBindFinished();
+                }
+            }
+        }
+        ;
+
+        new Task().execute();
+
+        return this;
+    }
 
     public Avatar loadAvatarByHashCode(String hash_code, int avatar_size) {
         gravatar.setSize(avatar_size);

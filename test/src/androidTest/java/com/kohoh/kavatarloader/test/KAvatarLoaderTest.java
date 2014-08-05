@@ -114,26 +114,22 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         });
     }
 
-    //TODO 待完成
-//    public void testBindImageViewByHashCode() {
-//        String hash_code = GravatarConstant.DOSENT_EXIST_EMAIL_HASH_CODE;
-//        final String tag_expect = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=404";
-//
-//        avatar_loader.bindImageViewByHashCode(iv_avatar_medium_size, hash_code, new BindListener() {
-//
-//            @Override
-//            public void onBindFinished() {
-//                Drawable drawable = iv_avatar_medium_size.getDrawable();
-//                assertNotNull("drawable is null", drawable);
-//
-//                String tag_actural = (String) iv_avatar_medium_size.getTag();
-//                assertEquals("tag not right", tag_expect, tag_actural);
-//
-//                //TODO 检测drawable对应的byte[]是否正确。
-//
-//            }
-//        });
-//    }
+    public void testBindImageViewByHashCode() {
+        String hash_code = GravatarConstant.EXIST_EMAIL1;
+        final String tag_expect = GravatarConstant.EXIST_EMAIL1_SIZE_100_URL;
+
+        avatar_loader.bindImageViewByHashCode(iv_size100, hash_code, new BindListener() {
+
+            @Override
+            public void onBindFinished() {
+                Drawable drawable = iv_size100.getDrawable();
+                assertNotNull("drawable is null", drawable);
+
+                String tag_actural = (String) iv_size100.getTag();
+                assertEquals("tag not right", tag_expect, tag_actural);
+            }
+        });
+    }
 
 
 }
