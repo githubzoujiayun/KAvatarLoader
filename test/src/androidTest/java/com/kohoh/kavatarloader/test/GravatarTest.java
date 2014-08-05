@@ -1,27 +1,26 @@
 package com.kohoh.kavatarloader.test;
 
-import android.content.res.AssetManager;
 import android.test.AndroidTestCase;
 
 import com.kohoh.gravatar.Gravatar;
 import com.kohoh.gravatar.GravatarDefaultImage;
 import com.kohoh.gravatar.GravatarRating;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Created by kohoh on 14-8-1.
  */
 public class GravatarTest extends AndroidTestCase {
     private Gravatar gravatar;
+    private GravatarTestUtils gravatar_test_utils;
 
     static public final String TAG = GravatarTest.class.getSimpleName() + "_TAG";
 
     @Override
     protected void setUp() throws Exception {
         gravatar = new Gravatar();
+        gravatar_test_utils = new GravatarTestUtils(this.getContext());
     }
 
 
@@ -84,7 +83,6 @@ public class GravatarTest extends AndroidTestCase {
     }
 
 
-
     //TestCase018 测试Gravatar#getUrlByHashCode能否正确提供url
     public void testGetUrlByHashCode() {
         testGetUrlByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_DEFAULT_URL);
@@ -130,45 +128,13 @@ public class GravatarTest extends AndroidTestCase {
 
     private void testDownloadByHashCode(String hash_code, String raw_gravatar_expect_file_name) throws IOException {
         byte[] raw_gravatar_actural = gravatar.downloadByHashCode(hash_code);
-        byte[] raw_gravatar_expect = loadExpectRawGravatar(raw_gravatar_expect_file_name);
-        assertRawGravatarEquals(raw_gravatar_expect, raw_gravatar_actural);
+        byte[] raw_gravatar_expect = gravatar_test_utils.loadExpectRawGravatar(raw_gravatar_expect_file_name);
+        gravatar_test_utils.assertRawGravatarEquals(raw_gravatar_expect, raw_gravatar_actural);
     }
 
     private void testDownloadByEmail(String email, String raw_gravatar_expect_file_name) throws IOException {
         byte[] raw_gravatar_actural = gravatar.downloadByEmail(email);
-        byte[] raw_gravatar_expect = loadExpectRawGravatar(raw_gravatar_expect_file_name);
-        assertRawGravatarEquals(raw_gravatar_expect, raw_gravatar_actural);
-    }
-
-    private byte[] loadExpectRawGravatar(String raw_gravatar_expect_file_name) throws IOException {
-        AssetManager asset_manager = getContext().getAssets();
-        InputStream inputStream;
-        BufferedInputStream bufferedInputStream;
-
-        inputStream = asset_manager.open(raw_gravatar_expect_file_name);
-        byte[] raw_gravatar_expect = new byte[inputStream.available()];
-        bufferedInputStream = new BufferedInputStream(inputStream);
-        bufferedInputStream.read(raw_gravatar_expect);
-
-        return raw_gravatar_expect;
-    }
-
-    private void assertRawGravatarEquals(byte[] raw_gravatar_expect, byte[] raw_gravatar_actural) throws IOException {
-        assertNotNull("raw_gravatar_actural is null", raw_gravatar_actural);
-        assertNotNull("raw_gravatar_expect is null", raw_gravatar_expect);
-
-        boolean result = true;
-
-        if (raw_gravatar_actural.length != raw_gravatar_expect.length) {
-            result = false;
-        }
-
-        for (int i = 0; i < raw_gravatar_actural.length; i++) {
-            if (raw_gravatar_actural[i] != raw_gravatar_expect[i]) {
-                result = false;
-            }
-        }
-
-        assertTrue("raw_gravatar not equals", result);
+        byte[] raw_gravatar_expect = gravatar_test_utils.loadExpectRawGravatar(raw_gravatar_expect_file_name);
+        gravatar_test_utils.assertRawGravatarEquals(raw_gravatar_expect, raw_gravatar_actural);
     }
 }
