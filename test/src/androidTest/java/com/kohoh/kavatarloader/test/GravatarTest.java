@@ -27,48 +27,48 @@ public class GravatarTest extends AndroidTestCase {
 
     //TestCase019 测试Gravatar#getUrl输入的email前后有空格的情况下能否正常工作
     public void testGetImageUrlTrimLeadingAndTrailingWhitespace() {
-        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl("kavatarloader1@126.com   "));
-        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl("   kavatarloader1@126.com"));
-        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl("   kavatarloader1@126.com   "));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrlByEmail("kavatarloader1@126.com   "));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrlByEmail("   kavatarloader1@126.com"));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrlByEmail("   kavatarloader1@126.com   "));
     }
 
     //TestCase020 测试Gravatar#getUrl输入的email存在大写字母的情况下能否正常工作
     public void testGetImageUrlForceAllCharactersToLowerCase() {
-        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl("kaVatArloAdEr1@126.Com"));
-        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl("kAvaTarlOadeR1@126.COM"));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrlByEmail("kaVatArloAdEr1@126.Com"));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrlByEmail("kAvaTarlOadeR1@126.COM"));
     }
 
     //TestCase021 测试Gravatar#getUrl能否正常工作
     public void testGetImageUrlDefaults() {
-        assertEquals(GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_URL, gravatar.getUrl(GravatarConstant.DOSENT_EXIST_EMAIL));
-        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL1));
-        assertEquals(GravatarConstant.EXIST_EMAIL2_DEFAULT_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL2));
+        assertEquals(GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_URL, gravatar.getUrlByEmail(GravatarConstant.DOSENT_EXIST_EMAIL));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1));
+        assertEquals(GravatarConstant.EXIST_EMAIL2_DEFAULT_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL2));
     }
 
     //TestCase021 测试Gravatar#getUrl设置size之后能否正确工作
     public void testGetImageUrlSize() {
         gravatar.setSize(300);
-        assertEquals(GravatarConstant.DOSENT_EXIST_EMAIL_SIZE_300_URL, gravatar.getUrl(GravatarConstant.DOSENT_EXIST_EMAIL));
+        assertEquals(GravatarConstant.DOSENT_EXIST_EMAIL_SIZE_300_URL, gravatar.getUrlByEmail(GravatarConstant.DOSENT_EXIST_EMAIL));
         gravatar.setSize(100);
-        assertEquals(GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL1));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1));
         gravatar.setSize(200);
-        assertEquals(GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL2));
+        assertEquals(GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL2));
     }
 
     //TestCase022 测试Gravatar#getUrl设置rating之后能否正确工作
     public void testGetImageUrlRating() {
         gravatar.setRating(GravatarRating.PARENTAL_GUIDANCE_SUGGESTED);
-        assertEquals(GravatarConstant.EXIST_EMAIL1_RATING_PARENTAL_GUIDANCE_SUGGESTED_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL1));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_RATING_PARENTAL_GUIDANCE_SUGGESTED_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1));
         gravatar.setRating(GravatarRating.XPLICIT);
-        assertEquals(GravatarConstant.EXIST_EMAIL2_RATING_XPLICIT_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL2));
+        assertEquals(GravatarConstant.EXIST_EMAIL2_RATING_XPLICIT_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL2));
     }
 
     //TestCase023 测试Gravatar#getUrl设置deafult_image之后能否正确工作
     public void testGetImageUrlDefaultImage() {
         gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
-        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_IMAGE_GRAVATAR_ICON_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL1));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_IMAGE_GRAVATAR_ICON_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1));
         gravatar.setDefaultImage(GravatarDefaultImage.WAVATAR);
-        assertEquals(GravatarConstant.EXIST_EMAIL2_DEFAULT_IMAGE_WAVATAR_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL2));
+        assertEquals(GravatarConstant.EXIST_EMAIL2_DEFAULT_IMAGE_WAVATAR_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL2));
     }
 
     //TestCase024 测试Gravatar#getUrl设置deafult_image,size,rating之后能否正确工作
@@ -76,11 +76,11 @@ public class GravatarTest extends AndroidTestCase {
         gravatar.setSize(123);
         gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
         gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
-        assertEquals(GravatarConstant.EXIST_EMAIL2_123_GENERAL_AUDIENCES_IDENTICON_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL2));
+        assertEquals(GravatarConstant.EXIST_EMAIL2_123_GENERAL_AUDIENCES_IDENTICON_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL2));
         gravatar.setSize(321);
         gravatar.setDefaultImage(GravatarDefaultImage.MONSTERID);
         gravatar.setRating(GravatarRating.RESTRICTED);
-        assertEquals(GravatarConstant.EXIST_EMAIL1_321_RESTRICTED_MONSTERID_URL, gravatar.getUrl(GravatarConstant.EXIST_EMAIL1));
+        assertEquals(GravatarConstant.EXIST_EMAIL1_321_RESTRICTED_MONSTERID_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1));
     }
 
 
@@ -135,7 +135,7 @@ public class GravatarTest extends AndroidTestCase {
     }
 
     private void testDownloadByEmail(String email, String raw_gravatar_expect_file_name) throws IOException {
-        byte[] raw_gravatar_actural = gravatar.download(email);
+        byte[] raw_gravatar_actural = gravatar.downloadByEmail(email);
         byte[] raw_gravatar_expect = loadExpectRawGravatar(raw_gravatar_expect_file_name);
         assertRawGravatarEquals(raw_gravatar_expect, raw_gravatar_actural);
     }

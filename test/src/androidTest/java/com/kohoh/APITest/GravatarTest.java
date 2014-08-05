@@ -21,18 +21,18 @@ public class GravatarTest extends AndroidTestCase{
     public static final String TAG = Gravatar.class.getSimpleName() + "_tag";
 
     public void logAPI() {
-        String url_doesnt_exit_email = gravatar.getUrl(GravatarConstant.DOSENT_EXIST_EMAIL);
-        String url_exist_email1 = gravatar.getUrl(GravatarConstant.EXIST_EMAIL1);
-        String url_exist_email2 = gravatar.getUrl(GravatarConstant.EXIST_EMAIL2);
+        String url_doesnt_exit_email = gravatar.getUrlByEmail(GravatarConstant.DOSENT_EXIST_EMAIL);
+        String url_exist_email1 = gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1);
+        String url_exist_email2 = gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL2);
         Log.d(TAG, "url_doesnt_exit_email= " + url_doesnt_exit_email);
         Log.d(TAG, "url_exist_email1= " + url_exist_email1);
         Log.d(TAG, "url_exist_email2= " + url_exist_email2);
 
         gravatar = new Gravatar();
-        String url_exist_email1_with_whitespace1 = gravatar.getUrl("kavatarloader1@126.com   ");
-        String url_exist_email1_with_whitespace2 = gravatar.getUrl("  kavatarloader1@126.com");
-        String url_exist_email1_with_hith_case1 = gravatar.getUrl("kaVatArlOader1@126.com");
-        String url_exist_email1_with_hith_case2 = gravatar.getUrl("KavaTarloaDer1@126.cOm");
+        String url_exist_email1_with_whitespace1 = gravatar.getUrlByEmail("kavatarloader1@126.com   ");
+        String url_exist_email1_with_whitespace2 = gravatar.getUrlByEmail("  kavatarloader1@126.com");
+        String url_exist_email1_with_hith_case1 = gravatar.getUrlByEmail("kaVatArlOader1@126.com");
+        String url_exist_email1_with_hith_case2 = gravatar.getUrlByEmail("KavaTarloaDer1@126.cOm");
         Log.d(TAG, "url_exist_email1_with_hith_case1= " + url_exist_email1_with_hith_case1);
         Log.d(TAG, "url_exist_email1_with_hith_case2= " + url_exist_email1_with_hith_case2);
         Log.d(TAG, "url_exist_email1_with_whitespace1= " + url_exist_email1_with_whitespace1);
@@ -40,21 +40,21 @@ public class GravatarTest extends AndroidTestCase{
 
         gravatar = new Gravatar();
         gravatar.setSize(100);
-        String url_exist_mail1_with_size100 = gravatar.getUrl(GravatarConstant.EXIST_EMAIL1);
+        String url_exist_mail1_with_size100 = gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1);
         gravatar.setSize(321);
-        String url_exist_mail2_with_size321 = gravatar.getUrl(GravatarConstant.EXIST_EMAIL2);
+        String url_exist_mail2_with_size321 = gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL2);
         Log.d(TAG, "url_exist_mail1_with_size100= " + url_exist_mail1_with_size100);
         Log.d(TAG, "url_exist_mail2_with_size321= " + url_exist_mail2_with_size321);
 
         gravatar = new Gravatar();
         gravatar.setRating(GravatarRating.XPLICIT);
-        String url_exist_mail1_with_rating_xplicit = gravatar.getUrl(GravatarConstant.EXIST_EMAIL1);
+        String url_exist_mail1_with_rating_xplicit = gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1);
         gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
-        String url_exist_mail1_with_rating_general_audiences = gravatar.getUrl(GravatarConstant.EXIST_EMAIL1);
+        String url_exist_mail1_with_rating_general_audiences = gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1);
         gravatar.setRating(GravatarRating.RESTRICTED);
-        String url_exist_mail1_with_rating_restricted = gravatar.getUrl(GravatarConstant.EXIST_EMAIL1);
+        String url_exist_mail1_with_rating_restricted = gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1);
         gravatar.setRating(GravatarRating.PARENTAL_GUIDANCE_SUGGESTED);
-        String url_exist_mail1_with_rating_parental_guidance_suggested = gravatar.getUrl(GravatarConstant.EXIST_EMAIL1);
+        String url_exist_mail1_with_rating_parental_guidance_suggested = gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1);
         Log.d(TAG, "url_exist_mail1_with_rating_xplicit= " + url_exist_mail1_with_rating_xplicit);
         Log.d(TAG, "url_exist_mail1_with_rating_restricted= " + url_exist_mail1_with_rating_restricted);
         Log.d(TAG, "url_exist_mail1_with_rating_general_audiences= " + url_exist_mail1_with_rating_general_audiences);
@@ -62,14 +62,14 @@ public class GravatarTest extends AndroidTestCase{
 
         gravatar = new Gravatar();
         gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
-        String url_exist_mail1_with_default_image_gravatar_icon = gravatar.getUrl(GravatarConstant.EXIST_EMAIL1);
+        String url_exist_mail1_with_default_image_gravatar_icon = gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1);
         Log.d(TAG, "url_exist_mail1_with_default_image_gravatar_icon= " + url_exist_mail1_with_default_image_gravatar_icon);
 
         gravatar = new Gravatar();
         gravatar.setSize(123);
         gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
         gravatar.setRating(GravatarRating.XPLICIT);
-        String url_exist_mail1_combined = gravatar.getUrl(GravatarConstant.EXIST_EMAIL1);
+        String url_exist_mail1_combined = gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1);
         Log.d(TAG, "url_exist_mail1_combined= " + url_exist_mail1_combined);
     }
 
@@ -94,15 +94,15 @@ public class GravatarTest extends AndroidTestCase{
         byte[] bytes;
 
         gravatar.setDefaultImage(GravatarDefaultImage.GRAVATAR_ICON);
-        bytes = gravatar.download(email);
+        bytes = gravatar.downloadByEmail(email);
         Log.d(TAG, "defaultImage=GRAVATAR_ICON bytes length= " + bytes.length);
 
         gravatar.setDefaultImage(GravatarDefaultImage.MONSTERID);
-        bytes = gravatar.download(email);
+        bytes = gravatar.downloadByEmail(email);
         Log.d(TAG, "defaultImage=MONSTERID bytes length= " + bytes.length);
 
         gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
-        bytes = gravatar.download(email);
+        bytes = gravatar.downloadByEmail(email);
         Log.d(TAG, "defaultImage=IDENTICON bytes length= " + bytes.length);
 
         Log.d(TAG, "----------------------------");
@@ -116,15 +116,15 @@ public class GravatarTest extends AndroidTestCase{
         byte[] bytes;
 
         gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
-        bytes = gravatar.download(email);
+        bytes = gravatar.downloadByEmail(email);
         Log.d(TAG, "rating=GENERAL_AUDIENCES bytes length= " + bytes.length);
 
         gravatar.setRating(GravatarRating.PARENTAL_GUIDANCE_SUGGESTED);
-        bytes = gravatar.download(email);
+        bytes = gravatar.downloadByEmail(email);
         Log.d(TAG, "rating=PARENTAL_GUIDANCE_SUGGESTEDS bytes length= " + bytes.length);
 
         gravatar.setRating(GravatarRating.XPLICIT);
-        bytes = gravatar.download(email);
+        bytes = gravatar.downloadByEmail(email);
         Log.d(TAG, "rating=XPLICIT bytes length= " + bytes.length);
 
         Log.d(TAG, "----------------------------");
@@ -139,23 +139,23 @@ public class GravatarTest extends AndroidTestCase{
         gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
 
         gravatar.setSize(50);
-        bytes = gravatar.download(email);
+        bytes = gravatar.downloadByEmail(email);
         Log.d(TAG, "size=50 bytes length= " + bytes.length);
 
         gravatar.setSize(100);
-        bytes = gravatar.download(email);
+        bytes = gravatar.downloadByEmail(email);
         Log.d(TAG, "size=100 bytes length= " + bytes.length);
 
         gravatar.setSize(200);
-        bytes = gravatar.download(email);
+        bytes = gravatar.downloadByEmail(email);
         Log.d(TAG, "size= 200 bytes length= " + bytes.length);
 
         Log.d(TAG, "----------------------------");
     }
 
     public void logAvatarEqual() throws IOException {
-        byte[] bytes1 = gravatar.download(GravatarConstant.EXIST_EMAIL1);
-        byte[] bytes2 = gravatar.download(GravatarConstant.EXIST_EMAIL2);
+        byte[] bytes1 = gravatar.downloadByEmail(GravatarConstant.EXIST_EMAIL1);
+        byte[] bytes2 = gravatar.downloadByEmail(GravatarConstant.EXIST_EMAIL2);
 
         Log.d(TAG, bytes1.equals(bytes2) ? "equals" : "not equals");
 
@@ -171,11 +171,11 @@ public class GravatarTest extends AndroidTestCase{
 
     public void downloadAndSave() throws IOException {
         gravatar.setSize(100);
-        byte[] bytes_email1_size100 = gravatar.download(GravatarConstant.EXIST_EMAIL1);
-        byte[] bytes_email2_size100 = gravatar.download(GravatarConstant.EXIST_EMAIL2);
+        byte[] bytes_email1_size100 = gravatar.downloadByEmail(GravatarConstant.EXIST_EMAIL1);
+        byte[] bytes_email2_size100 = gravatar.downloadByEmail(GravatarConstant.EXIST_EMAIL2);
         gravatar.setSize(200);
-        byte[] bytes_email1_size200 = gravatar.download(GravatarConstant.EXIST_EMAIL1);
-        byte[] bytes_email2_size200 = gravatar.download(GravatarConstant.EXIST_EMAIL2);
+        byte[] bytes_email1_size200 = gravatar.downloadByEmail(GravatarConstant.EXIST_EMAIL1);
+        byte[] bytes_email2_size200 = gravatar.downloadByEmail(GravatarConstant.EXIST_EMAIL2);
 
         saveBytes(GravatarConstant.EXIST_EMAIL1 + "_size100_bytes", bytes_email1_size100);
         saveBytes(GravatarConstant.EXIST_EMAIL1 + "_size200_bytes", bytes_email1_size200);

@@ -24,8 +24,8 @@ import java.util.List;
  * gravatar.setSize(50);
  * gravatar.setRating(GravatarRating.GENERAL_AUDIENCES);
  * gravatar.setDefaultImage(GravatarDefaultImage.IDENTICON);
- * String url = gravatar.getUrl("iHaveAn@email.com");
- * byte[] jpg = gravatar.download("info@ralfebert.de");
+ * String url = gravatar.getUrlByEmail("iHaveAn@email.com");
+ * byte[] jpg = gravatar.downloadByEmail("info@ralfebert.de");
  * </code>
  */
 public final class Gravatar {
@@ -68,17 +68,17 @@ public final class Gravatar {
     /**
      * Returns the Gravatar URL for the given email address.
      */
-    public String getUrl(String email) {
+    public String getUrlByEmail(String email) {
         Validate.notNull(email, "email");
 
-        // hexadecimal MD5 hash of the requested user's lowercased email address
-        // with all whitespace trimmed
         String emailHash = MD5Util.md5Hex(email.toLowerCase().trim());
         String params = formatUrlParameters();
         return GRAVATAR_URL + emailHash + ".jpg" + params;
     }
 
     public String getUrlByHashCode(String hash_code) {
+        Validate.notNull(hash_code, "hash_code");
+
         String params = formatUrlParameters();
         return GRAVATAR_URL + hash_code + ".jpg" + params;
     }
@@ -88,25 +88,18 @@ public final class Gravatar {
      * returns a byte array containing the gravatar jpg, returns null if no
      * gravatar was found.
      */
-    public byte[] download(String email) throws GravatarDownloadException {
-        InputStream stream = null;
-        try {
-            URL url = new URL(getUrl(email));
-            stream = url.openStream();
-            return IOUtils.toByteArray(stream);
-        } catch (FileNotFoundException e) {
-            return null;
-        } catch (Exception e) {
-            throw new GravatarDownloadException(e);
-        } finally {
-            IOUtils.closeQuietly(stream);
-        }
+    public byte[] downloadByEmail(String email) throws GravatarDownloadException {
+        return dowloadByUrl(getUrlByEmail(email));
     }
 
     public byte[] downloadByHashCode(String hash_code) throws GravatarDownloadException {
+        return dowloadByUrl(getUrlByHashCode(hash_code));
+    }
+
+    public byte[] dowloadByUrl(String url_address) throws GravatarDownloadException{
         InputStream stream = null;
         try {
-            URL url = new URL(getUrlByHashCode(hash_code));
+            URL url = new URL(url_address);
             stream = url.openStream();
             return IOUtils.toByteArray(stream);
         } catch (FileNotFoundException e) {
