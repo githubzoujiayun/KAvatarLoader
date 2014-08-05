@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.KAvatarLoader.test.R;
+import com.kohoh.gravatar.Gravatar;
 import com.kohoh.kavatarloader.Avatar;
 import com.kohoh.kavatarloader.BindListener;
 import com.kohoh.kavatarloader.KAvatarLoader;
@@ -93,43 +94,48 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         assertEquals("avatar's size not equal", 222, avatar_loader.calculateAvatarSize(iv_not_square_size222));
     }
 
-    //    TestCase001 给KAvatarLoader#bind(),穿入一个ImageView和一个Email地址，
-//    根据这个Email地址加载正确的头像到ImageV上
+//    TestCase001 检测KAvatarLoader#bindImageViewByEmail是否正常工作
     public void testBindImageViewByEmail() throws InterruptedException {
-        testBindImageView(iv_size100, GravatarConstant.EXIST_EMAIL1, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-        testBindImageView(iv_size200, GravatarConstant.EXIST_EMAIL2, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
+        testBindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+        testBindImageViewByEmail(iv_size200, GravatarConstant.EXIST_EMAIL2, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
     }
 
-    private void testBindImageView(final ImageView imageView, final String email, final String tag_expect) {
-        avatar_loader.bind(imageView, email, new BindListener() {
-            @Override
-            public void onBindFinished() {
-                Drawable drawable = imageView.getDrawable();
-                assertNotNull("drawable is null", drawable);
-
-                String tag_actural = (String) imageView.getTag();
-                assertEquals("tag not equal", tag_expect, tag_actural);
-
-            }
-        });
-    }
-
+//    TestCase010 测试KAvatarLoader#bindImageViewByHashCode是否正常工作
     public void testBindImageViewByHashCode() {
-        String hash_code = GravatarConstant.EXIST_EMAIL1;
-        final String tag_expect = GravatarConstant.EXIST_EMAIL1_SIZE_100_URL;
-
-        avatar_loader.bindImageViewByHashCode(iv_size100, hash_code, new BindListener() {
-
-            @Override
-            public void onBindFinished() {
-                Drawable drawable = iv_size100.getDrawable();
-                assertNotNull("drawable is null", drawable);
-
-                String tag_actural = (String) iv_size100.getTag();
-                assertEquals("tag not right", tag_expect, tag_actural);
-            }
-        });
+        testBindImageViewByHashCode(iv_size100, GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+        testBindImageViewByHashCode(iv_size200, GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
     }
+
+    private void testBindImageViewByEmail(final ImageView image_view, final String email, final String tag_expect) {
+        avatar_loader.bind(image_view, email, new AssertBindImageViewListener(image_view, tag_expect));
+    }
+
+    private void testBindImageViewByHashCode(final ImageView image_view, final String hash_code, final String tag_expect) {
+        avatar_loader.bindImageViewByHashCode(image_view, hash_code, new AssertBindImageViewListener(image_view, tag_expect));
+    }
+
+    class AssertBindImageViewListener implements BindListener {
+
+        private ImageView image_view;
+        private String tag_expect;
+
+        AssertBindImageViewListener(ImageView image_view, String tag_expected) {
+            this.image_view = image_view;
+            this.tag_expect = tag_expected;
+
+        }
+
+        @Override
+        public void onBindFinished() {
+            Drawable drawable = image_view.getDrawable();
+            assertNotNull("drawable is null", drawable);
+
+            String tag_actural = (String) image_view.getTag();
+            assertEquals("tag not equal", tag_expect, tag_actural);
+        }
+    };
+
+
 
 
 }
