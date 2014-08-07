@@ -118,16 +118,15 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         testBindImageViewByHashCode(iv_size200, GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
     }
 
-    //TODO 待完成
     //TestCase030 测试KAvatarLoader#bindImageViewByUrl能否正常工作
-//    public void testBindImageViewByUrl() {
-//        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-//        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
-//    }
-//
-//    private void testBindImageViewByUrl(final ImageView image_view, final String url, final String tag_expected) {
-//        avatar_loader.bindImageViewByUrl(image_view, url, new AssertBindImageViewListener(image_view, tag_expected));
-//    }
+    public void testBindImageViewByUrl() {
+        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
+    }
+
+    private void testBindImageViewByUrl(final ImageView image_view, final String url, final String tag_expected) {
+        avatar_loader.bindImageViewByUrl(image_view, url, new AssertBindImageViewListener(image_view, tag_expected));
+    }
 
     private void testBindImageViewByEmail(final ImageView image_view, final String email, final String tag_expect) {
         avatar_loader.bindImageViewByEmail(image_view, email, new AssertBindImageViewListener(image_view, tag_expect));
