@@ -5,5 +5,6 @@
     <string name="title_activity_single_bind_view">SingleBindViewActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_single_bind_actionbar">SingleBindActionbarActivity</string>
 
 </resources>
