@@ -175,5 +175,16 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         });
     }
 
+    //TestCase033 测试KAvatarLoader#bindActionBarByHashCode能否正常工作
+    public void testBindActionBarByHashCode() {
+        ActionBar action_bar = activity.getActionBar();
+        avatar_loader.bindActionBarByHashCode(action_bar, GravatarConstant.EXIST_EMAIL1_HASH_CODE, new BindListener() {
+            @Override
+            public void onBindFinished(int RESULT_CODE) {
+                assertEquals("bind actionbar failed", KAvatarLoader.RESULT_CODE_SUCCESS, RESULT_CODE);
+            }
+        });
+    }
+
 
 }
