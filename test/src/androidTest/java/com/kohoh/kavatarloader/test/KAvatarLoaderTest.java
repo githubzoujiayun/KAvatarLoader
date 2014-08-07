@@ -62,6 +62,15 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
                 GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
     }
 
+    //TestCase031 测试KAvatarLoader#loadAvatarByUrl能否正常工作
+    public void testLoadAvatarByUrl() {
+        testLoadAvatarByUrl(GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, 100,
+                GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+
+        testLoadAvatarByUrl(GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, 200,
+                GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
+    }
+
     private void assertLoadAvatar(Avatar avatar, String tag_expect) {
         assertNotNull("avatar is null", avatar);
         assertNotNull("avatar's drawable is null", avatar.getDrawable());
@@ -81,6 +90,10 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         assertLoadAvatar(avatar, tag_expect);
     }
 
+    private void testLoadAvatarByUrl(String url, int size, String tag_expected) {
+        Avatar avatar = avatar_loader.loadAvatarByUrl(url, size);
+        assertLoadAvatar(avatar, tag_expected);
+    }
 
     //TestCase029 测试是否能够根据ImageView计算出正确的AvatarSize
     public void testCalculateAvatarSize() {
@@ -93,17 +106,28 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         assertEquals("avatar's size not equal", 222, avatar_loader.calculateAvatarSize(iv_not_square_size222));
     }
 
-//    TestCase001 检测KAvatarLoader#bindImageViewByEmail是否正常工作
+    //TestCase001 检测KAvatarLoader#bindImageViewByEmail是否正常工作
     public void testBindImageViewByEmail() throws InterruptedException {
         testBindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
         testBindImageViewByEmail(iv_size200, GravatarConstant.EXIST_EMAIL2, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
     }
 
-//    TestCase010 测试KAvatarLoader#bindImageViewByHashCode是否正常工作
+    //TestCase010 测试KAvatarLoader#bindImageViewByHashCode是否正常工作
     public void testBindImageViewByHashCode() {
         testBindImageViewByHashCode(iv_size100, GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
         testBindImageViewByHashCode(iv_size200, GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
     }
+
+    //TODO 待完成
+    //TestCase030 测试KAvatarLoader#bindImageViewByUrl能否正常工作
+//    public void testBindImageViewByUrl() {
+//        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+//        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
+//    }
+//
+//    private void testBindImageViewByUrl(final ImageView image_view, final String url, final String tag_expected) {
+//        avatar_loader.bindImageViewByUrl(image_view, url, new AssertBindImageViewListener(image_view, tag_expected));
+//    }
 
     private void testBindImageViewByEmail(final ImageView image_view, final String email, final String tag_expect) {
         avatar_loader.bindImageViewByEmail(image_view, email, new AssertBindImageViewListener(image_view, tag_expect));
@@ -132,5 +156,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
             String tag_actural = (String) image_view.getTag();
             assertEquals("tag not equal", tag_expect, tag_actural);
         }
-    };
+    }
+
+    ;
 }
