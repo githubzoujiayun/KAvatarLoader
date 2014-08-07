@@ -81,7 +81,7 @@ public class KAvatarLoader {
             protected void onPostExecute(Avatar avatar) {
                 Log.d(TAG, "finish loading avatar");
                 image_view.setImageDrawable(avatar.getDrawable());
-                image_view.setTag(gravatar.getUrlByHashCode(hash_code));
+                image_view.setTag(avatar.getTag());
                 if (bind_listener != null) {
                     bind_listener.onBindFinished();
                 }
