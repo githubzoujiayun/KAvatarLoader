@@ -166,14 +166,14 @@ public class KAvatarLoader {
         gravatar.setSize(avatar_size);
         byte[] raw_gravatar = gravatar.downloadByHashCode(hash_code);
         String tag = gravatar.getUrlByHashCode(hash_code);
-        return new Avatar(raw_gravatar, tag);
+        return new Avatar(context,raw_gravatar, tag);
     }
 
     public Avatar loadAvatarByEmail(String email, int avatar_size) {
         gravatar.setSize(avatar_size);
         byte[] raw_gravatar = gravatar.downloadByEmail(email);
         String tag = gravatar.getUrlByEmail(email);
-        return new Avatar(raw_gravatar, tag);
+        return new Avatar(context,raw_gravatar, tag);
     }
 
     //这里的avatar_size本质上没有任何作用
@@ -181,7 +181,7 @@ public class KAvatarLoader {
         gravatar.setSize(avatar_size);
         byte[] raw_gravatar = gravatar.dowloadByUrl(url);
         String tag = url;
-        return new Avatar((raw_gravatar), tag);
+        return new Avatar(context,raw_gravatar, tag);
     }
 
 }
