@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
-public class DrawableTest extends Activity {
+public class DrawableTestActivity extends Activity {
     private ImageView iv_from_net;
     private ImageView iv_from_local;
     private KAvatarLoader avatar_loader;

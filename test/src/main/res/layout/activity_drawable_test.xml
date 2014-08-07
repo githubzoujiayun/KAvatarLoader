@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.kohoh.KAvatarLoader.test.DrawableTest">
+    tools:context="com.kohoh.KAvatarLoader.test.DrawableTestActivity">
 
     <ImageView
         android:layout_width="wrap_content"
