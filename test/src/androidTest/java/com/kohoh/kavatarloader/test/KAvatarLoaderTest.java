@@ -1,5 +1,6 @@
 package com.kohoh.kavatarloader.test;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.test.ActivityInstrumentationTestCase2;
@@ -163,17 +164,16 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     ;
 
-    //TODO 待完成
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
-//    public void testBindActionBarByEmail() {
-//        ActionBar action_bar = activity.getActionBar();
-//        avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1), new BindListener() {
-//            @Override
-//            public void onBindFinished(int RESULT_CODE) {
-//                assertEquals("bind actionbar failed", KAvatarLoader.RESULT_CODE_SUCCESS, RESULT_CODE);
-//            }
-//        };
-//    }
+    public void testBindActionBarByEmail() {
+        ActionBar action_bar = activity.getActionBar();
+        avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1, new BindListener() {
+            @Override
+            public void onBindFinished(int RESULT_CODE) {
+                assertEquals("bind actionbar failed", KAvatarLoader.RESULT_CODE_SUCCESS, RESULT_CODE);
+            }
+        });
+    }
 
 
 }

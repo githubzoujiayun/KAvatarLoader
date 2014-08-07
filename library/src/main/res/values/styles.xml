@@ -1,8 +1,8 @@
 <resources>
 
     <style name="AvatarActionBar">
-        <item name="android:layout_width">28dp</item>
-        <item name="android:layout_height">28dp</item>
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
     </style>
 
     <style name="AvatarXLarge">

@@ -1,5 +1,6 @@
 package com.kohoh.kavatarloader;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -42,20 +43,6 @@ public class KAvatarLoader {
         return avatar_size;
     }
 
-    private void onBindImageViewFinished(ImageView imageView, Avatar avatar,BindListener bind_listener) {
-        Drawable avatar_drawable = avatar.getDrawable();
-        String avatar_tag = avatar.getTag();
-        if (avatar_drawable != null && avatar_tag != null) {
-            imageView.setImageDrawable(avatar_drawable);
-            imageView.setTag(avatar_tag);
-        }
-
-        if (bind_listener != null) {
-            int result_code = (avatar_drawable != null && avatar_tag != null) ? RESULT_CODE_SUCCESS : RESULT_CODE_FAIL;
-            bind_listener.onBindFinished(result_code);
-        }
-    }
-
     public KAvatarLoader bindImageViewByEmail(final ImageView image_view, final String email, final BindListener bind_listener) {
 
         final int avatar_size = calculateAvatarSize(image_view);
@@ -71,7 +58,7 @@ public class KAvatarLoader {
             @Override
             protected void onPostExecute(Avatar avatar) {
                 Log.d(TAG, "finish loading avatar");
-                onBindImageViewFinished(image_view,avatar,bind_listener);
+                onBindImageViewFinished(image_view, avatar, bind_listener);
             }
         }
 
@@ -94,7 +81,7 @@ public class KAvatarLoader {
             @Override
             protected void onPostExecute(Avatar avatar) {
                 Log.d(TAG, "finish loading avatar");
-                onBindImageViewFinished(image_view,avatar,bind_listener);
+                onBindImageViewFinished(image_view, avatar, bind_listener);
             }
         }
 
@@ -116,12 +103,63 @@ public class KAvatarLoader {
             @Override
             protected void onPostExecute(Avatar avatar) {
                 Log.d(TAG, "finish loading avatar");
-                onBindImageViewFinished(image_view,avatar,bind_listener);
+                onBindImageViewFinished(image_view, avatar, bind_listener);
             }
         }
 
         new Task().execute();
         return this;
+    }
+
+    public KAvatarLoader bindActionBarByEmail(final ActionBar action_bar, final String email, final BindListener bind_listener) {
+        //default_avatar_size是翻看ActionBar的源码得到的logo的大小
+        final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
+
+        class Task extends AsyncTask<Objects, Objects, Avatar> {
+
+            @Override
+            protected Avatar doInBackground(Objects... params) {
+                Log.d(TAG, "start loading avatar");
+                return loadAvatarByEmail(email, avatar_size);
+            }
+
+            @Override
+            protected void onPostExecute(Avatar avatar) {
+                Log.d(TAG, "finish loading avatar");
+                onBindActionBarFinished(action_bar, avatar, bind_listener);
+
+            }
+        }
+
+        new Task().execute();
+        return this;
+    }
+
+    private void onBindImageViewFinished(ImageView imageView, Avatar avatar, BindListener bind_listener) {
+        Drawable avatar_drawable = avatar.getDrawable();
+        String avatar_tag = avatar.getTag();
+        if (avatar_drawable != null && avatar_tag != null) {
+            imageView.setImageDrawable(avatar_drawable);
+            imageView.setTag(avatar_tag);
+        }
+
+        if (bind_listener != null) {
+            int result_code = (avatar_drawable != null && avatar_tag != null) ? RESULT_CODE_SUCCESS : RESULT_CODE_FAIL;
+            bind_listener.onBindFinished(result_code);
+        }
+    }
+
+    private void onBindActionBarFinished(ActionBar action_bar, Avatar avatar, BindListener bind_listener) {
+        Drawable avatar_drawable = avatar.getDrawable();
+        if (avatar_drawable != null) {
+            action_bar.setDisplayUseLogoEnabled(true);
+            action_bar.setLogo(avatar_drawable);
+        }
+
+        if (bind_listener != null) {
+            int result_code = (avatar_drawable != null) ? RESULT_CODE_SUCCESS : RESULT_CODE_FAIL;
+            bind_listener.onBindFinished(result_code);
+        }
     }
 
     public Avatar loadAvatarByHashCode(String hash_code, int avatar_size) {
