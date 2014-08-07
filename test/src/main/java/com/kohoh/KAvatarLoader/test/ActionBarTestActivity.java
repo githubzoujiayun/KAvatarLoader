@@ -19,14 +19,18 @@ public class ActionBarTestActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        getActionBar().setLogo(R.drawable.logo100);
 
-        ImageView iv_icon_and_logo = (ImageView) findViewById(android.R.id.home);
-        if (iv_icon_and_logo != null) {
-            iv_icon_and_logo.setImageDrawable(getResources().getDrawable(R.drawable.icon100));
-        } else {
-            Log.e("kohoh_tag", "iv_icon_and_logo is null");
-        }
+        getActionBar().setLogo(R.drawable.banner);
+        getActionBar().setLogo(R.drawable.banner_vertical);
+
+//        getActionBar().setLogo(R.drawable.logo100);
+
+//        ImageView iv_icon_and_logo = (ImageView) findViewById(android.R.id.home);
+//        if (iv_icon_and_logo != null) {
+//            iv_icon_and_logo.setImageDrawable(getResources().getDrawable(R.drawable.icon100));
+//        } else {
+//            Log.e("kohoh_tag", "iv_icon_and_logo is null");
+//        }
 
     }
 }
