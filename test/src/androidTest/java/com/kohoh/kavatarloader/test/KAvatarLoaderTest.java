@@ -148,14 +148,32 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         }
 
         @Override
-        public void onBindFinished() {
+        public void onBindFinished(int RESULT_CODE) {
             Drawable drawable = image_view.getDrawable();
             assertNotNull("drawable is null", drawable);
 
             String tag_actural = (String) image_view.getTag();
             assertEquals("tag not equal", tag_expect, tag_actural);
+
+            if (RESULT_CODE != KAvatarLoader.RESULT_CODE_SUCCESS) {
+                fail("bind ImageView failed");
+            }
         }
     }
 
     ;
+
+    //TODO 待完成
+    //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
+//    public void testBindActionBarByEmail() {
+//        ActionBar action_bar = activity.getActionBar();
+//        avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1), new BindListener() {
+//            @Override
+//            public void onBindFinished(int RESULT_CODE) {
+//                assertEquals("bind actionbar failed", KAvatarLoader.RESULT_CODE_SUCCESS, RESULT_CODE);
+//            }
+//        };
+//    }
+
+
 }

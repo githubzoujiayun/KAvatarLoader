@@ -1,6 +1,7 @@
 package com.kohoh.kavatarloader;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
@@ -16,6 +17,9 @@ public class KAvatarLoader {
     private Context context;
     private Gravatar gravatar;
     static private final String TAG = KAvatarLoader.class.getSimpleName();
+
+    static public final int RESULT_CODE_SUCCESS = 1;
+    static public final int RESULT_CODE_FAIL = 1;
 
     public KAvatarLoader(Context context) {
         this.context = context;
@@ -38,9 +42,23 @@ public class KAvatarLoader {
         return avatar_size;
     }
 
-    public KAvatarLoader bindImageViewByEmail(final ImageView imageView, final String email, final BindListener bindListener) {
+    private void onBindImageViewFinished(ImageView imageView, Avatar avatar,BindListener bind_listener) {
+        Drawable avatar_drawable = avatar.getDrawable();
+        String avatar_tag = avatar.getTag();
+        if (avatar_drawable != null && avatar_tag != null) {
+            imageView.setImageDrawable(avatar_drawable);
+            imageView.setTag(avatar_tag);
+        }
 
-        final int avatar_size = calculateAvatarSize(imageView);
+        if (bind_listener != null) {
+            int result_code = (avatar_drawable != null && avatar_tag != null) ? RESULT_CODE_SUCCESS : RESULT_CODE_FAIL;
+            bind_listener.onBindFinished(result_code);
+        }
+    }
+
+    public KAvatarLoader bindImageViewByEmail(final ImageView image_view, final String email, final BindListener bind_listener) {
+
+        final int avatar_size = calculateAvatarSize(image_view);
 
         class Task extends AsyncTask<Objects, Objects, Avatar> {
 
@@ -53,11 +71,7 @@ public class KAvatarLoader {
             @Override
             protected void onPostExecute(Avatar avatar) {
                 Log.d(TAG, "finish loading avatar");
-                imageView.setImageDrawable(avatar.getDrawable());
-                imageView.setTag(avatar.getTag());
-                if (bindListener != null) {
-                    bindListener.onBindFinished();
-                }
+                onBindImageViewFinished(image_view,avatar,bind_listener);
             }
         }
 
@@ -80,11 +94,7 @@ public class KAvatarLoader {
             @Override
             protected void onPostExecute(Avatar avatar) {
                 Log.d(TAG, "finish loading avatar");
-                image_view.setImageDrawable(avatar.getDrawable());
-                image_view.setTag(avatar.getTag());
-                if (bind_listener != null) {
-                    bind_listener.onBindFinished();
-                }
+                onBindImageViewFinished(image_view,avatar,bind_listener);
             }
         }
 
@@ -106,11 +116,7 @@ public class KAvatarLoader {
             @Override
             protected void onPostExecute(Avatar avatar) {
                 Log.d(TAG, "finish loading avatar");
-                image_view.setImageDrawable(avatar.getDrawable());
-                image_view.setTag(avatar.getTag());
-                if (bind_listener != null) {
-                    bind_listener.onBindFinished();
-                }
+                onBindImageViewFinished(image_view,avatar,bind_listener);
             }
         }
 
@@ -132,6 +138,7 @@ public class KAvatarLoader {
         return new Avatar(raw_gravatar, tag);
     }
 
+    //这里的avatar_size本质上没有任何作用
     public Avatar loadAvatarByUrl(String url, int avatar_size) {
         gravatar.setSize(avatar_size);
         byte[] raw_gravatar = gravatar.dowloadByUrl(url);
