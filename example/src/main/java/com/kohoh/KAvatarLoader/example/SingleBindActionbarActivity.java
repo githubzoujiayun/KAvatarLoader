@@ -4,7 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.kohoh.gravatar.GravatarDefaultImage;
+import com.kohoh.kavatarloader.DefaultAvatar;
 import com.kohoh.kavatarloader.KAvatarLoader;
 
 
@@ -27,7 +27,7 @@ public class SingleBindActionbarActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        avatar_loader.setDefaultAvatar(GravatarDefaultImage.MONSTERID);
+        avatar_loader.setDefaultAvatar(DefaultAvatar.MONSTERID);
         avatar_loader.bindActionBarByEmail(action_bar, email, null);
     }
 }

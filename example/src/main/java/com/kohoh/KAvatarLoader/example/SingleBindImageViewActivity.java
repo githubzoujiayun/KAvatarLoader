@@ -6,7 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.kohoh.gravatar.GravatarDefaultImage;
+import com.kohoh.kavatarloader.DefaultAvatar;
 import com.kohoh.kavatarloader.KAvatarLoader;
 
 public class SingleBindImageViewActivity extends Activity {
@@ -37,17 +37,17 @@ public class SingleBindImageViewActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        avatarLoader.setDefaultAvatar(GravatarDefaultImage.GRAVATAR_ICON);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.GRAVATAR_ICON);
         avatarLoader.bindImageViewByEmail(iv_avatar_no_size, email, null);
-        avatarLoader.setDefaultAvatar(GravatarDefaultImage.MYSTERY_MEN);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.MYSTERY_MEN);
         avatarLoader.bindImageViewByEmail(iv_avatar_small_size, email, null);
-        avatarLoader.setDefaultAvatar(GravatarDefaultImage.RETRO);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.RETRO);
         avatarLoader.bindImageViewByEmail(iv_avatar_medium_size, email, null);
-        avatarLoader.setDefaultAvatar(GravatarDefaultImage.MONSTERID);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.MONSTERID);
         avatarLoader.bindImageViewByEmail(iv_avatar_large_size, email, null);
-        avatarLoader.setDefaultAvatar(GravatarDefaultImage.IDENTICON);
+        avatarLoader.setDefaultAvatar(R.drawable.custom_default_avatar);
         avatarLoader.bindImageViewByEmail(iv_avatar_xlarge_size, email, null);
-        avatarLoader.setDefaultAvatar(GravatarDefaultImage.BLANK);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.BLANK);
         avatarLoader.bindImageViewByEmail(iv_avatar_actionbar_size, email, null);
     }
 
