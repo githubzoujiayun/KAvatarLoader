@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.UiThreadTest;
 import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
@@ -109,18 +110,21 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     //TestCase001 检测KAvatarLoader#bindImageViewByEmail是否正常工作
+    @UiThreadTest
     public void testBindImageViewByEmail() throws InterruptedException {
         testBindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
         testBindImageViewByEmail(iv_size200, GravatarConstant.EXIST_EMAIL2, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
     }
 
     //TestCase010 测试KAvatarLoader#bindImageViewByHashCode是否正常工作
+    @UiThreadTest
     public void testBindImageViewByHashCode() {
         testBindImageViewByHashCode(iv_size100, GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
         testBindImageViewByHashCode(iv_size200, GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
     }
 
     //TestCase030 测试KAvatarLoader#bindImageViewByUrl能否正常工作
+    @UiThreadTest
     public void testBindImageViewByUrl() {
         testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
         testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
@@ -166,6 +170,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     ;
 
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
+    @UiThreadTest
     public void testBindActionBarByEmail() {
         ActionBar action_bar = activity.getActionBar();
         avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1, new BindListener() {
@@ -177,6 +182,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     //TestCase033 测试KAvatarLoader#bindActionBarByHashCode能否正常工作
+    @UiThreadTest
     public void testBindActionBarByHashCode() {
         ActionBar action_bar = activity.getActionBar();
         avatar_loader.bindActionBarByHashCode(action_bar, GravatarConstant.EXIST_EMAIL1_HASH_CODE, new BindListener() {
@@ -188,6 +194,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     //TestCase034 测试KAvatarLoader#binActionBarByUrl能否正常工作
+    @UiThreadTest
     public void testBindActionBarByUrl() {
         ActionBar action_bar = activity.getActionBar();
         avatar_loader.bindActionBarByUrl(action_bar, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, new BindListener() {
@@ -210,6 +217,22 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         Avatar avatar = avatar_loader.loadAvatarByEmail(GravatarConstant.DOSENT_EXIST_EMAIL, 100);
         String avatar_tag_actural = avatar.getTag();
         assertEquals("setDefaultAvatar failed", avatar_tag_expect, avatar_tag_actural);
+    }
+
+    //TestCase036 测试KAvatarLoader能否在加载Avatar之前首先加载默认的Avatar
+    @UiThreadTest
+    public void testLoadDefaultImageBeforeLoadRealAvatar() {
+        testLoadDeaultImageBeforeLoadRealAvatar(GravatarDefaultImage.MYSTERY_MEN);
+        testLoadDeaultImageBeforeLoadRealAvatar(GravatarDefaultImage.GRAVATAR_ICON);
+    }
+
+    private void testLoadDeaultImageBeforeLoadRealAvatar(GravatarDefaultImage default_avatar) {
+        avatar_loader.setDefaultAvatar(default_avatar);
+        avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1,null);
+
+        String avatar_tag_expect = "default avatar "+default_avatar.toString();
+        String avatar_tag_actural = (String) iv_size100.getTag();
+        assertEquals("LoadDefaultImageBeforeLoadRealAvatar failed", avatar_tag_expect, avatar_tag_actural);
     }
 
 }

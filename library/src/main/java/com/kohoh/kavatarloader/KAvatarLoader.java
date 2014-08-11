@@ -2,6 +2,7 @@ package com.kohoh.kavatarloader;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -18,6 +19,7 @@ import java.util.Objects;
 public class KAvatarLoader {
     private Context context;
     private Gravatar gravatar;
+    private GravatarDefaultImage default_avatar;
     static private final String TAG = KAvatarLoader.class.getSimpleName();
 
     static public final int RESULT_CODE_SUCCESS = 1;
@@ -26,6 +28,7 @@ public class KAvatarLoader {
     public KAvatarLoader(Context context) {
         this.context = context;
         this.gravatar = new Gravatar();
+        this.default_avatar = GravatarDefaultImage.MYSTERY_MEN;
     }
 
     public int calculateAvatarSize(ImageView imageView) {
@@ -51,6 +54,11 @@ public class KAvatarLoader {
         class Task extends AsyncTask<Objects, Objects, Avatar> {
 
             @Override
+            protected void onPreExecute() {
+                bindImageViewWithDefaultAvatar(image_view);
+            }
+
+            @Override
             protected Avatar doInBackground(Objects... params) {
                 Log.d(TAG, "start loading avatar");
                 return loadAvatarByEmail(email, avatar_size);
@@ -72,6 +80,11 @@ public class KAvatarLoader {
         final int avatar_size = calculateAvatarSize(image_view);
 
         class Task extends AsyncTask<Objects, Objects, Avatar> {
+
+            @Override
+            protected void onPreExecute() {
+                bindImageViewWithDefaultAvatar(image_view);
+            }
 
             @Override
             protected Avatar doInBackground(Objects... params) {
@@ -96,6 +109,11 @@ public class KAvatarLoader {
         class Task extends AsyncTask<Objects, Objects, Avatar> {
 
             @Override
+            protected void onPreExecute() {
+                bindImageViewWithDefaultAvatar(image_view);
+            }
+
+            @Override
             protected Avatar doInBackground(Objects... params) {
                 Log.d(TAG, "start loading avatar");
                 return loadAvatarByUrl(url, avatar_size);
@@ -117,6 +135,11 @@ public class KAvatarLoader {
         final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 
         class Task extends AsyncTask<Objects, Objects, Avatar> {
+
+            @Override
+            protected void onPreExecute() {
+                bindActionBarWithDefaultAvatar(action_bar);
+            }
 
             @Override
             protected Avatar doInBackground(Objects... params) {
@@ -143,6 +166,11 @@ public class KAvatarLoader {
         class Task extends AsyncTask<Objects, Objects, Avatar> {
 
             @Override
+            protected void onPreExecute() {
+                bindActionBarWithDefaultAvatar(action_bar);
+            }
+
+            @Override
             protected Avatar doInBackground(Objects... params) {
                 Log.d(TAG, "start loading avatar");
                 return loadAvatarByHashCode(hash_code, avatar_size);
@@ -165,6 +193,11 @@ public class KAvatarLoader {
         final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 
         class Task extends AsyncTask<Objects, Objects, Avatar> {
+
+            @Override
+            protected void onPreExecute() {
+                bindActionBarWithDefaultAvatar(action_bar);
+            }
 
             @Override
             protected Avatar doInBackground(Objects... params) {
@@ -211,6 +244,68 @@ public class KAvatarLoader {
         }
     }
 
+    private void bindImageViewWithDefaultAvatar(ImageView image_view) {
+        Resources resources = context.getResources();
+        String tag = "default avatar ";
+
+        switch (this.default_avatar) {
+            case GRAVATAR_ICON:
+                image_view.setImageDrawable(resources.getDrawable(R.drawable.gravatar_icon));
+                image_view.setTag(tag + GravatarDefaultImage.GRAVATAR_ICON.toString());
+                break;
+            case IDENTICON:
+                image_view.setImageDrawable(resources.getDrawable(R.drawable.identicon));
+                image_view.setTag(tag + GravatarDefaultImage.IDENTICON.toString());
+                break;
+            case MONSTERID:
+                image_view.setImageDrawable(resources.getDrawable(R.drawable.monsterid));
+                image_view.setTag(tag + GravatarDefaultImage.MONSTERID.toString());
+                break;
+            case WAVATAR:
+                image_view.setImageDrawable(resources.getDrawable(R.drawable.wavatar));
+                image_view.setTag(tag + GravatarDefaultImage.WAVATAR.toString());
+                break;
+            case MYSTERY_MEN:
+                image_view.setImageDrawable(resources.getDrawable(R.drawable.mystery_men));
+                image_view.setTag(tag + GravatarDefaultImage.MYSTERY_MEN.toString());
+                break;
+            case RETRO:
+                image_view.setImageDrawable(resources.getDrawable(R.drawable.retro));
+                image_view.setTag(tag + GravatarDefaultImage.RETRO.toString());
+                break;
+            case BLANK:
+                image_view.setImageDrawable(resources.getDrawable(R.drawable.blank));
+                image_view.setTag(tag + GravatarDefaultImage.BLANK.toString());
+                break;
+        }
+    }
+
+    private void bindActionBarWithDefaultAvatar(ActionBar action_bar) {
+        switch (this.default_avatar) {
+            case GRAVATAR_ICON:
+                action_bar.setLogo(R.drawable.gravatar_icon);
+                break;
+            case IDENTICON:
+                action_bar.setLogo(R.drawable.identicon);
+                break;
+            case MONSTERID:
+                action_bar.setLogo(R.drawable.monsterid);
+                break;
+            case WAVATAR:
+                action_bar.setLogo(R.drawable.wavatar);
+                break;
+            case MYSTERY_MEN:
+                action_bar.setLogo(R.drawable.mystery_men);
+                break;
+            case RETRO:
+                action_bar.setLogo(R.drawable.retro);
+                break;
+            case BLANK:
+                action_bar.setLogo(R.drawable.blank);
+                break;
+        }
+    }
+
     public Avatar loadAvatarByHashCode(String hash_code, int avatar_size) {
         gravatar.setSize(avatar_size);
         byte[] raw_gravatar = gravatar.downloadByHashCode(hash_code);
@@ -235,6 +330,7 @@ public class KAvatarLoader {
 
     public KAvatarLoader setDefaultAvatar(GravatarDefaultImage default_avatar) {
         gravatar.setDefaultImage(default_avatar);
+        this.default_avatar = default_avatar;
         return this;
     }
 
