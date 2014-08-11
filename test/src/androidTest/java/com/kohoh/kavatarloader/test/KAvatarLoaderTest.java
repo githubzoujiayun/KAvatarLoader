@@ -246,4 +246,18 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         assertEquals("LoadDefaultImageBeforeLoadRealAvatar failed", avatar_tag_expect, avatar_tag_actural);
     }
 
+    //TestCase038 测试当DefaultAvatar被设置为HTTP_404或者CUSTOM_DEFAULT_AVATAR状态时，加载avatar后能否正常工作
+    @UiThreadTest
+    public void testSetCustomDefaultAvatarWithHttp404() {
+        avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
+        final ImageView iv_size100 = this.iv_size100;
+        avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.DOSENT_EXIST_EMAIL, new BindListener() {
+            @Override
+            public void onBindFinished(int RESULT_CODE) {
+                assertEquals("result code wrong", KAvatarLoader.RESULT_CODE_FAIL, RESULT_CODE);
+                assertEquals("tag wrong", "custom default avatar", iv_size100.getTag());
+            }
+        });
+    }
+
 }

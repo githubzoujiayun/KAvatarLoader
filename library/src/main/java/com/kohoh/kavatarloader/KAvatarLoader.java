@@ -218,6 +218,13 @@ public class KAvatarLoader {
     }
 
     private void onBindImageViewFinished(ImageView imageView, Avatar avatar, BindListener bind_listener) {
+        if (avatar == null || avatar.getBytes() == null) {
+            if (bind_listener != null) {
+                bind_listener.onBindFinished(RESULT_CODE_FAIL);
+            }
+            return;
+        }
+
         Drawable avatar_drawable = avatar.getDrawable();
         String avatar_tag = avatar.getTag();
         if (avatar_drawable != null && avatar_tag != null) {
@@ -232,6 +239,13 @@ public class KAvatarLoader {
     }
 
     private void onBindActionBarFinished(ActionBar action_bar, Avatar avatar, BindListener bind_listener) {
+        if (avatar == null || avatar.getBytes() == null) {
+            if (bind_listener != null) {
+                bind_listener.onBindFinished(RESULT_CODE_FAIL);
+            }
+            return;
+        }
+
         Drawable avatar_drawable = avatar.getDrawable();
         if (avatar_drawable != null) {
             action_bar.setDisplayUseLogoEnabled(true);

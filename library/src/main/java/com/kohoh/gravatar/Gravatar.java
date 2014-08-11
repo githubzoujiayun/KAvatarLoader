@@ -1,10 +1,11 @@
 package com.kohoh.gravatar;
 
+import android.util.Log;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -38,6 +39,8 @@ public final class Gravatar {
     private int size = DEFAULT_SIZE;
     private GravatarRating rating = DEFAULT_RATING;
     private GravatarDefaultImage defaultImage = DEFAULT_DEFAULT_IMAGE;
+
+    static final public String TAG = Gravatar.class.getSimpleName();
 
     /**
      * Specify a gravatar size between 1 and 512 pixels. If you omit this, a
@@ -88,24 +91,23 @@ public final class Gravatar {
      * returns a byte array containing the gravatar jpg, returns null if no
      * gravatar was found.
      */
-    public byte[] downloadByEmail(String email) throws GravatarDownloadException {
+    public byte[] downloadByEmail(String email) {
         return dowloadByUrl(getUrlByEmail(email));
     }
 
-    public byte[] downloadByHashCode(String hash_code) throws GravatarDownloadException {
+    public byte[] downloadByHashCode(String hash_code) {
         return dowloadByUrl(getUrlByHashCode(hash_code));
     }
 
-    public byte[] dowloadByUrl(String url_address) throws GravatarDownloadException{
+    public byte[] dowloadByUrl(String url_address) {
         InputStream stream = null;
         try {
             URL url = new URL(url_address);
             stream = url.openStream();
             return IOUtils.toByteArray(stream);
-        } catch (FileNotFoundException e) {
-            return null;
         } catch (Exception e) {
-            throw new GravatarDownloadException(e);
+            Log.e(TAG, "download avatar fialed", e);
+            return null;
         } finally {
             IOUtils.closeQuietly(stream);
         }
