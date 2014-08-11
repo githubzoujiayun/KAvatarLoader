@@ -19,7 +19,7 @@ import java.util.Objects;
 public class KAvatarLoader {
     private Context context;
     private Gravatar gravatar;
-    private GravatarDefaultImage default_avatar;
+    private DefaultAvatar default_avatar;
     static private final String TAG = KAvatarLoader.class.getSimpleName();
 
     static public final int RESULT_CODE_SUCCESS = 1;
@@ -28,7 +28,7 @@ public class KAvatarLoader {
     public KAvatarLoader(Context context) {
         this.context = context;
         this.gravatar = new Gravatar();
-        this.default_avatar = GravatarDefaultImage.MYSTERY_MEN;
+        this.default_avatar = DefaultAvatar.MYSTERY_MEN;
     }
 
     public int calculateAvatarSize(ImageView imageView) {
@@ -277,6 +277,10 @@ public class KAvatarLoader {
                 image_view.setImageDrawable(resources.getDrawable(R.drawable.blank));
                 image_view.setTag(tag + GravatarDefaultImage.BLANK.toString());
                 break;
+            case CUSTOM_DEFAULT_AVATAR:
+                image_view.setImageDrawable(this.default_avatar.getCustomDefaultAvatar());
+                image_view.setTag("custom default avatar");
+                break;
         }
     }
 
@@ -303,6 +307,9 @@ public class KAvatarLoader {
             case BLANK:
                 action_bar.setLogo(R.drawable.blank);
                 break;
+            case CUSTOM_DEFAULT_AVATAR:
+                action_bar.setLogo(this.default_avatar.getCustomDefaultAvatar());
+                break;
         }
     }
 
@@ -328,9 +335,23 @@ public class KAvatarLoader {
         return new Avatar(context, raw_gravatar, tag);
     }
 
-    public KAvatarLoader setDefaultAvatar(GravatarDefaultImage default_avatar) {
-        gravatar.setDefaultImage(default_avatar);
+    public KAvatarLoader setDefaultAvatar(DefaultAvatar default_avatar) {
+        if (!default_avatar.equals(DefaultAvatar.CUSTOM_DEFAULT_AVATAR)) {
+            gravatar.setDefaultImage(GravatarDefaultImage.valueOf(default_avatar.toString()));
+        } else {
+            gravatar.setDefaultImage(GravatarDefaultImage.HTTP_404);
+        }
+
         this.default_avatar = default_avatar;
+        return this;
+    }
+
+    public KAvatarLoader setDefaultAvatar(int default_avatar) {
+        setDefaultAvatar(DefaultAvatar.CUSTOM_DEFAULT_AVATAR);
+
+        Drawable custom_default_avatar = context.getResources().getDrawable(default_avatar);
+        this.default_avatar.setCustomDefaultAvatar(custom_default_avatar);
+
         return this;
     }
 

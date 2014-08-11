@@ -9,9 +9,9 @@ import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.KAvatarLoader.test.R;
-import com.kohoh.gravatar.GravatarDefaultImage;
 import com.kohoh.kavatarloader.Avatar;
 import com.kohoh.kavatarloader.BindListener;
+import com.kohoh.kavatarloader.DefaultAvatar;
 import com.kohoh.kavatarloader.KAvatarLoader;
 
 import java.io.IOException;
@@ -207,12 +207,12 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     //TestCase035 测试KAvatarLoader#setDefaultAvatar能否正常工作
     public void testSetDefaultAvatar() {
-        testSetDefaultAvatar(GravatarDefaultImage.WAVATAR, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_WAVATAR_SIZE100_URL);
-        testSetDefaultAvatar(GravatarDefaultImage.GRAVATAR_ICON, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_GRAVATAR_ICON_SIZE100_URL);
-        testSetDefaultAvatar(GravatarDefaultImage.HTTP_404, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_HTTP_404_SIZE100_URL);
+        testSetDefaultAvatar(DefaultAvatar.WAVATAR, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_WAVATAR_SIZE100_URL);
+        testSetDefaultAvatar(DefaultAvatar.GRAVATAR_ICON, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_GRAVATAR_ICON_SIZE100_URL);
+        testSetDefaultAvatar(DefaultAvatar.HTTP_404, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_HTTP_404_SIZE100_URL);
     }
 
-    private void testSetDefaultAvatar(GravatarDefaultImage default_image, String avatar_tag_expect) {
+    private void testSetDefaultAvatar(DefaultAvatar default_image, String avatar_tag_expect) {
         avatar_loader.setDefaultAvatar(default_image);
         Avatar avatar = avatar_loader.loadAvatarByEmail(GravatarConstant.DOSENT_EXIST_EMAIL, 100);
         String avatar_tag_actural = avatar.getTag();
@@ -222,15 +222,26 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase036 测试KAvatarLoader能否在加载Avatar之前首先加载默认的Avatar
     @UiThreadTest
     public void testLoadDefaultImageBeforeLoadRealAvatar() {
-        testLoadDeaultImageBeforeLoadRealAvatar(GravatarDefaultImage.MYSTERY_MEN);
-        testLoadDeaultImageBeforeLoadRealAvatar(GravatarDefaultImage.GRAVATAR_ICON);
+        testLoadDeaultImageBeforeLoadRealAvatar(DefaultAvatar.MYSTERY_MEN);
+        testLoadDeaultImageBeforeLoadRealAvatar(DefaultAvatar.GRAVATAR_ICON);
     }
 
-    private void testLoadDeaultImageBeforeLoadRealAvatar(GravatarDefaultImage default_avatar) {
+    private void testLoadDeaultImageBeforeLoadRealAvatar(DefaultAvatar default_avatar) {
         avatar_loader.setDefaultAvatar(default_avatar);
-        avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1,null);
+        avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, null);
 
-        String avatar_tag_expect = "default avatar "+default_avatar.toString();
+        String avatar_tag_expect = "default avatar " + default_avatar.toString();
+        String avatar_tag_actural = (String) iv_size100.getTag();
+        assertEquals("LoadDefaultImageBeforeLoadRealAvatar failed", avatar_tag_expect, avatar_tag_actural);
+    }
+
+    //TestCase037 测试KAvatarLoader#setDefaultAvatar能否设置自定义的default avatar
+    @UiThreadTest
+    public void testSetCustomDefaultAvatar() {
+        avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
+        avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, null);
+
+        String avatar_tag_expect = "custom default avatar";
         String avatar_tag_actural = (String) iv_size100.getTag();
         assertEquals("LoadDefaultImageBeforeLoadRealAvatar failed", avatar_tag_expect, avatar_tag_actural);
     }
