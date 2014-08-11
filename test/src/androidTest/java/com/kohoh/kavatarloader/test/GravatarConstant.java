@@ -1,7 +1,5 @@
 package com.kohoh.kavatarloader.test;
 
-import java.security.PublicKey;
-
 /**
  * Created by kohoh on 14-8-2.
  */
@@ -22,7 +20,6 @@ public class GravatarConstant {
 
     public static final String EXIST_EMAIL1_DEFAULT_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404";
     public static final String EXIST_EMAIL2_DEFAULT_URL = "http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404";
-    public static final String DOSENT_EXIST_EMAIL_DEFAULT_URL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=404";
 
     public static final String EXIST_EMAIL1_SIZE_100_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=100&d=404";
     public static final String EXIST_EMAIL2_SIZE_200_URL = "http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?s=200&d=404";
@@ -41,4 +38,10 @@ public class GravatarConstant {
     public static final String EXIST_EMAIL1_SIZE_200_BYTE_FILE_NAME = "kavatarloader1@126.com_size200_bytes";
     public static final String EXIST_EMAIL2_SIZE_100_BYTE_FILE_NAME = "kavatarloader2@126.com_size100_bytes";
     public static final String EXIST_EMAIL2_SIZE_200_BYTE_FILE_NAME = "kavatarloader2@126.com_size200_bytes";
+
+    public static final String DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_WAVATAR_SIZE100_URL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?s=100&d=wavatar";
+    public static final String DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_GRAVATAR_ICON_SIZE100_URL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?s=100";
+    public static final String DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_HTTP_404_SIZE100_URL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?s=100&d=404";
+
+
 }

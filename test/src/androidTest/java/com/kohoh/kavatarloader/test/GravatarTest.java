@@ -42,7 +42,6 @@ public class GravatarTest extends AndroidTestCase {
 
     //TestCase021 测试Gravatar#getUrl能否正常工作
     public void testGetImageUrlDefaults() {
-        assertEquals(GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_URL, gravatar.getUrlByEmail(GravatarConstant.DOSENT_EXIST_EMAIL));
         assertEquals(GravatarConstant.EXIST_EMAIL1_DEFAULT_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL1));
         assertEquals(GravatarConstant.EXIST_EMAIL2_DEFAULT_URL, gravatar.getUrlByEmail(GravatarConstant.EXIST_EMAIL2));
     }

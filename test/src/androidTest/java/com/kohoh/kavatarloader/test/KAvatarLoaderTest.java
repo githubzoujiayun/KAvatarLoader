@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.KAvatarLoader.test.R;
+import com.kohoh.gravatar.GravatarDefaultImage;
 import com.kohoh.kavatarloader.Avatar;
 import com.kohoh.kavatarloader.BindListener;
 import com.kohoh.kavatarloader.KAvatarLoader;
@@ -195,6 +196,20 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
                 assertEquals("bind actionbar failed", KAvatarLoader.RESULT_CODE_SUCCESS, RESULT_CODE);
             }
         });
+    }
+
+    //TestCase035 测试KAvatarLoader#setDefaultAvatar能否正常工作
+    public void testSetDefaultAvatar() {
+        testSetDefaultAvatar(GravatarDefaultImage.WAVATAR, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_WAVATAR_SIZE100_URL);
+        testSetDefaultAvatar(GravatarDefaultImage.GRAVATAR_ICON, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_GRAVATAR_ICON_SIZE100_URL);
+        testSetDefaultAvatar(GravatarDefaultImage.HTTP_404, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_HTTP_404_SIZE100_URL);
+    }
+
+    private void testSetDefaultAvatar(GravatarDefaultImage default_image, String avatar_tag_expect) {
+        avatar_loader.setDefaultAvatar(default_image);
+        Avatar avatar = avatar_loader.loadAvatarByEmail(GravatarConstant.DOSENT_EXIST_EMAIL, 100);
+        String avatar_tag_actural = avatar.getTag();
+        assertEquals("setDefaultAvatar failed", avatar_tag_expect, avatar_tag_actural);
     }
 
 }
