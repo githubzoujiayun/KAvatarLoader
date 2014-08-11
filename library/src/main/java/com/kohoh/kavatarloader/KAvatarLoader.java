@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.kohoh.gravatar.Gravatar;
 import com.kohoh.gravatar.GravatarDefaultImage;
+import com.kohoh.gravatar.GravatarRating;
 
 import java.util.Objects;
 
@@ -366,6 +367,11 @@ public class KAvatarLoader {
         Drawable custom_default_avatar = context.getResources().getDrawable(default_avatar);
         this.default_avatar.setCustomDefaultAvatar(custom_default_avatar);
 
+        return this;
+    }
+
+    public KAvatarLoader setAvatarRating(AvatarRating avatar_rating) {
+        gravatar.setRating(GravatarRating.valueOf(avatar_rating.toString()));
         return this;
     }
 
