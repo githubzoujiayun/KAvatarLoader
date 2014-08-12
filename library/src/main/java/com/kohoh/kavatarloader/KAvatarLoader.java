@@ -134,7 +134,7 @@ public class KAvatarLoader {
     public KAvatarLoader setDefaultAvatar(DefaultAvatar default_avatar, Integer default_avatar_resource) {
         if (default_avatar.equals(DefaultAvatar.CUSTOM_DEFAULT_AVATAR)) {
             Drawable custom_default_avatar = context.getResources().getDrawable(default_avatar_resource);
-            this.default_avatar.setCustomDefaultAvatar(custom_default_avatar);
+            default_avatar.setCustomDefaultAvatar(custom_default_avatar);
         }
         this.default_avatar = default_avatar;
         return this;

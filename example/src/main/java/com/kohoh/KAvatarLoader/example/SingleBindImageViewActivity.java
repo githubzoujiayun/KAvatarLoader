@@ -37,18 +37,18 @@ public class SingleBindImageViewActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        avatarLoader.setDefaultAvatar(DefaultAvatar.GRAVATAR_ICON);
-        avatarLoader.bindImageViewByEmail(iv_avatar_no_size, email, null);
-        avatarLoader.setDefaultAvatar(DefaultAvatar.MYSTERY_MEN);
-        avatarLoader.bindImageViewByEmail(iv_avatar_small_size, email, null);
-        avatarLoader.setDefaultAvatar(DefaultAvatar.RETRO);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.GRAVATAR_ICON,null);
+        avatarLoader.bindImageViewByEmail(iv_avatar_no_size, "kavatarloader2@126.com", null);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.MYSTERY_MEN,null);
+        avatarLoader.bindImageViewByEmail(iv_avatar_small_size, "kavatarloader1@126.com", null);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.RETRO,null);
         avatarLoader.bindImageViewByEmail(iv_avatar_medium_size, email, null);
-        avatarLoader.setDefaultAvatar(DefaultAvatar.MONSTERID);
-        avatarLoader.bindImageViewByEmail(iv_avatar_large_size, email, null);
-        avatarLoader.setDefaultAvatar(R.drawable.custom_default_avatar);
-        avatarLoader.bindImageViewByEmail(iv_avatar_xlarge_size, email, null);
-        avatarLoader.setDefaultAvatar(DefaultAvatar.BLANK);
-        avatarLoader.bindImageViewByEmail(iv_avatar_actionbar_size, email, null);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.MONSTERID,null);
+        avatarLoader.bindImageViewByEmail(iv_avatar_large_size, "kavatarloader1@126.com", null);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.CUSTOM_DEFAULT_AVATAR,R.drawable.custom_default_avatar);
+        avatarLoader.bindImageViewByEmail(iv_avatar_xlarge_size, "dsadfdfsd", null);
+        avatarLoader.setDefaultAvatar(DefaultAvatar.MYSTERY_MEN,null);
+        avatarLoader.bindImageViewByEmail(iv_avatar_actionbar_size, "kavatarloader2@126.com", null);
     }
 
     @Override

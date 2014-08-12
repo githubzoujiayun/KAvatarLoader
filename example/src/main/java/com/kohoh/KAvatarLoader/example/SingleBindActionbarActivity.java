@@ -27,7 +27,7 @@ public class SingleBindActionbarActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        avatar_loader.setDefaultAvatar(DefaultAvatar.MONSTERID);
+        avatar_loader.setDefaultAvatar(DefaultAvatar.MONSTERID,null);
         avatar_loader.bindActionBarByEmail(action_bar, email, null);
     }
 }
