@@ -31,16 +31,23 @@ import java.util.List;
  */
 public final class Gravatar {
 
-    private final static int DEFAULT_SIZE = 80;
+    public final static int DEFAULT_SIZE = 80;
     private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
-    private static final GravatarRating DEFAULT_RATING = GravatarRating.GENERAL_AUDIENCES;
-    private static final GravatarDefaultImage DEFAULT_DEFAULT_IMAGE = GravatarDefaultImage.HTTP_404;
+    public static final GravatarRating DEFAULT_RATING = GravatarRating.GENERAL_AUDIENCES;
+    public static final GravatarDefaultImage DEFAULT_DEFAULT_IMAGE = GravatarDefaultImage.HTTP_404;
 
     private int size = DEFAULT_SIZE;
     private GravatarRating rating = DEFAULT_RATING;
     private GravatarDefaultImage defaultImage = DEFAULT_DEFAULT_IMAGE;
 
-    static final public String TAG = Gravatar.class.getSimpleName();
+    static final public String TAG = Gravatar.class.getSimpleName()+"_tag";
+
+    public void log() {
+        Log.d(TAG, "--------------------------------");
+        Log.d(TAG, "size= " + size);
+        Log.d(TAG, "rating= " + rating);
+        Log.d(TAG, "default avatar= " + defaultImage);
+    }
 
     /**
      * Specify a gravatar size between 1 and 512 pixels. If you omit this, a
