@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.test.UiThreadTest;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -54,7 +53,7 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
         }
     }
 
-    private void bindImageViewWithDefaultAvatar(ImageView image_view,TaskParm task_parm) {
+    private void bindImageViewWithDefaultAvatar(ImageView image_view, TaskParm task_parm) {
         Resources resources = context.getResources();
         String tag = "default avatar ";
 
@@ -94,7 +93,7 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
         }
     }
 
-    private void bindActionBarWithDefaultAvatar(ActionBar action_bar,TaskParm task_parm) {
+    private void bindActionBarWithDefaultAvatar(ActionBar action_bar, TaskParm task_parm) {
         switch (task_parm.getDefaultAvatar()) {
             case GRAVATAR_ICON:
                 action_bar.setLogo(R.drawable.gravatar_icon);
@@ -172,7 +171,6 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
     }
 
 
-
     enum TARGET_VIEW_STYLE {ACTION_BAR, IMAGE_VIEW;}
 
     private TARGET_VIEW_STYLE getTargetViewSytle(Object target_view) throws Exception {
@@ -194,8 +192,11 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
     Avatar loadAvatar(TaskParm task_parm) throws Exception {
         gravatar.setSize(task_parm.getAvatarSize());
         gravatar.setRating(GravatarRating.valueOf(task_parm.getAvatarRating().toString()));
-        gravatar.setDefaultImage(GravatarDefaultImage.valueOf(task_parm.getDefaultAvatar().toString()));
-
+        if (task_parm.getDefaultAvatar().equals(DefaultAvatar.CUSTOM_DEFAULT_AVATAR)) {
+            gravatar.setDefaultImage(GravatarDefaultImage.HTTP_404);
+        } else {
+            gravatar.setDefaultImage(GravatarDefaultImage.valueOf(task_parm.getDefaultAvatar().toString()));
+        }
         gravatar.log();
 
         TASK_PARM_STYLE style = getTaskParmStyle(task_parm);

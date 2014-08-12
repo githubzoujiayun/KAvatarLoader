@@ -45,24 +45,24 @@ public class DrawableTestActivity extends Activity {
     protected void onResume() {
         super.onResume();
 
-        new AsyncTask() {
-            @Override
-            protected Object doInBackground(Object[] params) {
-                return  avatar_loader.loadAvatarByUrl(EXIST_EMAIL1_SIZE_100_URL,100);
-            }
-
-            @Override
-            protected void onPostExecute(Object o) {
-                Avatar avatar = (Avatar) o;
-
-                BitmapDrawable drawable = new BitmapDrawable(getResources(), avatar.getBitmap());
-                iv_from_net.setImageDrawable(drawable);
-
-                Bitmap bitmap=BitmapFactory.decodeByteArray(avatar.getBytes(), 0, avatar.getBytes().length);
-                iv_from_local.setImageBitmap(bitmap);
-
-            }
-        }.execute();
+//        new AsyncTask() {
+//            @Override
+//            protected Object doInBackground(Object[] params) {
+//                return  avatar_loader.loadAvatarByUrl(EXIST_EMAIL1_SIZE_100_URL,100);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(Object o) {
+//                Avatar avatar = (Avatar) o;
+//
+//                BitmapDrawable drawable = new BitmapDrawable(getResources(), avatar.getBitmap());
+//                iv_from_net.setImageDrawable(drawable);
+//
+//                Bitmap bitmap=BitmapFactory.decodeByteArray(avatar.getBytes(), 0, avatar.getBytes().length);
+//                iv_from_local.setImageBitmap(bitmap);
+//
+//            }
+//        }.execute();
 
 
     }

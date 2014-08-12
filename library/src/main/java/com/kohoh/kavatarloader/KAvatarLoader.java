@@ -2,34 +2,22 @@ package com.kohoh.kavatarloader;
 
 import android.app.ActionBar;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.ImageView;
-
-import com.kohoh.gravatar.Gravatar;
-import com.kohoh.gravatar.GravatarDefaultImage;
-import com.kohoh.gravatar.GravatarRating;
-
-import java.util.Objects;
 
 /**
  * Created by kohoh on 14-7-28.
  */
 public class KAvatarLoader {
     private Context context;
-    private Gravatar gravatar;
     private DefaultAvatar default_avatar;
+    private AvatarRating avatar_rating;
     static private final String TAG = KAvatarLoader.class.getSimpleName();
-
-    static public final int RESULT_CODE_SUCCESS = 1;
-    static public final int RESULT_CODE_FAIL = 1;
 
     public KAvatarLoader(Context context) {
         this.context = context;
-        this.gravatar = new Gravatar();
-        this.default_avatar = DefaultAvatar.MYSTERY_MEN;
+        this.default_avatar = DefaultAvatar.HTTP_404;
+        this.avatar_rating = AvatarRating.GENERAL_AUDIENCES;
     }
 
     public int calculateAvatarSize(ImageView imageView) {
@@ -52,27 +40,15 @@ public class KAvatarLoader {
 
         final int avatar_size = calculateAvatarSize(image_view);
 
-        class Task extends AsyncTask<Objects, Objects, Avatar> {
+        TaskParmUseEmail task_parm = new TaskParmUseEmail();
+        task_parm.setEmail(email);
+        task_parm.setTargetView(image_view);
+        task_parm.setBindListner(bind_listener);
+        task_parm.setAvatarSize(avatar_size);
+        task_parm.setAvatarRating(avatar_rating);
+        task_parm.setDefaultAvatar(default_avatar);
+        new AvatarLoadTask(context, task_parm).execute();
 
-            @Override
-            protected void onPreExecute() {
-                bindImageViewWithDefaultAvatar(image_view);
-            }
-
-            @Override
-            protected Avatar doInBackground(Objects... params) {
-                Log.d(TAG, "start loading avatar");
-                return loadAvatarByEmail(email, avatar_size);
-            }
-
-            @Override
-            protected void onPostExecute(Avatar avatar) {
-                Log.d(TAG, "finish loading avatar");
-                onBindImageViewFinished(image_view, avatar, bind_listener);
-            }
-        }
-
-        new Task().execute();
         return this;
     }
 
@@ -80,54 +56,30 @@ public class KAvatarLoader {
 
         final int avatar_size = calculateAvatarSize(image_view);
 
-        class Task extends AsyncTask<Objects, Objects, Avatar> {
+        TaskParmUseHashCode task_parm = new TaskParmUseHashCode();
+        task_parm.setHashCode(hash_code);
+        task_parm.setTargetView(image_view);
+        task_parm.setBindListner(bind_listener);
+        task_parm.setAvatarSize(avatar_size);
+        task_parm.setAvatarRating(avatar_rating);
+        task_parm.setDefaultAvatar(default_avatar);
+        new AvatarLoadTask(context, task_parm).execute();
 
-            @Override
-            protected void onPreExecute() {
-                bindImageViewWithDefaultAvatar(image_view);
-            }
-
-            @Override
-            protected Avatar doInBackground(Objects... params) {
-                Log.d(TAG, "start loading avatar");
-                return loadAvatarByHashCode(hash_code, avatar_size);
-            }
-
-            @Override
-            protected void onPostExecute(Avatar avatar) {
-                Log.d(TAG, "finish loading avatar");
-                onBindImageViewFinished(image_view, avatar, bind_listener);
-            }
-        }
-
-        new Task().execute();
         return this;
     }
 
     public KAvatarLoader bindImageViewByUrl(final ImageView image_view, final String url, final BindListener bind_listener) {
         final int avatar_size = calculateAvatarSize(image_view);
 
-        class Task extends AsyncTask<Objects, Objects, Avatar> {
+        TaskParmUseUrl task_parm = new TaskParmUseUrl();
+        task_parm.setUrl(url);
+        task_parm.setTargetView(image_view);
+        task_parm.setBindListner(bind_listener);
+        task_parm.setAvatarSize(avatar_size);
+        task_parm.setAvatarRating(avatar_rating);
+        task_parm.setDefaultAvatar(default_avatar);
+        new AvatarLoadTask(context, task_parm).execute();
 
-            @Override
-            protected void onPreExecute() {
-                bindImageViewWithDefaultAvatar(image_view);
-            }
-
-            @Override
-            protected Avatar doInBackground(Objects... params) {
-                Log.d(TAG, "start loading avatar");
-                return loadAvatarByUrl(url, avatar_size);
-            }
-
-            @Override
-            protected void onPostExecute(Avatar avatar) {
-                Log.d(TAG, "finish loading avatar");
-                onBindImageViewFinished(image_view, avatar, bind_listener);
-            }
-        }
-
-        new Task().execute();
         return this;
     }
 
@@ -135,28 +87,15 @@ public class KAvatarLoader {
         //default_avatar_size是翻看ActionBar的源码得到的logo的大小
         final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 
-        class Task extends AsyncTask<Objects, Objects, Avatar> {
+        TaskParmUseEmail task_parm = new TaskParmUseEmail();
+        task_parm.setEmail(email);
+        task_parm.setTargetView(action_bar);
+        task_parm.setBindListner(bind_listener);
+        task_parm.setAvatarSize(avatar_size);
+        task_parm.setAvatarRating(avatar_rating);
+        task_parm.setDefaultAvatar(default_avatar);
+        new AvatarLoadTask(context, task_parm).execute();
 
-            @Override
-            protected void onPreExecute() {
-                bindActionBarWithDefaultAvatar(action_bar);
-            }
-
-            @Override
-            protected Avatar doInBackground(Objects... params) {
-                Log.d(TAG, "start loading avatar");
-                return loadAvatarByEmail(email, avatar_size);
-            }
-
-            @Override
-            protected void onPostExecute(Avatar avatar) {
-                Log.d(TAG, "finish loading avatar");
-                onBindActionBarFinished(action_bar, avatar, bind_listener);
-
-            }
-        }
-
-        new Task().execute();
         return this;
     }
 
@@ -164,28 +103,15 @@ public class KAvatarLoader {
         //default_avatar_size是翻看ActionBar的源码得到的logo的大小
         final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 
-        class Task extends AsyncTask<Objects, Objects, Avatar> {
+        TaskParmUseHashCode task_parm = new TaskParmUseHashCode();
+        task_parm.setHashCode(hash_code);
+        task_parm.setTargetView(action_bar);
+        task_parm.setBindListner(bind_listener);
+        task_parm.setAvatarSize(avatar_size);
+        task_parm.setAvatarRating(avatar_rating);
+        task_parm.setDefaultAvatar(default_avatar);
+        new AvatarLoadTask(context, task_parm).execute();
 
-            @Override
-            protected void onPreExecute() {
-                bindActionBarWithDefaultAvatar(action_bar);
-            }
-
-            @Override
-            protected Avatar doInBackground(Objects... params) {
-                Log.d(TAG, "start loading avatar");
-                return loadAvatarByHashCode(hash_code, avatar_size);
-            }
-
-            @Override
-            protected void onPostExecute(Avatar avatar) {
-                Log.d(TAG, "finish loading avatar");
-                onBindActionBarFinished(action_bar, avatar, bind_listener);
-
-            }
-        }
-
-        new Task().execute();
         return this;
     }
 
@@ -193,185 +119,29 @@ public class KAvatarLoader {
         //default_avatar_size是翻看ActionBar的源码得到的logo的大小
         final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 
-        class Task extends AsyncTask<Objects, Objects, Avatar> {
+        TaskParmUseUrl task_parm = new TaskParmUseUrl();
+        task_parm.setUrl(url);
+        task_parm.setTargetView(action_bar);
+        task_parm.setBindListner(bind_listener);
+        task_parm.setAvatarSize(avatar_size);
+        task_parm.setAvatarRating(avatar_rating);
+        task_parm.setDefaultAvatar(default_avatar);
+        new AvatarLoadTask(context, task_parm).execute();
 
-            @Override
-            protected void onPreExecute() {
-                bindActionBarWithDefaultAvatar(action_bar);
-            }
-
-            @Override
-            protected Avatar doInBackground(Objects... params) {
-                Log.d(TAG, "start loading avatar");
-                return loadAvatarByUrl(url, avatar_size);
-            }
-
-            @Override
-            protected void onPostExecute(Avatar avatar) {
-                Log.d(TAG, "finish loading avatar");
-                onBindActionBarFinished(action_bar, avatar, bind_listener);
-
-            }
-        }
-
-        new Task().execute();
         return this;
     }
 
-    private void onBindImageViewFinished(ImageView imageView, Avatar avatar, BindListener bind_listener) {
-        if (avatar == null || avatar.getBytes() == null) {
-            if (bind_listener != null) {
-                bind_listener.onBindFinished(RESULT_CODE_FAIL);
-            }
-            return;
+    public KAvatarLoader setDefaultAvatar(DefaultAvatar default_avatar, Integer default_avatar_resource) {
+        if (default_avatar.equals(DefaultAvatar.CUSTOM_DEFAULT_AVATAR)) {
+            Drawable custom_default_avatar = context.getResources().getDrawable(default_avatar_resource);
+            this.default_avatar.setCustomDefaultAvatar(custom_default_avatar);
         }
-
-        Drawable avatar_drawable = avatar.getDrawable();
-        String avatar_tag = avatar.getTag();
-        if (avatar_drawable != null && avatar_tag != null) {
-            imageView.setImageDrawable(avatar_drawable);
-            imageView.setTag(avatar_tag);
-        }
-
-        if (bind_listener != null) {
-            int result_code = (avatar_drawable != null && avatar_tag != null) ? RESULT_CODE_SUCCESS : RESULT_CODE_FAIL;
-            bind_listener.onBindFinished(result_code);
-        }
-    }
-
-    private void onBindActionBarFinished(ActionBar action_bar, Avatar avatar, BindListener bind_listener) {
-        if (avatar == null || avatar.getBytes() == null) {
-            if (bind_listener != null) {
-                bind_listener.onBindFinished(RESULT_CODE_FAIL);
-            }
-            return;
-        }
-
-        Drawable avatar_drawable = avatar.getDrawable();
-        if (avatar_drawable != null) {
-            action_bar.setDisplayUseLogoEnabled(true);
-            action_bar.setLogo(avatar_drawable);
-        }
-
-        if (bind_listener != null) {
-            int result_code = (avatar_drawable != null) ? RESULT_CODE_SUCCESS : RESULT_CODE_FAIL;
-            bind_listener.onBindFinished(result_code);
-        }
-    }
-
-    private void bindImageViewWithDefaultAvatar(ImageView image_view) {
-        Resources resources = context.getResources();
-        String tag = "default avatar ";
-
-        switch (this.default_avatar) {
-            case GRAVATAR_ICON:
-                image_view.setImageDrawable(resources.getDrawable(R.drawable.gravatar_icon));
-                image_view.setTag(tag + GravatarDefaultImage.GRAVATAR_ICON.toString());
-                break;
-            case IDENTICON:
-                image_view.setImageDrawable(resources.getDrawable(R.drawable.identicon));
-                image_view.setTag(tag + GravatarDefaultImage.IDENTICON.toString());
-                break;
-            case MONSTERID:
-                image_view.setImageDrawable(resources.getDrawable(R.drawable.monsterid));
-                image_view.setTag(tag + GravatarDefaultImage.MONSTERID.toString());
-                break;
-            case WAVATAR:
-                image_view.setImageDrawable(resources.getDrawable(R.drawable.wavatar));
-                image_view.setTag(tag + GravatarDefaultImage.WAVATAR.toString());
-                break;
-            case MYSTERY_MEN:
-                image_view.setImageDrawable(resources.getDrawable(R.drawable.mystery_men));
-                image_view.setTag(tag + GravatarDefaultImage.MYSTERY_MEN.toString());
-                break;
-            case RETRO:
-                image_view.setImageDrawable(resources.getDrawable(R.drawable.retro));
-                image_view.setTag(tag + GravatarDefaultImage.RETRO.toString());
-                break;
-            case BLANK:
-                image_view.setImageDrawable(resources.getDrawable(R.drawable.blank));
-                image_view.setTag(tag + GravatarDefaultImage.BLANK.toString());
-                break;
-            case CUSTOM_DEFAULT_AVATAR:
-                image_view.setImageDrawable(this.default_avatar.getCustomDefaultAvatar());
-                image_view.setTag("custom default avatar");
-                break;
-        }
-    }
-
-    private void bindActionBarWithDefaultAvatar(ActionBar action_bar) {
-        switch (this.default_avatar) {
-            case GRAVATAR_ICON:
-                action_bar.setLogo(R.drawable.gravatar_icon);
-                break;
-            case IDENTICON:
-                action_bar.setLogo(R.drawable.identicon);
-                break;
-            case MONSTERID:
-                action_bar.setLogo(R.drawable.monsterid);
-                break;
-            case WAVATAR:
-                action_bar.setLogo(R.drawable.wavatar);
-                break;
-            case MYSTERY_MEN:
-                action_bar.setLogo(R.drawable.mystery_men);
-                break;
-            case RETRO:
-                action_bar.setLogo(R.drawable.retro);
-                break;
-            case BLANK:
-                action_bar.setLogo(R.drawable.blank);
-                break;
-            case CUSTOM_DEFAULT_AVATAR:
-                action_bar.setLogo(this.default_avatar.getCustomDefaultAvatar());
-                break;
-        }
-    }
-
-    public Avatar loadAvatarByHashCode(String hash_code, int avatar_size) {
-        gravatar.setSize(avatar_size);
-        byte[] raw_gravatar = gravatar.downloadByHashCode(hash_code);
-        String tag = gravatar.getUrlByHashCode(hash_code);
-        return new Avatar(context, raw_gravatar, tag);
-    }
-
-    public Avatar loadAvatarByEmail(String email, int avatar_size) {
-        gravatar.setSize(avatar_size);
-        byte[] raw_gravatar = gravatar.downloadByEmail(email);
-        String tag = gravatar.getUrlByEmail(email);
-        return new Avatar(context, raw_gravatar, tag);
-    }
-
-    //这里的avatar_size本质上没有任何作用
-    public Avatar loadAvatarByUrl(String url, int avatar_size) {
-        gravatar.setSize(avatar_size);
-        byte[] raw_gravatar = gravatar.dowloadByUrl(url);
-        String tag = url;
-        return new Avatar(context, raw_gravatar, tag);
-    }
-
-    public KAvatarLoader setDefaultAvatar(DefaultAvatar default_avatar) {
-        if (!default_avatar.equals(DefaultAvatar.CUSTOM_DEFAULT_AVATAR)) {
-            gravatar.setDefaultImage(GravatarDefaultImage.valueOf(default_avatar.toString()));
-        } else {
-            gravatar.setDefaultImage(GravatarDefaultImage.HTTP_404);
-        }
-
         this.default_avatar = default_avatar;
         return this;
     }
 
-    public KAvatarLoader setDefaultAvatar(int default_avatar) {
-        setDefaultAvatar(DefaultAvatar.CUSTOM_DEFAULT_AVATAR);
-
-        Drawable custom_default_avatar = context.getResources().getDrawable(default_avatar);
-        this.default_avatar.setCustomDefaultAvatar(custom_default_avatar);
-
-        return this;
-    }
-
     public KAvatarLoader setAvatarRating(AvatarRating avatar_rating) {
-        gravatar.setRating(GravatarRating.valueOf(avatar_rating.toString()));
+        this.avatar_rating = avatar_rating;
         return this;
     }
 

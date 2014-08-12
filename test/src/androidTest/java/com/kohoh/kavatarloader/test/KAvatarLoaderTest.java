@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
+import android.util.Log;
 import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
@@ -13,8 +14,6 @@ import com.kohoh.kavatarloader.Avatar;
 import com.kohoh.kavatarloader.BindListener;
 import com.kohoh.kavatarloader.DefaultAvatar;
 import com.kohoh.kavatarloader.KAvatarLoader;
-
-import java.io.IOException;
 
 /**
  * Created by kohoh on 14-7-29.
@@ -47,32 +46,6 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         iv_not_square_size222 = (ImageView) activity.findViewById(R.id.iv_not_square_size_222);
     }
 
-    //TestCase28 测试KAvatatLoader#loadAvatarByEmail是否正常工作
-    public void testLoadAvatarByEmail() throws IOException {
-        testLoadAvatarByEmail(GravatarConstant.EXIST_EMAIL1, 100,
-                GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-
-        testLoadAvatarByEmail(GravatarConstant.EXIST_EMAIL2, 200,
-                GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
-    }
-
-    //TestCase27 测试KAvatarLoader#loadAvatarByHashCode是否正常工作
-    public void testLoadAvatarByHashCode() throws IOException {
-        testLoadAvatarByHashCode(GravatarConstant.EXIST_EMAIL1_HASH_CODE, 100,
-                GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-
-        testLoadAvatarByHashCode(GravatarConstant.EXIST_EMAIL2_HASH_CODE, 200,
-                GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
-    }
-
-    //TestCase031 测试KAvatarLoader#loadAvatarByUrl能否正常工作
-    public void testLoadAvatarByUrl() {
-        testLoadAvatarByUrl(GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, 100,
-                GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-
-        testLoadAvatarByUrl(GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, 200,
-                GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
-    }
 
     private void assertLoadAvatar(Avatar avatar, String tag_expect) {
         assertNotNull("avatar is null", avatar);
@@ -83,22 +56,8 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         assertEquals("avatar's tag not equal", tag_expect, avatar.getTag());
     }
 
-    private void testLoadAvatarByEmail(String email, int size, String tag_expect) {
-        Avatar avatar = avatar_loader.loadAvatarByEmail(email, size);
-        assertLoadAvatar(avatar, tag_expect);
-    }
 
-    private void testLoadAvatarByHashCode(String hash_code, int size, String tag_expect) {
-        Avatar avatar = avatar_loader.loadAvatarByHashCode(hash_code, size);
-        assertLoadAvatar(avatar, tag_expect);
-    }
-
-    private void testLoadAvatarByUrl(String url, int size, String tag_expected) {
-        Avatar avatar = avatar_loader.loadAvatarByUrl(url, size);
-        assertLoadAvatar(avatar, tag_expected);
-    }
-
-    //TestCase029 测试是否能够根据ImageView计算出正确的AvatarSize
+    //    TestCase029 测试是否能够根据ImageView计算出正确的AvatarSize
     public void testCalculateAvatarSize() {
         assertEquals("avatar's size not equal", 100, avatar_loader.calculateAvatarSize(iv_size100));
         assertEquals("avatar's size not equal", 200, avatar_loader.calculateAvatarSize(iv_size200));
@@ -154,16 +113,17 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         }
 
         @Override
-        public void onBindFinished(int RESULT_CODE) {
+        public void onBindFinished(BindListener.RESULT_CODE result_code) {
+            Log.d("kohoh_tag", "bind finish");
             Drawable drawable = image_view.getDrawable();
             assertNotNull("drawable is null", drawable);
 
             String tag_actural = (String) image_view.getTag();
             assertEquals("tag not equal", tag_expect, tag_actural);
 
-            if (RESULT_CODE != KAvatarLoader.RESULT_CODE_SUCCESS) {
-                fail("bind ImageView failed");
-            }
+            assertEquals("bind failed", BindListener.RESULT_CODE.SUCCESS, result_code);
+
+
         }
     }
 
@@ -175,8 +135,8 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         ActionBar action_bar = activity.getActionBar();
         avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1, new BindListener() {
             @Override
-            public void onBindFinished(int RESULT_CODE) {
-                assertEquals("bind actionbar failed", KAvatarLoader.RESULT_CODE_SUCCESS, RESULT_CODE);
+            public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
             }
         });
     }
@@ -187,8 +147,8 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         ActionBar action_bar = activity.getActionBar();
         avatar_loader.bindActionBarByHashCode(action_bar, GravatarConstant.EXIST_EMAIL1_HASH_CODE, new BindListener() {
             @Override
-            public void onBindFinished(int RESULT_CODE) {
-                assertEquals("bind actionbar failed", KAvatarLoader.RESULT_CODE_SUCCESS, RESULT_CODE);
+            public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
             }
         });
     }
@@ -199,35 +159,21 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         ActionBar action_bar = activity.getActionBar();
         avatar_loader.bindActionBarByUrl(action_bar, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, new BindListener() {
             @Override
-            public void onBindFinished(int RESULT_CODE) {
-                assertEquals("bind actionbar failed", KAvatarLoader.RESULT_CODE_SUCCESS, RESULT_CODE);
+            public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
             }
         });
     }
 
-    //TestCase035 测试KAvatarLoader#setDefaultAvatar能否正常工作
-    public void testSetDefaultAvatar() {
-        testSetDefaultAvatar(DefaultAvatar.WAVATAR, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_WAVATAR_SIZE100_URL);
-        testSetDefaultAvatar(DefaultAvatar.GRAVATAR_ICON, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_GRAVATAR_ICON_SIZE100_URL);
-        testSetDefaultAvatar(DefaultAvatar.HTTP_404, GravatarConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_HTTP_404_SIZE100_URL);
-    }
-
-    private void testSetDefaultAvatar(DefaultAvatar default_image, String avatar_tag_expect) {
-        avatar_loader.setDefaultAvatar(default_image);
-        Avatar avatar = avatar_loader.loadAvatarByEmail(GravatarConstant.DOSENT_EXIST_EMAIL, 100);
-        String avatar_tag_actural = avatar.getTag();
-        assertEquals("setDefaultAvatar failed", avatar_tag_expect, avatar_tag_actural);
-    }
-
     //TestCase036 测试KAvatarLoader能否在加载Avatar之前首先加载默认的Avatar
     @UiThreadTest
-    public void testLoadDefaultImageBeforeLoadRealAvatar() {
+    public void testLoadDefaultImageBeforeRealLoad() {
         testLoadDeaultImageBeforeLoadRealAvatar(DefaultAvatar.MYSTERY_MEN);
         testLoadDeaultImageBeforeLoadRealAvatar(DefaultAvatar.GRAVATAR_ICON);
     }
 
     private void testLoadDeaultImageBeforeLoadRealAvatar(DefaultAvatar default_avatar) {
-        avatar_loader.setDefaultAvatar(default_avatar);
+        avatar_loader.setDefaultAvatar(default_avatar, null);
         avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, null);
 
         String avatar_tag_expect = "default avatar " + default_avatar.toString();
@@ -237,8 +183,8 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     //TestCase037 测试KAvatarLoader#setDefaultAvatar能否设置自定义的default avatar
     @UiThreadTest
-    public void testSetCustomDefaultAvatar() {
-        avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
+    public void testSetCustomDefaultAvatarBeforeRealLoad() {
+        avatar_loader.setDefaultAvatar(DefaultAvatar.CUSTOM_DEFAULT_AVATAR, R.drawable.custom_default_avatar);
         avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, null);
 
         String avatar_tag_expect = "custom default avatar";
@@ -248,16 +194,24 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     //TestCase038 测试当DefaultAvatar被设置为HTTP_404或者CUSTOM_DEFAULT_AVATAR状态时，加载avatar后能否正常工作
     @UiThreadTest
-    public void testSetCustomDefaultAvatarWithHttp404() {
-        avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
+    public void testSetCustomDefaultAvatarAfterRealLoadFailed() {
+        avatar_loader.setDefaultAvatar(DefaultAvatar.CUSTOM_DEFAULT_AVATAR, R.drawable.custom_default_avatar);
         final ImageView iv_size100 = this.iv_size100;
         avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.DOSENT_EXIST_EMAIL, new BindListener() {
             @Override
-            public void onBindFinished(int RESULT_CODE) {
-                assertEquals("result code wrong", KAvatarLoader.RESULT_CODE_FAIL, RESULT_CODE);
+            public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                assertEquals("result code wrong", BindListener.RESULT_CODE.FAIL, result_code);
                 assertEquals("tag wrong", "custom default avatar", iv_size100.getTag());
             }
         });
-    }
 
+        avatar_loader.setDefaultAvatar(DefaultAvatar.BLANK, null);
+        avatar_loader.bindImageViewByEmail(iv_size200, GravatarConstant.DOSENT_EXIST_EMAIL, new BindListener() {
+            @Override
+            public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                assertEquals("result code wrong", BindListener.RESULT_CODE.FAIL, result_code);
+                assertEquals("tag wrong", "default avatar BLANK", iv_size200.getTag());
+            }
+        });
+    }
 }
