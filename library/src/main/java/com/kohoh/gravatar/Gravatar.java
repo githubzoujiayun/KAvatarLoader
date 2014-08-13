@@ -3,8 +3,8 @@ package com.kohoh.gravatar;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.Validate;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 
 import java.io.InputStream;
 import java.net.URL;
