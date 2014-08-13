@@ -7,22 +7,15 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
-        <activity android:name=".SingleBindImageViewActivity">
+        <activity android:name=".SingleBindImageViewActivity"
+            android:label="@string/single_bind_image_view_activity_lable">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SingleBindActionbarActivity"
-            android:label="@string/title_activity_single_bind_actionbar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
     </application>
 
 </manifest>
