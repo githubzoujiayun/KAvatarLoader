@@ -19,7 +19,7 @@ public class KAvatarLoader {
         this.avatar_rating = AvatarRating.GENERAL_AUDIENCES;
     }
 
-    public int calculateAvatarSize(ImageView imageView) {
+    int calculateAvatarSize(ImageView imageView) {
         //计算头像的尺寸
         final int height = imageView.getHeight();
         final int width = imageView.getWidth();

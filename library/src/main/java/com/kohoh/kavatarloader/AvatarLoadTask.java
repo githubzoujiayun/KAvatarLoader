@@ -160,7 +160,10 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
         }
     }
 
-    Avatar loadAvatar(TaskParm task_parm) throws Exception {
+    Avatar loadAvatar(TaskParm task_parm) {
+        byte[] raw_gravatar = null;
+        String tag = null;
+
         gravatar.setSize(task_parm.getAvatarSize());
         gravatar.setRating(GravatarRating.valueOf(task_parm.getAvatarRating().toString()));
         if (task_parm.getDefaultAvatar().equals(DefaultAvatar.CUSTOM_DEFAULT_AVATAR)) {
@@ -168,39 +171,32 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
         } else {
             gravatar.setDefaultImage(GravatarDefaultImage.valueOf(task_parm.getDefaultAvatar().toString()));
         }
+
         gravatar.log();
 
         TaskParm.TASK_PARM_STYLE style = getTaskParmStyle(task_parm);
         switch (style) {
             case TASK_PARM_USE_URL:
-                return loadAvatarByUrl(((TaskParmUseUrl) task_parm).getUrl());
+                String url = ((TaskParmUseUrl) task_parm).getUrl();
+                raw_gravatar = gravatar.dowloadByUrl(url);
+                tag = url;
+                break;
             case TASK_PARM_USE_EMAIL:
-                return loadAvatarByEmail(((TaskParmUseEmail) task_parm).getEmail());
+                String email = ((TaskParmUseEmail) task_parm).getEmail();
+                raw_gravatar = gravatar.downloadByEmail(email);
+                tag = gravatar.getUrlByEmail(email);
+                break;
             case TASK_PARM_USE_HASH_CODE:
-                return loadAvatarByHashCode(((TaskParmUseHashCode) task_parm).getHashCode());
+                String hash_code = ((TaskParmUseHashCode) task_parm).getHashCode();
+                raw_gravatar = gravatar.downloadByHashCode(hash_code);
+                tag = gravatar.getUrlByHashCode(hash_code);
+                break;
             default:
-                throw new Exception("style 必须是TASK_PARM_USE_URL，TASK_PARM_USE_EMAIL，TASK_PARM_USE_HASH_CODE之一");
+                Log.e(TAG, "style 必须是TASK_PARM_USE_URL，TASK_PARM_USE_EMAIL，TASK_PARM_USE_HASH_CODE之一");
         }
-    }
 
-    private Avatar loadAvatarByHashCode(String hash_code) {
-        byte[] raw_gravatar = gravatar.downloadByHashCode(hash_code);
-        String tag = gravatar.getUrlByHashCode(hash_code);
-        return new Avatar(context, raw_gravatar, tag);
+        return new Avatar(context,raw_gravatar,tag);
     }
-
-    private Avatar loadAvatarByEmail(String email) {
-        byte[] raw_gravatar = gravatar.downloadByEmail(email);
-        String tag = gravatar.getUrlByEmail(email);
-        return new Avatar(context, raw_gravatar, tag);
-    }
-
-    private Avatar loadAvatarByUrl(String url) {
-        byte[] raw_gravatar = gravatar.dowloadByUrl(url);
-        String tag = url;
-        return new Avatar(context, raw_gravatar, tag);
-    }
-
 
     @Override
     protected void onPreExecute() {

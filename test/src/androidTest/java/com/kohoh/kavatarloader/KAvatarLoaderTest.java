@@ -1,4 +1,4 @@
-package com.kohoh.kavatarloader.test;
+package com.kohoh.kavatarloader;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -10,10 +10,7 @@ import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.KAvatarLoader.test.R;
-import com.kohoh.kavatarloader.Avatar;
-import com.kohoh.kavatarloader.BindListener;
-import com.kohoh.kavatarloader.DefaultAvatar;
-import com.kohoh.kavatarloader.KAvatarLoader;
+import com.kohoh.kavatarloader.test.GravatarConstant;
 
 /**
  * Created by kohoh on 14-7-29.
