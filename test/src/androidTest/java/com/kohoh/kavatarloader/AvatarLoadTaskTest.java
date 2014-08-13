@@ -24,6 +24,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     private ImageView iv_no_size;
     private ActionBar action_bar;
     private Resources resources;
+
     public AvatarLoadTaskTest() {
         super(KAvatarLoaderTestUseActivity.class);
     }

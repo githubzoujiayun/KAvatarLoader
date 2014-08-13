@@ -23,6 +23,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     private ImageView iv_no_size;
     private ImageView iv_not_square_size99;
     private ImageView iv_not_square_size222;
+
     public KAvatarLoaderTest() {
         super(KAvatarLoaderTestUseActivity.class);
     }
