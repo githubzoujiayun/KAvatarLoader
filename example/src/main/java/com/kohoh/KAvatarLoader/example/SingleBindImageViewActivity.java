@@ -38,11 +38,11 @@ public class SingleBindImageViewActivity extends Activity {
         //如果设置为HTTP_404,则不会绑定默认头像。且如果加载失败，你会在log中发现一条Error.
         //当然，你还以使用KAvatarLoader#setDefaultAvatar(int default_avatar_resource)设置自定义的默认头像。
         avatar_loader.setDefaultAvatar(DefaultAvatar.MYSTERY_MEN);
-        //设置头像的等级。Gravatar将头像设置为GENERAL_AUDIENCES，
+        //设置头像的等级。Gravatar将头像定义为GENERAL_AUDIENCES，
         // PARENTAL_GUIDANCE_SUGGESTED，RESTRICTED，XPLICIT四个等级
         //默认的等级为GENERAL_AUDIENCES。
         avatar_loader.setAvatarRating(AvatarRating.GENERAL_AUDIENCES);
-        //设置KAvatarLoader的Execuor。通过该方法，可以控制KAvatarLoader的加绑定行为。
+        //设置KAvatarLoader的Execuor。通过该方法，可以控制KAvatarLoader的绑定行为。
         //如果设置为AsyncTask.SERIAL_EXECUTOR，则每次同时绑定一个容器。
         //如果设置为AsyncTask.THREAD_POOL_EXECUTOR,则每次最多同时绑定五个容器。
         //当然你也可是使用你自定义的Executor。
@@ -68,6 +68,8 @@ public class SingleBindImageViewActivity extends Activity {
 
     //绑定ImageView，你还可以通过KAvatarLoader#bindImageViewByHashCode和
     // KAvatarLoader#bindImageViewByUrl实现该功能
+    //bind_listener是一个实现了BindListener接口的对象。当完成对容器的绑定之后，
+    // 会回调BindListener#onBindFinished(RESULT_CODE result_code)方法。
     private void bindImageView() {
         avatar_loader.bindImageViewByEmail(iv_avatar_no_size, "hagonzalez94@gmail.com", null);
         avatar_loader.bindImageViewByEmail(iv_avatar_small_size, "jfeinstein10@gmail.com", null);

@@ -23,6 +23,16 @@ public class KAvatarLoader {
         this.avatar_rating = AvatarRating.GENERAL_AUDIENCES;
     }
 
+    /**
+     * 设置KAvatarLoader的Execuor。
+     * 通过该方法，可以控制KAvatarLoader的绑定行为。
+     * 如果设置为AsyncTask.SERIAL_EXECUTOR，则每次同时绑定一个容器。
+     * 如果设置为AsyncTask.THREAD_POOL_EXECUTOR,则每次最多同时绑定五个容器。
+     * 当然你也可是使用你自定义的Executor。
+     * 默认的Executor为AsyncTask.SERIAL_EXECUTOR。
+     *
+     * @param executor
+     */
     static public void setLoadExector(Executor executor) {
         KAvatarLoader.executor = executor;
     }
@@ -43,6 +53,17 @@ public class KAvatarLoader {
         return avatar_size;
     }
 
+    /**
+     * 将指定的Gravatar头像绑定到指定的ImageView上
+     * bind_listener实现了BindListener接口的对象。当完成对容器的绑定之后，
+     * 会回调BindListener#onBindFinished(RESULT_CODE result_code)方法。
+     * 你还可以通过KAvatarLoader#bindImageViewByHashCode和KAvatarLoader#bindImageViewByUrl实现该功能
+     *
+     * @param image_view    指定的ImagView
+     * @param email         通过Email加载头像
+     * @param bind_listener 绑定监听者
+     * @return KAvatarLoader
+     */
     public KAvatarLoader bindImageViewByEmail(final ImageView image_view, final String email,
                                               final BindListener bind_listener) {
 
@@ -51,6 +72,17 @@ public class KAvatarLoader {
         return this;
     }
 
+    /**
+     * 将指定的Gravatar头像绑定到指定的ImageView上
+     * bind_listener实现了BindListener接口的对象。当完成对容器的绑定之后，
+     * 会回调BindListener#onBindFinished(RESULT_CODE result_code)方法。
+     * 你还可以通过KAvatarLoader#bindImageViewByEmial和KAvatarLoader#bindImageViewByUrl实现该功能
+     *
+     * @param image_view    指定的ImagView
+     * @param hash_code     通过HashCode加载头像
+     * @param bind_listener 绑定监听者
+     * @return KAvatarLoader
+     */
     public KAvatarLoader bindImageViewByHashCode(final ImageView image_view, final String hash_code,
                                                  final BindListener bind_listener) {
 
@@ -59,6 +91,17 @@ public class KAvatarLoader {
         return this;
     }
 
+    /**
+     * 将指定的Gravatar头像绑定到指定的ImageView上
+     * bind_listener实现了BindListener接口的对象。当完成对容器的绑定之后，
+     * 会回调BindListener#onBindFinished(RESULT_CODE result_code)方法。
+     * 你还可以通过KAvatarLoader#bindImageViewByHashCode和KAvatarLoader#bindImageViewByEmail实现该功能
+     *
+     * @param image_view    指定的ImagView
+     * @param url           通过URL加载头像
+     * @param bind_listener 绑定监听者
+     * @return KAvatarLoader
+     */
     public KAvatarLoader bindImageViewByUrl(final ImageView image_view, final String url,
                                             final BindListener bind_listener) {
 
@@ -67,6 +110,18 @@ public class KAvatarLoader {
         return this;
     }
 
+
+    /**
+     * 将指定的Gravatar头像绑定到指定的ActionBar上
+     * bind_listener实现了BindListener接口的对象。当完成对容器的绑定之后，
+     * 会回调BindListener#onBindFinished(RESULT_CODE result_code)方法。
+     * 你还可以通过KAvatarLoader#bindActionBarByHashCode和KAvatarLoader#bindActionBarByUrl实现该功能
+     *
+     * @param action_bar    指定的ImagView
+     * @param email         通过Email加载头像
+     * @param bind_listener 绑定监听者
+     * @return KAvatarLoader
+     */
     public KAvatarLoader bindActionBarByEmail(final ActionBar action_bar, final String email,
                                               final BindListener bind_listener) {
 
@@ -75,6 +130,17 @@ public class KAvatarLoader {
         return this;
     }
 
+    /**
+     * 将指定的Gravatar头像绑定到指定的ActionBar上
+     * bind_listener实现了BindListener接口的对象。当完成对容器的绑定之后，
+     * 会回调BindListener#onBindFinished(RESULT_CODE result_code)方法。
+     * 你还可以通过KAvatarLoader#bindActionBarByEmail和KAvatarLoader#bindActionBarByUrl实现该功能
+     *
+     * @param action_bar    指定的ImagView
+     * @param hash_code     通过HashCode加载头像
+     * @param bind_listener 绑定监听者
+     * @return KAvatarLoader
+     */
     public KAvatarLoader bindActionBarByHashCode(final ActionBar action_bar, final String hash_code,
                                                  final BindListener bind_listener) {
 
@@ -83,6 +149,17 @@ public class KAvatarLoader {
         return this;
     }
 
+    /**
+     * 将指定的Gravatar头像绑定到指定的ActionBar上
+     * bind_listener实现了BindListener接口的对象。当完成对容器的绑定之后，
+     * 会回调BindListener#onBindFinished(RESULT_CODE result_code)方法。
+     * 你还可以通过KAvatarLoader#bindActionBarByHashCode和KAvatarLoader#bindActionBarByEmail实现该功能
+     *
+     * @param action_bar    指定的ImagView
+     * @param url           通过RUL加载头像
+     * @param bind_listener 绑定监听者
+     * @return KAvatarLoader
+     */
     public KAvatarLoader bindActionBarByUrl(final ActionBar action_bar, final String url,
                                             final BindListener bind_listener) {
 
@@ -122,11 +199,29 @@ public class KAvatarLoader {
         new AvatarLoadTask(context, task_parm).executeOnExecutor(executor);
     }
 
+    /**
+     * 设置默认的头像。
+     * 在加载头像之前，容器会被绑定为默认的头像。如果加载失败，默认头像会始终与容器绑定。
+     * 项目中提供了GRAVATAR_ICON，MYSTERY_MEN，IDENTICON，WAVATAR等，由Gravatar提供的默认头像。
+     * 如果设置为HTTP_404,则不会绑定默认头像。且如果加载失败，你会在log中发现一条Error.
+     * 当然，你还以使用KAvatarLoader#setDefaultAvatar(int default_avatar_resource)设置自定义的默认头像。
+     *
+     * @param default_avatar 默认头像
+     * @return KAvatarLoader
+     */
     public KAvatarLoader setDefaultAvatar(DefaultAvatar default_avatar) {
         this.default_avatar = default_avatar;
         return this;
     }
 
+    /**
+     * 设置自定义的默认头像。
+     * 在加载头像之前，容器会被绑定为默认的头像。如果加载失败，默认头像会始终与容器绑定。
+     * 当然，你还以使用KAvatarLoader#setDefaultAvatar(DefaultAvatar default_avatar)设置由Gravatar提供的默认头像。
+     *
+     * @param default_avatar_resource 默认头像
+     * @return KAvatarLoader
+     */
     public KAvatarLoader setDefaultAvatar(int default_avatar_resource) {
         DefaultAvatar default_avatar = DefaultAvatar.CUSTOM_DEFAULT_AVATAR;
         default_avatar.setCustomDefaultAvatar(context.getResources().getDrawable(default_avatar_resource));
@@ -134,6 +229,14 @@ public class KAvatarLoader {
         return this;
     }
 
+    /**
+     * 设置头像的等级。
+     * Gravatar将头像定义为GENERAL_AUDIENCES，PARENTAL_GUIDANCE_SUGGESTED，RESTRICTED，XPLICIT四个等级
+     * 默认的等级为GENERAL_AUDIENCES。
+     *
+     * @param avatar_rating 头像等级
+     * @return KAvatarLoader
+     */
     public KAvatarLoader setAvatarRating(AvatarRating avatar_rating) {
         this.avatar_rating = avatar_rating;
         return this;
