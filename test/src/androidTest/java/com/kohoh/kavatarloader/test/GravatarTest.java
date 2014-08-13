@@ -17,9 +17,8 @@ import java.io.InputStream;
  * Created by kohoh on 14-8-1.
  */
 public class GravatarTest extends AndroidTestCase {
-    private Gravatar gravatar;
-
     static public final String TAG = GravatarTest.class.getSimpleName() + "_TAG";
+    private Gravatar gravatar;
 
     @Override
     protected void setUp() throws Exception {

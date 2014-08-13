@@ -11,6 +11,7 @@ import com.kohoh.kavatarloader.KAvatarLoader;
 
 public class SingleBindImageViewActivity extends Activity {
 
+    static final private String email = "info@ralfebert.de";
     private ImageView iv_avatar_no_size;
     private ImageView iv_avatar_small_size;
     private ImageView iv_avatar_medium_size;
@@ -18,7 +19,6 @@ public class SingleBindImageViewActivity extends Activity {
     private ImageView iv_avatar_xlarge_size;
     private ImageView iv_avatar_actionbar_size;
     private KAvatarLoader avatarLoader;
-    static final private String email = "info@ralfebert.de";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

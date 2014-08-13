@@ -2,22 +2,22 @@ package com.kohoh.gravatar;
 
 public enum GravatarRating {
 
-	GENERAL_AUDIENCES("g"),
+    GENERAL_AUDIENCES("g"),
 
-	PARENTAL_GUIDANCE_SUGGESTED("pg"),
+    PARENTAL_GUIDANCE_SUGGESTED("pg"),
 
-	RESTRICTED("r"),
+    RESTRICTED("r"),
 
-	XPLICIT("x");
+    XPLICIT("x");
 
-	private String code;
+    private String code;
 
-	private GravatarRating(String code) {
-		this.code = code;
-	}
+    private GravatarRating(String code) {
+        this.code = code;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
 }

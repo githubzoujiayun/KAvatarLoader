@@ -10,9 +10,9 @@ import com.kohoh.kavatarloader.KAvatarLoader;
 
 public class SingleBindActionbarActivity extends Activity {
 
+    static final public String email = "kavatarloader1@126.com";
     private KAvatarLoader avatar_loader;
     private ActionBar action_bar;
-    static final public String email = "kavatarloader1@126.com";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

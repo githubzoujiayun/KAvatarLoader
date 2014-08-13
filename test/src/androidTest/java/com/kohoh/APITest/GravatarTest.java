@@ -16,9 +16,9 @@ import java.io.IOException;
 /**
  * Created by kohoh on 14-8-5.
  */
-public class GravatarTest extends AndroidTestCase{
-    private Gravatar gravatar = new Gravatar();
+public class GravatarTest extends AndroidTestCase {
     public static final String TAG = Gravatar.class.getSimpleName() + "_tag";
+    private Gravatar gravatar = new Gravatar();
 
     public void logAPI() {
         String url_doesnt_exit_email = gravatar.getUrlByEmail(GravatarConstant.DOSENT_EXIST_EMAIL);

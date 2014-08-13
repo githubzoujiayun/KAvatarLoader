@@ -24,14 +24,14 @@ public enum DefaultAvatar {
 
     BLANK;
 
-    private Drawable custom_default_avatar=null;
-
-    public void setCustomDefaultAvatar(Drawable custom_default_avatar) {
-        this.custom_default_avatar = custom_default_avatar;
-    }
+    private Drawable custom_default_avatar = null;
 
     public Drawable getCustomDefaultAvatar() {
         return custom_default_avatar;
+    }
+
+    public void setCustomDefaultAvatar(Drawable custom_default_avatar) {
+        this.custom_default_avatar = custom_default_avatar;
     }
 
 }

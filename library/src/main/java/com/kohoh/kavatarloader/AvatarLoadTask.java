@@ -195,33 +195,29 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
                 Log.e(TAG, "style 必须是TASK_PARM_USE_URL，TASK_PARM_USE_EMAIL，TASK_PARM_USE_HASH_CODE之一");
         }
 
-        return new Avatar(context,raw_gravatar,tag);
+        return new Avatar(context, raw_gravatar, tag);
     }
 
     @Override
     protected void onPreExecute() {
-        Log.d(TAG, "-----START LOAD AVATAR------");
         task_parm.log();
         bindTargetViewWithDefaultAvatar(task_parm);
     }
 
     @Override
     protected Avatar doInBackground(Objects... params) {
-        Log.d(TAG, "------LOADING AVATAR------");
-        try {
-            return loadAvatar(task_parm);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        Log.d(TAG, "-----START LOAD AVATAR------");
+        Avatar avatar = loadAvatar(task_parm);
+        Log.d(TAG, "avatar's raw_bytes " + (avatar.getBytes() == null ? "is null" : "not null"));
+        Log.d(TAG, "avatar's tag " + (avatar.getTag() == null ? "is null" : "is " + avatar.getTag()));
+        Log.d(TAG, "------LOAD FINISH------");
+
+        return avatar;
     }
 
     @Override
     protected void onPostExecute(Avatar avatar) {
-        Log.d(TAG, "avatar's raw_bytes " + (avatar.getBytes() == null ? "is null" : "not null"));
-        Log.d(TAG, "avatar's tag " + (avatar.getTag() == null ? "is null" : "is " + avatar.getTag()));
         onBindTargetViewFinished(task_parm, avatar);
-        Log.d(TAG, "------LOAD FINISH------");
     }
 }
 

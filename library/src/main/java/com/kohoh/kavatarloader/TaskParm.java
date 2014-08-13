@@ -10,37 +10,12 @@ import com.kohoh.gravatar.Gravatar;
  * Created by kohoh on 14-8-12.
  */
 abstract public class TaskParm {
+    public final static String TAG = TaskParm.class.getSimpleName() + "_tag";
     private BindListener bind_listner;
     private Integer avatar_size = Gravatar.DEFAULT_SIZE;
     private DefaultAvatar default_avatar = DefaultAvatar.valueOf(Gravatar.DEFAULT_DEFAULT_IMAGE.toString());
     private AvatarRating avatar_rating = AvatarRating.valueOf(Gravatar.DEFAULT_RATING.toString());
     private Object target_view;
-
-    public final static String TAG = TaskParm.class.getSimpleName() + "_tag";
-
-    public void log() {
-        Log.d(TAG, "-------TaskParmInfo-------");
-        Log.d(TAG, "size = " + avatar_size);
-        Log.d(TAG, "rating = " + avatar_rating);
-        Log.d(TAG, "default avatar = " + default_avatar);
-        Log.d(TAG, "bind_listener " + (bind_listner == null ? "is null" : "not null"));
-        Log.d(TAG, "target_view = " + getTargetViewSytle(target_view).toString());
-
-        switch (getTaskParmStyle(this)) {
-            case TASK_PARM_USE_EMAIL:
-                Log.d(TAG, "email = " + ((TaskParmUseEmail) this).getEmail());
-                break;
-            case TASK_PARM_USE_HASH_CODE:
-                Log.d(TAG, "hash_code = " + ((TaskParmUseHashCode) this).getHashCode());
-                break;
-            case TASK_PARM_USE_URL:
-                Log.d(TAG, "url = " + ((TaskParmUseUrl) this).getUrl());
-                break;
-        }
-        Log.d(TAG, "---------END---------");
-    }
-
-    public enum TARGET_VIEW_STYLE {ACTION_BAR, IMAGE_VIEW;}
 
     public static TARGET_VIEW_STYLE getTargetViewSytle(Object target_view) {
         boolean isActionBar = ActionBar.class.isInstance(target_view);
@@ -62,8 +37,6 @@ abstract public class TaskParm {
 
         return target_view_style;
     }
-
-    public enum TASK_PARM_STYLE {TASK_PARM_USE_URL, TASK_PARM_USE_EMAIL, TASK_PARM_USE_HASH_CODE;}
 
     public static TASK_PARM_STYLE getTaskParmStyle(TaskParm task_parm) {
         boolean isTaskParmUseUrl = TaskParmUseUrl.class.isInstance(task_parm);
@@ -89,6 +62,28 @@ abstract public class TaskParm {
         }
 
         return task_parm_style;
+    }
+
+    public void log() {
+        Log.d(TAG, "-------TaskParmInfo-------");
+        Log.d(TAG, "size = " + avatar_size);
+        Log.d(TAG, "rating = " + avatar_rating);
+        Log.d(TAG, "default avatar = " + default_avatar);
+        Log.d(TAG, "bind_listener " + (bind_listner == null ? "is null" : "not null"));
+        Log.d(TAG, "target_view = " + getTargetViewSytle(target_view).toString());
+
+        switch (getTaskParmStyle(this)) {
+            case TASK_PARM_USE_EMAIL:
+                Log.d(TAG, "email = " + ((TaskParmUseEmail) this).getEmail());
+                break;
+            case TASK_PARM_USE_HASH_CODE:
+                Log.d(TAG, "hash_code = " + ((TaskParmUseHashCode) this).getHashCode());
+                break;
+            case TASK_PARM_USE_URL:
+                Log.d(TAG, "url = " + ((TaskParmUseUrl) this).getUrl());
+                break;
+        }
+        Log.d(TAG, "---------END---------");
     }
 
     public Object getTargetView() {
@@ -135,4 +130,8 @@ abstract public class TaskParm {
         this.avatar_rating = avatar_rating;
         return this;
     }
+
+    public enum TARGET_VIEW_STYLE {ACTION_BAR, IMAGE_VIEW;}
+
+    public enum TASK_PARM_STYLE {TASK_PARM_USE_URL, TASK_PARM_USE_EMAIL, TASK_PARM_USE_HASH_CODE;}
 }

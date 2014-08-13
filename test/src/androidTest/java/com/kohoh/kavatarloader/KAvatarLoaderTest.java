@@ -16,19 +16,16 @@ import com.kohoh.kavatarloader.test.GravatarConstant;
  * Created by kohoh on 14-7-29.
  */
 public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarLoaderTestUseActivity> {
-    public KAvatarLoaderTest() {
-        super(KAvatarLoaderTestUseActivity.class);
-    }
-
     private Activity activity;
     private KAvatarLoader avatar_loader;
-
     private ImageView iv_size100;
     private ImageView iv_size200;
     private ImageView iv_no_size;
     private ImageView iv_not_square_size99;
     private ImageView iv_not_square_size222;
-
+    public KAvatarLoaderTest() {
+        super(KAvatarLoaderTestUseActivity.class);
+    }
 
     @Override
     protected void setUp() throws Exception {
@@ -98,34 +95,6 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         avatar_loader.bindImageViewByHashCode(image_view, hash_code, new AssertBindImageViewListener(image_view, tag_expect));
     }
 
-    class AssertBindImageViewListener implements BindListener {
-
-        private ImageView image_view;
-        private String tag_expect;
-
-        AssertBindImageViewListener(ImageView image_view, String tag_expected) {
-            this.image_view = image_view;
-            this.tag_expect = tag_expected;
-
-        }
-
-        @Override
-        public void onBindFinished(BindListener.RESULT_CODE result_code) {
-            Log.d("kohoh_tag", "bind finish");
-            Drawable drawable = image_view.getDrawable();
-            assertNotNull("drawable is null", drawable);
-
-            String tag_actural = (String) image_view.getTag();
-            assertEquals("tag not equal", tag_expect, tag_actural);
-
-            assertEquals("bind failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-
-
-        }
-    }
-
-    ;
-
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
     @UiThreadTest
     public void testBindActionBarByEmail() {
@@ -137,6 +106,8 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
             }
         });
     }
+
+    ;
 
     //TestCase033 测试KAvatarLoader#bindActionBarByHashCode能否正常工作
     @UiThreadTest
@@ -210,5 +181,31 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
                 assertEquals("tag wrong", "default avatar BLANK", iv_size200.getTag());
             }
         });
+    }
+
+    class AssertBindImageViewListener implements BindListener {
+
+        private ImageView image_view;
+        private String tag_expect;
+
+        AssertBindImageViewListener(ImageView image_view, String tag_expected) {
+            this.image_view = image_view;
+            this.tag_expect = tag_expected;
+
+        }
+
+        @Override
+        public void onBindFinished(BindListener.RESULT_CODE result_code) {
+            Log.d("kohoh_tag", "bind finish");
+            Drawable drawable = image_view.getDrawable();
+            assertNotNull("drawable is null", drawable);
+
+            String tag_actural = (String) image_view.getTag();
+            assertEquals("tag not equal", tag_expect, tag_actural);
+
+            assertEquals("bind failed", BindListener.RESULT_CODE.SUCCESS, result_code);
+
+
+        }
     }
 }

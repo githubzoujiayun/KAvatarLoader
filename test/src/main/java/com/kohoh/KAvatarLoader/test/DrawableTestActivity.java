@@ -1,33 +1,18 @@
 package com.kohoh.KAvatarLoader.test;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ImageView;
 
-import com.kohoh.kavatarloader.Avatar;
 import com.kohoh.kavatarloader.KAvatarLoader;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 
 public class DrawableTestActivity extends Activity {
+    public static final String EXIST_EMAIL1_SIZE_100_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=100&d=404";
+    public static final String EXIST_EMAIL1_SIZE_100_BYTE_FILE_NAME = "kavatarloader1@126.com_size100_bytes";
     private ImageView iv_from_net;
     private ImageView iv_from_local;
     private KAvatarLoader avatar_loader;
-
-    public static final String EXIST_EMAIL1_SIZE_100_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=100&d=404";
-    public static final String EXIST_EMAIL1_SIZE_100_BYTE_FILE_NAME = "kavatarloader1@126.com_size100_bytes";
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

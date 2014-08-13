@@ -6,8 +6,8 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.kohoh.KAvatarLoader.test.R;
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
+import com.kohoh.KAvatarLoader.test.R;
 
 
 /**
@@ -15,15 +15,14 @@ import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
  */
 public class ImageViewTest extends ActivityInstrumentationTestCase2<KAvatarLoaderTestUseActivity> {
 
-    public ImageViewTest() {
-        super(KAvatarLoaderTestUseActivity.class);
-    }
-
+    static public final String TAG = ImageViewTest.class.getSimpleName() + "_TAG";
     private Activity activity;
     private ImageView iv_size100;
     private ImageView iv_size200;
 
-    static public final String TAG = ImageViewTest.class.getSimpleName() + "_TAG";
+    public ImageViewTest() {
+        super(KAvatarLoaderTestUseActivity.class);
+    }
 
     @Override
     protected void setUp() throws Exception {

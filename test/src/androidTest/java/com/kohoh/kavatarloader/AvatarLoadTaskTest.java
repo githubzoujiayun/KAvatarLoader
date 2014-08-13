@@ -8,7 +8,7 @@ import android.test.UiThreadTest;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.kohoh.KAvatarLoader.test.*;
+import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.kavatarloader.test.Resources;
 
 import java.io.IOException;
@@ -18,18 +18,15 @@ import java.io.InputStream;
  * Created by kohoh on 14-8-12.
  */
 public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatarLoaderTestUseActivity> {
-    public AvatarLoadTaskTest() {
-        super(KAvatarLoaderTestUseActivity.class);
-    }
-
+    public final static String TAG = AvatarLoadTaskTest.class.getSimpleName() + "_tag";
     private Context context;
     private Activity activity;
-
-    public final static String TAG = AvatarLoadTaskTest.class.getSimpleName() + "_tag";
-
     private ImageView iv_no_size;
     private ActionBar action_bar;
     private Resources resources;
+    public AvatarLoadTaskTest() {
+        super(KAvatarLoaderTestUseActivity.class);
+    }
 
     @Override
     protected void setUp() throws Exception {
@@ -184,6 +181,45 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         return new AvatarLoadTask(context, null);
     }
 
+    @UiThreadTest
+    public void testbindImageViewWithDefaultAvatar() {
+        AvatarLoadTask task = getAvatarTask();
+        TaskParm taskParm = getTaskParm();
+        taskParm.setDefaultAvatar(DefaultAvatar.WAVATAR);
+        taskParm.setTargetView(iv_no_size);
+        task.bindTargetViewWithDefaultAvatar(taskParm);
+
+        assertNotNull("bind failed", iv_no_size.getDrawable());
+        assertNotNull("bind failed", iv_no_size.getTag());
+        assertEquals("bind failed", "default avatar WAVATAR", iv_no_size.getTag());
+    }
+
+    @UiThreadTest
+    public void testBindActionBarWithDefauleAvatar() {
+        AvatarLoadTask task = getAvatarTask();
+        TaskParm taskParm = getTaskParm();
+        taskParm.setDefaultAvatar(DefaultAvatar.GRAVATAR_ICON);
+        taskParm.setTargetView(action_bar);
+        task.bindTargetViewWithDefaultAvatar(taskParm);
+    }
+
+    @UiThreadTest
+    public void testBindImageViewWithCustomDefaultAvatar() {
+        AvatarLoadTask task = getAvatarTask();
+        TaskParm taskParm = getTaskParm();
+        taskParm.setDefaultAvatar(DefaultAvatar.CUSTOM_DEFAULT_AVATAR);
+        taskParm.getDefaultAvatar().setCustomDefaultAvatar(resources.getCunstomDefaultAvatar());
+        taskParm.setTargetView(iv_no_size);
+        task.bindTargetViewWithDefaultAvatar(taskParm);
+
+        assertNotNull("bind failed", iv_no_size.getDrawable());
+        assertNotNull("bind failed", iv_no_size.getTag());
+        assertEquals("bind failed", "custom default avatar", iv_no_size.getTag());
+    }
+
+    private TaskParm getTaskParm() {
+        return new TaskParmUseEmail();
+    }
 
     class AssertOnBindImageViewFinished implements BindListener {
 
@@ -238,47 +274,6 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
             Log.d(TAG, "bind finish");
         }
     }
-
-    @UiThreadTest
-    public void testbindImageViewWithDefaultAvatar() {
-        AvatarLoadTask task = getAvatarTask();
-        TaskParm taskParm = getTaskParm();
-        taskParm.setDefaultAvatar(DefaultAvatar.WAVATAR);
-        taskParm.setTargetView(iv_no_size);
-        task.bindTargetViewWithDefaultAvatar(taskParm);
-
-        assertNotNull("bind failed", iv_no_size.getDrawable());
-        assertNotNull("bind failed", iv_no_size.getTag());
-        assertEquals("bind failed", "default avatar WAVATAR", iv_no_size.getTag());
-    }
-
-    @UiThreadTest
-    public void testBindActionBarWithDefauleAvatar() {
-        AvatarLoadTask task = getAvatarTask();
-        TaskParm taskParm = getTaskParm();
-        taskParm.setDefaultAvatar(DefaultAvatar.GRAVATAR_ICON);
-        taskParm.setTargetView(action_bar);
-        task.bindTargetViewWithDefaultAvatar(taskParm);
-    }
-
-    @UiThreadTest
-    public void testBindImageViewWithCustomDefaultAvatar() {
-        AvatarLoadTask task = getAvatarTask();
-        TaskParm taskParm = getTaskParm();
-        taskParm.setDefaultAvatar(DefaultAvatar.CUSTOM_DEFAULT_AVATAR);
-        taskParm.getDefaultAvatar().setCustomDefaultAvatar(resources.getCunstomDefaultAvatar());
-        taskParm.setTargetView(iv_no_size);
-        task.bindTargetViewWithDefaultAvatar(taskParm);
-
-        assertNotNull("bind failed", iv_no_size.getDrawable());
-        assertNotNull("bind failed", iv_no_size.getTag());
-        assertEquals("bind failed", "custom default avatar", iv_no_size.getTag());
-    }
-
-    private TaskParm getTaskParm() {
-        return new TaskParmUseEmail();
-    }
-
 
     class AvatarLoadTaskConstant {
         public static final String DOSENT_EXIST_EMAIL = "doesntexist@example.com";

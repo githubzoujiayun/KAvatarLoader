@@ -4,6 +4,8 @@ package com.kohoh.kavatarloader;
  * Created by kohoh on 14-8-12.
  */
 public class TaskParmUseUrl extends TaskParm {
+    private String url;
+
     public String getUrl() {
         return url;
     }
@@ -12,7 +14,5 @@ public class TaskParmUseUrl extends TaskParm {
         this.url = url;
         return this;
     }
-
-    private String url;
 }
 

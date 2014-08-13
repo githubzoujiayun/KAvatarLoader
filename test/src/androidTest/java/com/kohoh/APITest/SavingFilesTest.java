@@ -13,8 +13,8 @@ import java.io.IOException;
  */
 public class SavingFilesTest extends AndroidTestCase {
 
-    private Context context;
     static final private String TAG = SavingFilesTest.class.getSimpleName();
+    private Context context;
 
     @Override
     protected void setUp() throws Exception {
@@ -24,12 +24,12 @@ public class SavingFilesTest extends AndroidTestCase {
 
     public void logGetFilesDir() throws IOException {
         File root = context.getFilesDir();
-        logFileInf(root,"root");
+        logFileInf(root, "root");
     }
 
     public void logGetCacheDir() throws IOException {
         File cacheDir = context.getCacheDir();
-        logFileInf(cacheDir,"cacheDir");
+        logFileInf(cacheDir, "cacheDir");
 
     }
 
@@ -44,9 +44,9 @@ public class SavingFilesTest extends AndroidTestCase {
         Log.d(TAG, "----------------------------------");
     }
 
-    public void logFileInf(File file,String file_name) throws IOException {
+    public void logFileInf(File file, String file_name) throws IOException {
         if (file.exists()) {
-            Log.d(TAG, file_name+"exists");
+            Log.d(TAG, file_name + "exists");
 
             String absolutePath = file.getAbsolutePath();
             Log.d(TAG, "AbsolutePath=" + absolutePath);

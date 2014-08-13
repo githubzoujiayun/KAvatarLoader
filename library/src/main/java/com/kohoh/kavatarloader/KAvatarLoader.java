@@ -2,21 +2,29 @@ package com.kohoh.kavatarloader;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.widget.ImageView;
+
+import java.util.concurrent.Executor;
 
 /**
  * Created by kohoh on 14-7-28.
  */
 public class KAvatarLoader {
+    static public final String TAG = KAvatarLoader.class.getSimpleName() + "_tag";
+    static private Executor executor = AsyncTask.SERIAL_EXECUTOR;
     private Context context;
     private DefaultAvatar default_avatar;
     private AvatarRating avatar_rating;
-    static public final String TAG = KAvatarLoader.class.getSimpleName() + "_tag";
 
     public KAvatarLoader(Context context) {
         this.context = context;
         this.default_avatar = DefaultAvatar.HTTP_404;
         this.avatar_rating = AvatarRating.GENERAL_AUDIENCES;
+    }
+
+    static public void setLoadExector(Executor executor) {
+        KAvatarLoader.executor = executor;
     }
 
     int calculateAvatarSize(ImageView imageView) {
@@ -111,7 +119,7 @@ public class KAvatarLoader {
         task_parm.setDefaultAvatar(default_avatar).setAvatarRating(avatar_rating).
                 setTargetView(target_view).setBindListner(bind_listener);
 
-        new AvatarLoadTask(context, task_parm).execute();
+        new AvatarLoadTask(context, task_parm).executeOnExecutor(executor);
     }
 
     public KAvatarLoader setDefaultAvatar(DefaultAvatar default_avatar) {

@@ -32,15 +32,13 @@ import java.util.List;
 public final class Gravatar {
 
     public final static int DEFAULT_SIZE = 80;
-    private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
-    public static final GravatarRating DEFAULT_RATING = GravatarRating.GENERAL_AUDIENCES;
-    public static final GravatarDefaultImage DEFAULT_DEFAULT_IMAGE = GravatarDefaultImage.HTTP_404;
-
     private int size = DEFAULT_SIZE;
+    public static final GravatarRating DEFAULT_RATING = GravatarRating.GENERAL_AUDIENCES;
     private GravatarRating rating = DEFAULT_RATING;
+    public static final GravatarDefaultImage DEFAULT_DEFAULT_IMAGE = GravatarDefaultImage.HTTP_404;
     private GravatarDefaultImage defaultImage = DEFAULT_DEFAULT_IMAGE;
-
-    static final public String TAG = Gravatar.class.getSimpleName()+"_tag";
+    static final public String TAG = Gravatar.class.getSimpleName() + "_tag";
+    private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
 
     public void log() {
         Log.d(TAG, "--------------------------------");

@@ -2,8 +2,6 @@ package com.kohoh.KAvatarLoader.test;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.kohoh.gravatar.Gravatar;
 

@@ -2,15 +2,15 @@ package com.kohoh.gravatar;
 
 public enum GravatarDefaultImage {
 
-	GRAVATAR_ICON(""),
+    GRAVATAR_ICON(""),
 
-	IDENTICON("identicon"),
+    IDENTICON("identicon"),
 
-	MONSTERID("monsterid"),
+    MONSTERID("monsterid"),
 
-	WAVATAR("wavatar"),
+    WAVATAR("wavatar"),
 
-	HTTP_404("404"),
+    HTTP_404("404"),
 
     MYSTERY_MEN("mystery_men"),
 
@@ -18,14 +18,14 @@ public enum GravatarDefaultImage {
 
     BLANK("blank");
 
-	private String code;
+    private String code;
 
-	private GravatarDefaultImage(String code) {
-		this.code = code;
-	}
+    private GravatarDefaultImage(String code) {
+        this.code = code;
+    }
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
 }
