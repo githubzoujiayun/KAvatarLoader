@@ -8,8 +8,9 @@ public class TaskParmUseUrl extends TaskParm {
         return url;
     }
 
-    public void setUrl(String url) {
+    public TaskParmUseUrl setUrl(String url) {
         this.url = url;
+        return this;
     }
 
     private String url;

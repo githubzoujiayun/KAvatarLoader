@@ -8,8 +8,9 @@ public class TaskParmUseEmail extends TaskParm {
         return email;
     }
 
-    public void setEmail(String email) {
+    public TaskParmUseEmail setEmail(String email) {
         this.email = email;
+        return this;
     }
 
     private String email;

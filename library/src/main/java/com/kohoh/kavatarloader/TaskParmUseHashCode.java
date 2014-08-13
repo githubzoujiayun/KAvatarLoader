@@ -8,8 +8,9 @@ public class TaskParmUseHashCode extends TaskParm {
         return hash_code;
     }
 
-    public void setHashCode(String hash_code) {
+    public TaskParmUseHashCode setHashCode(String hash_code) {
         this.hash_code = hash_code;
+        return this;
     }
 
     private String hash_code;

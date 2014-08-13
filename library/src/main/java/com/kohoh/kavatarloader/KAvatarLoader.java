@@ -2,7 +2,6 @@ package com.kohoh.kavatarloader;
 
 import android.app.ActionBar;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 /**
@@ -12,7 +11,7 @@ public class KAvatarLoader {
     private Context context;
     private DefaultAvatar default_avatar;
     private AvatarRating avatar_rating;
-    static private final String TAG = KAvatarLoader.class.getSimpleName();
+    static public final String TAG = KAvatarLoader.class.getSimpleName() + "_tag";
 
     public KAvatarLoader(Context context) {
         this.context = context;
@@ -39,16 +38,7 @@ public class KAvatarLoader {
     public KAvatarLoader bindImageViewByEmail(final ImageView image_view, final String email,
                                               final BindListener bind_listener) {
 
-        final int avatar_size = calculateAvatarSize(image_view);
-
-        TaskParmUseEmail task_parm = new TaskParmUseEmail();
-        task_parm.setEmail(email);
-        task_parm.setTargetView(image_view);
-        task_parm.setBindListner(bind_listener);
-        task_parm.setAvatarSize(avatar_size);
-        task_parm.setAvatarRating(avatar_rating);
-        task_parm.setDefaultAvatar(default_avatar);
-        new AvatarLoadTask(context, task_parm).execute();
+        loadAvatar(image_view, bind_listener, TaskParm.TASK_PARM_STYLE.TASK_PARM_USE_EMAIL, email);
 
         return this;
     }
@@ -56,85 +46,72 @@ public class KAvatarLoader {
     public KAvatarLoader bindImageViewByHashCode(final ImageView image_view, final String hash_code,
                                                  final BindListener bind_listener) {
 
-        final int avatar_size = calculateAvatarSize(image_view);
-
-        TaskParmUseHashCode task_parm = new TaskParmUseHashCode();
-        task_parm.setHashCode(hash_code);
-        task_parm.setTargetView(image_view);
-        task_parm.setBindListner(bind_listener);
-        task_parm.setAvatarSize(avatar_size);
-        task_parm.setAvatarRating(avatar_rating);
-        task_parm.setDefaultAvatar(default_avatar);
-        new AvatarLoadTask(context, task_parm).execute();
+        loadAvatar(image_view, bind_listener, TaskParm.TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE, hash_code);
 
         return this;
     }
 
     public KAvatarLoader bindImageViewByUrl(final ImageView image_view, final String url,
                                             final BindListener bind_listener) {
-        final int avatar_size = calculateAvatarSize(image_view);
 
-        TaskParmUseUrl task_parm = new TaskParmUseUrl();
-        task_parm.setUrl(url);
-        task_parm.setTargetView(image_view);
-        task_parm.setBindListner(bind_listener);
-        task_parm.setAvatarSize(avatar_size);
-        task_parm.setAvatarRating(avatar_rating);
-        task_parm.setDefaultAvatar(default_avatar);
-        new AvatarLoadTask(context, task_parm).execute();
+        loadAvatar(image_view, bind_listener, TaskParm.TASK_PARM_STYLE.TASK_PARM_USE_URL, url);
 
         return this;
     }
 
     public KAvatarLoader bindActionBarByEmail(final ActionBar action_bar, final String email,
                                               final BindListener bind_listener) {
-        //default_avatar_size是翻看ActionBar的源码得到的logo的大小
-        final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 
-        TaskParmUseEmail task_parm = new TaskParmUseEmail();
-        task_parm.setEmail(email);
-        task_parm.setTargetView(action_bar);
-        task_parm.setBindListner(bind_listener);
-        task_parm.setAvatarSize(avatar_size);
-        task_parm.setAvatarRating(avatar_rating);
-        task_parm.setDefaultAvatar(default_avatar);
-        new AvatarLoadTask(context, task_parm).execute();
+        loadAvatar(action_bar, bind_listener, TaskParm.TASK_PARM_STYLE.TASK_PARM_USE_EMAIL, email);
 
         return this;
     }
 
     public KAvatarLoader bindActionBarByHashCode(final ActionBar action_bar, final String hash_code,
                                                  final BindListener bind_listener) {
-        //default_avatar_size是翻看ActionBar的源码得到的logo的大小
-        final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 
-        TaskParmUseHashCode task_parm = new TaskParmUseHashCode();
-        task_parm.setHashCode(hash_code);
-        task_parm.setTargetView(action_bar);
-        task_parm.setBindListner(bind_listener);
-        task_parm.setAvatarSize(avatar_size);
-        task_parm.setAvatarRating(avatar_rating);
-        task_parm.setDefaultAvatar(default_avatar);
-        new AvatarLoadTask(context, task_parm).execute();
+        loadAvatar(action_bar, bind_listener, TaskParm.TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE, hash_code);
 
         return this;
     }
 
     public KAvatarLoader bindActionBarByUrl(final ActionBar action_bar, final String url,
                                             final BindListener bind_listener) {
-        //default_avatar_size是翻看ActionBar的源码得到的logo的大小
-        final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 
-        TaskParmUseUrl task_parm = new TaskParmUseUrl();
-        task_parm.setUrl(url);
-        task_parm.setTargetView(action_bar);
-        task_parm.setBindListner(bind_listener);
-        task_parm.setAvatarSize(avatar_size);
-        task_parm.setAvatarRating(avatar_rating);
-        task_parm.setDefaultAvatar(default_avatar);
-        new AvatarLoadTask(context, task_parm).execute();
+        loadAvatar(action_bar, bind_listener, TaskParm.TASK_PARM_STYLE.TASK_PARM_USE_URL, url);
 
         return this;
+    }
+
+    private void loadAvatar(Object target_view, BindListener bind_listener,
+                            TaskParm.TASK_PARM_STYLE task_parm_style, String address) {
+        TaskParm task_parm = null;
+
+        switch (task_parm_style) {
+            case TASK_PARM_USE_URL:
+                task_parm = new TaskParmUseUrl().setUrl(address);
+                break;
+            case TASK_PARM_USE_EMAIL:
+                task_parm = new TaskParmUseEmail().setEmail(address);
+                break;
+            case TASK_PARM_USE_HASH_CODE:
+                task_parm = new TaskParmUseHashCode().setHashCode(address);
+                break;
+        }
+
+        switch (TaskParm.getTargetViewSytle(target_view)) {
+            case ACTION_BAR:
+                task_parm.setAvatarSize(context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size));
+                break;
+            case IMAGE_VIEW:
+                task_parm.setAvatarSize(calculateAvatarSize((ImageView) target_view));
+                break;
+        }
+
+        task_parm.setDefaultAvatar(default_avatar).setAvatarRating(avatar_rating).
+                setTargetView(target_view).setBindListner(bind_listener);
+
+        new AvatarLoadTask(context, task_parm).execute();
     }
 
     public KAvatarLoader setDefaultAvatar(DefaultAvatar default_avatar) {

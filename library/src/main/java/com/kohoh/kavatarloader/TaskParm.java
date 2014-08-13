@@ -24,104 +24,115 @@ abstract public class TaskParm {
         Log.d(TAG, "rating = " + avatar_rating);
         Log.d(TAG, "default avatar = " + default_avatar);
         Log.d(TAG, "bind_listener " + (bind_listner == null ? "is null" : "not null"));
-        try {
-            Log.d(TAG, "target_view = " + getTargetViewSytle(target_view).toString());
+        Log.d(TAG, "target_view = " + getTargetViewSytle(target_view).toString());
 
-            switch (getTaskParmStyle(this)) {
-                case TASK_PARM_USE_EMAIL:
-                    Log.d(TAG, "email = " + ((TaskParmUseEmail) this).getEmail());
-                    break;
-                case TASK_PARM_USE_HASH_CODE:
-                    Log.d(TAG, "hash_code = " + ((TaskParmUseHashCode) this).getHashCode());
-                    break;
-                case TASK_PARM_USE_URL:
-                    Log.d(TAG, "url = " + ((TaskParmUseUrl) this).getUrl());
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        switch (getTaskParmStyle(this)) {
+            case TASK_PARM_USE_EMAIL:
+                Log.d(TAG, "email = " + ((TaskParmUseEmail) this).getEmail());
+                break;
+            case TASK_PARM_USE_HASH_CODE:
+                Log.d(TAG, "hash_code = " + ((TaskParmUseHashCode) this).getHashCode());
+                break;
+            case TASK_PARM_USE_URL:
+                Log.d(TAG, "url = " + ((TaskParmUseUrl) this).getUrl());
+                break;
         }
         Log.d(TAG, "---------END---------");
     }
 
     public enum TARGET_VIEW_STYLE {ACTION_BAR, IMAGE_VIEW;}
 
-    public static TARGET_VIEW_STYLE getTargetViewSytle(Object target_view) throws Exception {
+    public static TARGET_VIEW_STYLE getTargetViewSytle(Object target_view) {
         boolean isActionBar = ActionBar.class.isInstance(target_view);
         boolean isImageView = ImageView.class.isInstance(target_view);
 
+        TARGET_VIEW_STYLE target_view_style = null;
+
         if (isActionBar && !isImageView) {
-            return TARGET_VIEW_STYLE.ACTION_BAR;
+            target_view_style = TARGET_VIEW_STYLE.ACTION_BAR;
         }
 
         if (!isActionBar && isImageView) {
-            return TARGET_VIEW_STYLE.IMAGE_VIEW;
+            target_view_style = TARGET_VIEW_STYLE.IMAGE_VIEW;
         }
 
-        Log.e(TAG, "getTargetViewStyle error");
-        throw new Exception("target view 必须是ImageView或者ActionBar");
+        if (target_view_style == null) {
+            Log.e(TAG, "getTargetViewStyle error");
+        }
+
+        return target_view_style;
     }
 
     public enum TASK_PARM_STYLE {TASK_PARM_USE_URL, TASK_PARM_USE_EMAIL, TASK_PARM_USE_HASH_CODE;}
 
-    public static TASK_PARM_STYLE getTaskParmStyle(TaskParm task_parm) throws Exception {
+    public static TASK_PARM_STYLE getTaskParmStyle(TaskParm task_parm) {
         boolean isTaskParmUseUrl = TaskParmUseUrl.class.isInstance(task_parm);
         boolean isTaskParmUseEmail = TaskParmUseEmail.class.isInstance(task_parm);
         boolean isTaskParmUseHashCode = TaskParmUseHashCode.class.isInstance(task_parm);
 
+        TASK_PARM_STYLE task_parm_style = null;
+
         if (isTaskParmUseUrl && !isTaskParmUseEmail && !isTaskParmUseHashCode) {
-            return TASK_PARM_STYLE.TASK_PARM_USE_URL;
+            task_parm_style = TASK_PARM_STYLE.TASK_PARM_USE_URL;
         }
 
         if (!isTaskParmUseUrl && isTaskParmUseEmail && !isTaskParmUseHashCode) {
-            return TASK_PARM_STYLE.TASK_PARM_USE_EMAIL;
+            task_parm_style = TASK_PARM_STYLE.TASK_PARM_USE_EMAIL;
         }
 
         if (!isTaskParmUseUrl && !isTaskParmUseEmail && isTaskParmUseHashCode) {
-            return TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE;
+            task_parm_style = TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE;
         }
 
-        Log.e(TAG, "getTaskParmStyle error");
-        throw new Exception("task_parm必须是TaskParmUseUrl，TaskParmUseEail，TaskParmUseHashCode中的一个");
+        if (task_parm_style == null) {
+            Log.e(TAG, "getTaskParmStyle error");
+        }
+
+        return task_parm_style;
     }
 
     public Object getTargetView() {
         return target_view;
     }
 
-    public void setTargetView(Object target_view) {
+    public TaskParm setTargetView(Object target_view) {
         this.target_view = target_view;
+        return this;
     }
 
     public BindListener getBindListner() {
         return bind_listner;
     }
 
-    public void setBindListner(BindListener bind_listner) {
+    public TaskParm setBindListner(BindListener bind_listner) {
         this.bind_listner = bind_listner;
+        return this;
     }
 
     public int getAvatarSize() {
         return avatar_size;
     }
 
-    public void setAvatarSize(int avatar_size) {
+    public TaskParm setAvatarSize(int avatar_size) {
         this.avatar_size = avatar_size;
+        return this;
     }
 
     public DefaultAvatar getDefaultAvatar() {
         return default_avatar;
     }
 
-    public void setDefaultAvatar(DefaultAvatar default_avatar) {
+    public TaskParm setDefaultAvatar(DefaultAvatar default_avatar) {
         this.default_avatar = default_avatar;
+        return this;
     }
 
     public AvatarRating getAvatarRating() {
         return avatar_rating;
     }
 
-    public void setAvatarRating(AvatarRating avatar_rating) {
+    public TaskParm setAvatarRating(AvatarRating avatar_rating) {
         this.avatar_rating = avatar_rating;
+        return this;
     }
 }

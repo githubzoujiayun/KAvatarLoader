@@ -36,19 +36,15 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
     }
 
     void bindTargetViewWithDefaultAvatar(TaskParm task_parm) {
-        try {
-            Object target_view = task_parm.getTargetView();
-            TaskParm.TARGET_VIEW_STYLE target_view_style = getTargetViewSytle(target_view);
-            switch (target_view_style) {
-                case ACTION_BAR:
-                    bindActionBarWithDefaultAvatar((ActionBar) target_view, task_parm.getDefaultAvatar());
-                    break;
-                case IMAGE_VIEW:
-                    bindImageViewWithDefaultAvatar((ImageView) target_view, task_parm.getDefaultAvatar());
-                    break;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Object target_view = task_parm.getTargetView();
+        TaskParm.TARGET_VIEW_STYLE target_view_style = getTargetViewSytle(target_view);
+        switch (target_view_style) {
+            case ACTION_BAR:
+                bindActionBarWithDefaultAvatar((ActionBar) target_view, task_parm.getDefaultAvatar());
+                break;
+            case IMAGE_VIEW:
+                bindImageViewWithDefaultAvatar((ImageView) target_view, task_parm.getDefaultAvatar());
+                break;
         }
     }
 
