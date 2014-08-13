@@ -276,7 +276,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     }
 
     private TaskParm getTaskParm() {
-        return new TaskParm();
+        return new TaskParmUseEmail();
     }
 
 

@@ -36,7 +36,8 @@ public class KAvatarLoader {
         return avatar_size;
     }
 
-    public KAvatarLoader bindImageViewByEmail(final ImageView image_view, final String email, final BindListener bind_listener) {
+    public KAvatarLoader bindImageViewByEmail(final ImageView image_view, final String email,
+                                              final BindListener bind_listener) {
 
         final int avatar_size = calculateAvatarSize(image_view);
 
@@ -52,7 +53,8 @@ public class KAvatarLoader {
         return this;
     }
 
-    public KAvatarLoader bindImageViewByHashCode(final ImageView image_view, final String hash_code, final BindListener bind_listener) {
+    public KAvatarLoader bindImageViewByHashCode(final ImageView image_view, final String hash_code,
+                                                 final BindListener bind_listener) {
 
         final int avatar_size = calculateAvatarSize(image_view);
 
@@ -68,7 +70,8 @@ public class KAvatarLoader {
         return this;
     }
 
-    public KAvatarLoader bindImageViewByUrl(final ImageView image_view, final String url, final BindListener bind_listener) {
+    public KAvatarLoader bindImageViewByUrl(final ImageView image_view, final String url,
+                                            final BindListener bind_listener) {
         final int avatar_size = calculateAvatarSize(image_view);
 
         TaskParmUseUrl task_parm = new TaskParmUseUrl();
@@ -83,7 +86,8 @@ public class KAvatarLoader {
         return this;
     }
 
-    public KAvatarLoader bindActionBarByEmail(final ActionBar action_bar, final String email, final BindListener bind_listener) {
+    public KAvatarLoader bindActionBarByEmail(final ActionBar action_bar, final String email,
+                                              final BindListener bind_listener) {
         //default_avatar_size是翻看ActionBar的源码得到的logo的大小
         final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 
@@ -99,7 +103,8 @@ public class KAvatarLoader {
         return this;
     }
 
-    public KAvatarLoader bindActionBarByHashCode(final ActionBar action_bar, final String hash_code, final BindListener bind_listener) {
+    public KAvatarLoader bindActionBarByHashCode(final ActionBar action_bar, final String hash_code,
+                                                 final BindListener bind_listener) {
         //default_avatar_size是翻看ActionBar的源码得到的logo的大小
         final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 
@@ -115,7 +120,8 @@ public class KAvatarLoader {
         return this;
     }
 
-    public KAvatarLoader bindActionBarByUrl(final ActionBar action_bar, final String url, final BindListener bind_listener) {
+    public KAvatarLoader bindActionBarByUrl(final ActionBar action_bar, final String url,
+                                            final BindListener bind_listener) {
         //default_avatar_size是翻看ActionBar的源码得到的logo的大小
         final int avatar_size = context.getResources().getDimensionPixelSize(R.dimen.default_avatar_size);
 

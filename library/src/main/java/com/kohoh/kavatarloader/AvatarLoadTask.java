@@ -14,6 +14,9 @@ import com.kohoh.gravatar.GravatarRating;
 
 import java.util.Objects;
 
+import static com.kohoh.kavatarloader.TaskParm.getTargetViewSytle;
+import static com.kohoh.kavatarloader.TaskParm.getTaskParmStyle;
+
 /**
  * Created by kohoh on 14-8-12.
  */
@@ -33,19 +36,15 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
     }
 
     void bindTargetViewWithDefaultAvatar(TaskParm task_parm) {
-        Log.d(TAG, "-------------------------------");
-        Log.d(TAG, "bindTargetViewWithDefaultAvatar");
-        task_parm.log();
         try {
             Object target_view = task_parm.getTargetView();
-            TARGET_VIEW_STYLE target_view_style = getTargetViewSytle(target_view);
-            Log.d(TAG, "target view stle is " + target_view_style);
+            TaskParm.TARGET_VIEW_STYLE target_view_style = getTargetViewSytle(target_view);
             switch (target_view_style) {
                 case ACTION_BAR:
-                    bindActionBarWithDefaultAvatar((ActionBar) target_view, task_parm);
+                    bindActionBarWithDefaultAvatar((ActionBar) target_view, task_parm.getDefaultAvatar());
                     break;
                 case IMAGE_VIEW:
-                    bindImageViewWithDefaultAvatar((ImageView) target_view, task_parm);
+                    bindImageViewWithDefaultAvatar((ImageView) target_view, task_parm.getDefaultAvatar());
                     break;
             }
         } catch (Exception e) {
@@ -53,11 +52,11 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
         }
     }
 
-    private void bindImageViewWithDefaultAvatar(ImageView image_view, TaskParm task_parm) {
+    private void bindImageViewWithDefaultAvatar(ImageView image_view, DefaultAvatar default_avatar) {
         Resources resources = context.getResources();
         String tag = "default avatar ";
 
-        switch (task_parm.getDefaultAvatar()) {
+        switch (default_avatar) {
             case GRAVATAR_ICON:
                 image_view.setImageDrawable(resources.getDrawable(R.drawable.gravatar_icon));
                 image_view.setTag(tag + GravatarDefaultImage.GRAVATAR_ICON.toString());
@@ -87,14 +86,14 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
                 image_view.setTag(tag + GravatarDefaultImage.BLANK.toString());
                 break;
             case CUSTOM_DEFAULT_AVATAR:
-                image_view.setImageDrawable(task_parm.getDefaultAvatar().getCustomDefaultAvatar());
+                image_view.setImageDrawable(default_avatar.getCustomDefaultAvatar());
                 image_view.setTag("custom default avatar");
                 break;
         }
     }
 
-    private void bindActionBarWithDefaultAvatar(ActionBar action_bar, TaskParm task_parm) {
-        switch (task_parm.getDefaultAvatar()) {
+    private void bindActionBarWithDefaultAvatar(ActionBar action_bar, DefaultAvatar default_avatar) {
+        switch (default_avatar) {
             case GRAVATAR_ICON:
                 action_bar.setLogo(R.drawable.gravatar_icon);
                 break;
@@ -117,15 +116,12 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
                 action_bar.setLogo(R.drawable.blank);
                 break;
             case CUSTOM_DEFAULT_AVATAR:
-                action_bar.setLogo(task_parm.getDefaultAvatar().getCustomDefaultAvatar());
+                action_bar.setLogo(default_avatar.getCustomDefaultAvatar());
                 break;
         }
     }
 
     void onBindTargetViewFinished(TaskParm task_parm, Avatar avatar) {
-        Log.d(TAG, "-------------------------------");
-        Log.d(TAG, "onBindTargetViewFinished");
-
         Object target_view = task_parm.getTargetView();
         BindListener bind_listener = task_parm.getBindListner();
 
@@ -141,9 +137,7 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
         String avatar_tag = avatar.getTag();
 
         try {
-            TARGET_VIEW_STYLE target_view_stye = getTargetViewSytle(target_view);
-            Log.d(TAG, "target view style is " + target_view_stye);
-            Log.d(TAG, "tag is " + avatar_tag);
+            TaskParm.TARGET_VIEW_STYLE target_view_stye = getTargetViewSytle(target_view);
             switch (target_view_stye) {
                 case ACTION_BAR:
                     if (avatar_drawable != null) {
@@ -170,25 +164,6 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
         }
     }
 
-
-    enum TARGET_VIEW_STYLE {ACTION_BAR, IMAGE_VIEW;}
-
-    private TARGET_VIEW_STYLE getTargetViewSytle(Object target_view) throws Exception {
-        boolean isActionBar = ActionBar.class.isInstance(target_view);
-        boolean isImageView = ImageView.class.isInstance(target_view);
-
-        if (isActionBar && !isImageView) {
-            return TARGET_VIEW_STYLE.ACTION_BAR;
-        }
-
-        if (!isActionBar && isImageView) {
-            return TARGET_VIEW_STYLE.IMAGE_VIEW;
-        }
-
-        Log.e(TAG, "getTargetViewStyle error");
-        throw new Exception("target view 必须是ImageView或者ActionBar");
-    }
-
     Avatar loadAvatar(TaskParm task_parm) throws Exception {
         gravatar.setSize(task_parm.getAvatarSize());
         gravatar.setRating(GravatarRating.valueOf(task_parm.getAvatarRating().toString()));
@@ -199,7 +174,7 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
         }
         gravatar.log();
 
-        TASK_PARM_STYLE style = getTaskParmStyle(task_parm);
+        TaskParm.TASK_PARM_STYLE style = getTaskParmStyle(task_parm);
         switch (style) {
             case TASK_PARM_USE_URL:
                 return loadAvatarByUrl(((TaskParmUseUrl) task_parm).getUrl());
@@ -230,38 +205,17 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
         return new Avatar(context, raw_gravatar, tag);
     }
 
-    enum TASK_PARM_STYLE {TASK_PARM_USE_URL, TASK_PARM_USE_EMAIL, TASK_PARM_USE_HASH_CODE;}
-
-    private TASK_PARM_STYLE getTaskParmStyle(TaskParm task_parm) throws Exception {
-        boolean isTaskParmUseUrl = TaskParmUseUrl.class.isInstance(task_parm);
-        boolean isTaskParmUseEmail = TaskParmUseEmail.class.isInstance(task_parm);
-        boolean isTaskParmUseHashCode = TaskParmUseHashCode.class.isInstance(task_parm);
-
-        if (isTaskParmUseUrl && !isTaskParmUseEmail && !isTaskParmUseHashCode) {
-            return TASK_PARM_STYLE.TASK_PARM_USE_URL;
-        }
-
-        if (!isTaskParmUseUrl && isTaskParmUseEmail && !isTaskParmUseHashCode) {
-            return TASK_PARM_STYLE.TASK_PARM_USE_EMAIL;
-        }
-
-        if (!isTaskParmUseUrl && !isTaskParmUseEmail && isTaskParmUseHashCode) {
-            return TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE;
-        }
-
-        Log.e(TAG, "getTaskParmStyle error");
-        throw new Exception("task_parm必须是TaskParmUseUrl，TaskParmUseEail，TaskParmUseHashCode中的一个");
-    }
-
 
     @Override
     protected void onPreExecute() {
+        Log.d(TAG, "-----START LOAD AVATAR------");
+        task_parm.log();
         bindTargetViewWithDefaultAvatar(task_parm);
     }
 
     @Override
     protected Avatar doInBackground(Objects... params) {
-        Log.d(TAG, "start loading avatar");
+        Log.d(TAG, "------LOADING AVATAR------");
         try {
             return loadAvatar(task_parm);
         } catch (Exception e) {
@@ -272,8 +226,10 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
 
     @Override
     protected void onPostExecute(Avatar avatar) {
-        Log.d(TAG, "finish loading avatar");
+        Log.d(TAG, "avatar's raw_bytes " + avatar.getBytes() == null ? "is null" : "not null");
+        Log.d(TAG, "avatar's tag " + avatar.getTag() == null ? "is null" : "is" + avatar.getTag());
         onBindTargetViewFinished(task_parm, avatar);
+        Log.d(TAG, "------LOAD FINISH------");
     }
 }
 
