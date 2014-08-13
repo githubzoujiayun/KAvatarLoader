@@ -173,7 +173,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     private void testLoadDeaultImageBeforeLoadRealAvatar(DefaultAvatar default_avatar) {
-        avatar_loader.setDefaultAvatar(default_avatar, null);
+        avatar_loader.setDefaultAvatar(default_avatar);
         avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, null);
 
         String avatar_tag_expect = "default avatar " + default_avatar.toString();
@@ -184,7 +184,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase037 测试KAvatarLoader#setDefaultAvatar能否设置自定义的default avatar
     @UiThreadTest
     public void testSetCustomDefaultAvatarBeforeRealLoad() {
-        avatar_loader.setDefaultAvatar(DefaultAvatar.CUSTOM_DEFAULT_AVATAR, R.drawable.custom_default_avatar);
+        avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
         avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, null);
 
         String avatar_tag_expect = "custom default avatar";
@@ -195,7 +195,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase038 测试当DefaultAvatar被设置为HTTP_404或者CUSTOM_DEFAULT_AVATAR状态时，加载avatar后能否正常工作
     @UiThreadTest
     public void testSetCustomDefaultAvatarAfterRealLoadFailed() {
-        avatar_loader.setDefaultAvatar(DefaultAvatar.CUSTOM_DEFAULT_AVATAR, R.drawable.custom_default_avatar);
+        avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
         final ImageView iv_size100 = this.iv_size100;
         avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.DOSENT_EXIST_EMAIL, new BindListener() {
             @Override
@@ -205,7 +205,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
             }
         });
 
-        avatar_loader.setDefaultAvatar(DefaultAvatar.BLANK, null);
+        avatar_loader.setDefaultAvatar(DefaultAvatar.BLANK);
         avatar_loader.bindImageViewByEmail(iv_size200, GravatarConstant.DOSENT_EXIST_EMAIL, new BindListener() {
             @Override
             public void onBindFinished(BindListener.RESULT_CODE result_code) {

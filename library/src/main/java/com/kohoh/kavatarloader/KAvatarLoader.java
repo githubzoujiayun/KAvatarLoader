@@ -137,12 +137,15 @@ public class KAvatarLoader {
         return this;
     }
 
-    public KAvatarLoader setDefaultAvatar(DefaultAvatar default_avatar, Integer default_avatar_resource) {
-        if (default_avatar.equals(DefaultAvatar.CUSTOM_DEFAULT_AVATAR)) {
-            Drawable custom_default_avatar = context.getResources().getDrawable(default_avatar_resource);
-            default_avatar.setCustomDefaultAvatar(custom_default_avatar);
-        }
+    public KAvatarLoader setDefaultAvatar(DefaultAvatar default_avatar) {
         this.default_avatar = default_avatar;
+        return this;
+    }
+
+    public KAvatarLoader setDefaultAvatar(int default_avatar_resource) {
+        DefaultAvatar default_avatar = DefaultAvatar.CUSTOM_DEFAULT_AVATAR;
+        default_avatar.setCustomDefaultAvatar(context.getResources().getDrawable(default_avatar_resource));
+        setDefaultAvatar(default_avatar);
         return this;
     }
 

@@ -226,8 +226,8 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
 
     @Override
     protected void onPostExecute(Avatar avatar) {
-        Log.d(TAG, "avatar's raw_bytes " + avatar.getBytes() == null ? "is null" : "not null");
-        Log.d(TAG, "avatar's tag " + avatar.getTag() == null ? "is null" : "is" + avatar.getTag());
+        Log.d(TAG, "avatar's raw_bytes " + (avatar.getBytes() == null ? "is null" : "not null"));
+        Log.d(TAG, "avatar's tag " + (avatar.getTag() == null ? "is null" : "is " + avatar.getTag()));
         onBindTargetViewFinished(task_parm, avatar);
         Log.d(TAG, "------LOAD FINISH------");
     }

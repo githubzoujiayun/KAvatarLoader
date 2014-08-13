@@ -11,7 +11,7 @@ import com.kohoh.gravatar.Gravatar;
  */
 abstract public class TaskParm {
     private BindListener bind_listner;
-    private int avatar_size = Gravatar.DEFAULT_SIZE;
+    private Integer avatar_size = Gravatar.DEFAULT_SIZE;
     private DefaultAvatar default_avatar = DefaultAvatar.valueOf(Gravatar.DEFAULT_DEFAULT_IMAGE.toString());
     private AvatarRating avatar_rating = AvatarRating.valueOf(Gravatar.DEFAULT_RATING.toString());
     private Object target_view;
@@ -23,7 +23,7 @@ abstract public class TaskParm {
         Log.d(TAG, "size = " + avatar_size);
         Log.d(TAG, "rating = " + avatar_rating);
         Log.d(TAG, "default avatar = " + default_avatar);
-        Log.d(TAG, "bind_listener " + bind_listner == null ? "is null" : "not null");
+        Log.d(TAG, "bind_listener " + (bind_listner == null ? "is null" : "not null"));
         try {
             Log.d(TAG, "target_view = " + getTargetViewSytle(target_view).toString());
 
