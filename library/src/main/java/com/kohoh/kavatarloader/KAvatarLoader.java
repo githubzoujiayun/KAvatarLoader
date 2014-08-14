@@ -1,8 +1,10 @@
 package com.kohoh.kavatarloader;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.widget.ImageView;
 
@@ -13,7 +15,7 @@ import java.util.concurrent.Executor;
  */
 public class KAvatarLoader {
     static public final String TAG = KAvatarLoader.class.getSimpleName() + "_tag";
-    static private Executor executor = AsyncTask.SERIAL_EXECUTOR;
+    static private Executor executor;
     private Context context;
     private DefaultAvatar default_avatar;
     private AvatarRating avatar_rating;
@@ -25,7 +27,7 @@ public class KAvatarLoader {
     }
 
     /**
-     * 设置KAvatarLoader的Execuor。
+     * 设置KAvatarLoader的Execuor。该特性只有API11以上版本拥有。
      * 通过该方法，可以控制KAvatarLoader的绑定行为。
      * 如果设置为AsyncTask.SERIAL_EXECUTOR，则每次同时绑定一个容器。
      * 如果设置为AsyncTask.THREAD_POOL_EXECUTOR,则每次最多同时绑定五个容器。
@@ -169,6 +171,7 @@ public class KAvatarLoader {
         return this;
     }
 
+    @TargetApi(11)
     private void loadAvatar(Object target_view, BindListener bind_listener,
                             TaskParm.TASK_PARM_STYLE task_parm_style, String address) {
         TaskParm task_parm = null;
@@ -197,7 +200,15 @@ public class KAvatarLoader {
         task_parm.setDefaultAvatar(default_avatar).setAvatarRating(avatar_rating).
                 setTargetView(target_view).setBindListner(bind_listener);
 
-        new AvatarLoadTask(context, task_parm).executeOnExecutor(executor);
+        //该特性只有API11以上版本拥有
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
+            new AvatarLoadTask(context, task_parm).execute();
+        } else {
+            if (executor == null) {
+                executor = AsyncTask.SERIAL_EXECUTOR;
+            }
+            new AvatarLoadTask(context, task_parm).executeOnExecutor(executor);
+        }
     }
 
     /**

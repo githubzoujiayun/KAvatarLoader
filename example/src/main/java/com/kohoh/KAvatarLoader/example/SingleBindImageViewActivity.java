@@ -1,8 +1,10 @@
 package com.kohoh.KAvatarLoader.example;
 
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -26,6 +28,7 @@ public class SingleBindImageViewActivity extends ActionBarActivity {
     private KAvatarLoader avatar_loader;
 
     @Override
+    @TargetApi(11)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_bind_view);
@@ -48,7 +51,10 @@ public class SingleBindImageViewActivity extends ActionBarActivity {
         //如果设置为AsyncTask.THREAD_POOL_EXECUTOR,则每次最多同时绑定五个容器。
         //当然你也可是使用你自定义的Executor。
         //默认的Executor为AsyncTask.SERIAL_EXECUTOR。
-        avatar_loader.setLoadExector(AsyncTask.SERIAL_EXECUTOR);
+        //只有API11以上版本支持该功能
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR1) {
+            avatar_loader.setLoadExector(AsyncTask.SERIAL_EXECUTOR);
+        }
 
         iv_avatar_no_size = (ImageView) findViewById(R.id.iv_avatar_no_size);
         iv_avatar_small_size = (ImageView) findViewById(R.id.iv_avatar_small_size);

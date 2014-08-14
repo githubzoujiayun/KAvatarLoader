@@ -13,15 +13,13 @@ import com.kohoh.gravatar.Gravatar;
 import com.kohoh.gravatar.GravatarDefaultImage;
 import com.kohoh.gravatar.GravatarRating;
 
-import java.util.Objects;
-
 import static com.kohoh.kavatarloader.TaskParm.getTargetViewSytle;
 import static com.kohoh.kavatarloader.TaskParm.getTaskParmStyle;
 
 /**
  * Created by kohoh on 14-8-12.
  */
-public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
+public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
 
     public static final String TAG = AvatarLoadTask.class.getSimpleName() + "_tag";
 
@@ -206,7 +204,7 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
     }
 
     @Override
-    protected Avatar doInBackground(Objects... params) {
+    protected Avatar doInBackground(Object... params) {
         Log.d(TAG, "-----START LOAD AVATAR------");
         Avatar avatar = loadAvatar(task_parm);
         Log.d(TAG, "avatar's raw_bytes " + (avatar.getBytes() == null ? "is null" : "not null"));
