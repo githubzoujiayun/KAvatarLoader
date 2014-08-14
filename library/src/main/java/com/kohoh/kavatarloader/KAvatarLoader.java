@@ -33,6 +33,7 @@ public class KAvatarLoader {
      * 如果设置为AsyncTask.THREAD_POOL_EXECUTOR,则每次最多同时绑定五个容器。
      * 当然你也可是使用你自定义的Executor。
      * 默认的Executor为AsyncTask.SERIAL_EXECUTOR。
+     * 只有API11以上版本支持该功能
      *
      * @param executor
      */
