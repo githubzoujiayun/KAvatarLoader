@@ -57,6 +57,10 @@ avatar_loader.bindActionBarByEmail(action_bar, "kavatarloader2@126.com", bind_li
 
 `bind_listener`是一个实现了`BindListener`接口的对象。当完成对容器的绑定之后，会回调`BindListener#onBindFinished(RESULT_CODE result_code)`方法。
 
+##更新内容
+
+20140814 兼容API11以下版本
+
 ##待完成功能
 
 + 将下载的头像本地缓存，减少网络访问。
