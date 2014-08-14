@@ -1,17 +1,18 @@
 package com.kohoh.KAvatarLoader.example;
 
-import android.app.ActionBar;
-import android.app.Activity;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.ImageView;
 
 import com.kohoh.kavatarloader.AvatarRating;
 import com.kohoh.kavatarloader.DefaultAvatar;
 import com.kohoh.kavatarloader.KAvatarLoader;
 
-public class SingleBindImageViewActivity extends Activity {
+public class SingleBindImageViewActivity extends ActionBarActivity {
 
     private ImageView iv_avatar_no_size;
     private ImageView iv_avatar_small_size;
@@ -55,7 +56,7 @@ public class SingleBindImageViewActivity extends Activity {
         iv_avatar_large_size = (ImageView) findViewById(R.id.iv_avatar_large_size);
         iv_avatar_xlarge_size = (ImageView) findViewById(R.id.iv_avatar_xlarge_size);
         iv_avatar_actionbar_size = (ImageView) findViewById(R.id.iv_avatar_actionbar_size);
-        action_bar = getActionBar();
+        action_bar = getSupportActionBar();
     }
 
     @Override

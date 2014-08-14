@@ -1,9 +1,9 @@
 package com.kohoh.KAvatarLoader.test;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
-public class KAvatarLoaderTestUseActivity extends Activity {
+public class KAvatarLoaderTestUseActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -1,13 +1,13 @@
 package com.kohoh.KAvatarLoader.test;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.widget.ImageView;
 
 
-public class ActionBarTestActivity extends Activity {
+public class ActionBarTestActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class ActionBarTestActivity extends Activity {
 //        int height = getActionBar().getHeight();
 //        Log.d("kohoh_tag", "ActionBar height= " + height);
 
-        getActionBar().setLogo(R.drawable.logo100);
+        getSupportActionBar().setLogo(R.drawable.logo100);
 
         Log.d("kohoh_tag", "actionbar size= " + this.getResources().getDimensionPixelSize(R.dimen.default_avatar_size));
 

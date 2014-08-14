@@ -1,8 +1,9 @@
 package com.kohoh.kavatarloader;
 
-import android.app.ActionBar;
-import android.app.Activity;
+
 import android.content.Context;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 import android.util.Log;
@@ -20,7 +21,7 @@ import java.io.InputStream;
 public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatarLoaderTestUseActivity> {
     public final static String TAG = AvatarLoadTaskTest.class.getSimpleName() + "_tag";
     private Context context;
-    private Activity activity;
+    private ActionBarActivity activity;
     private ImageView iv_no_size;
     private ActionBar action_bar;
     private Resources resources;
@@ -35,7 +36,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         this.context = this.activity;
         this.resources = new Resources(context);
         iv_no_size = (ImageView) activity.findViewById(com.kohoh.KAvatarLoader.test.R.id.iv_no_size);
-        action_bar = activity.getActionBar();
+        action_bar = activity.getSupportActionBar();
     }
 
     public void testLoadAvatarUesUrl() throws Exception {

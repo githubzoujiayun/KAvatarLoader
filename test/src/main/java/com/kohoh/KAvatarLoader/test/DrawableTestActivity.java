@@ -1,13 +1,13 @@
 package com.kohoh.KAvatarLoader.test;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.ImageView;
 
 import com.kohoh.kavatarloader.KAvatarLoader;
 
 
-public class DrawableTestActivity extends Activity {
+public class DrawableTestActivity extends ActionBarActivity {
     public static final String EXIST_EMAIL1_SIZE_100_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=100&d=404";
     public static final String EXIST_EMAIL1_SIZE_100_BYTE_FILE_NAME = "kavatarloader1@126.com_size100_bytes";
     private ImageView iv_from_net;

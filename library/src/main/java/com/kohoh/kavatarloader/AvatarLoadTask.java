@@ -1,10 +1,11 @@
 package com.kohoh.kavatarloader;
 
-import android.app.ActionBar;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.widget.ImageView;
 

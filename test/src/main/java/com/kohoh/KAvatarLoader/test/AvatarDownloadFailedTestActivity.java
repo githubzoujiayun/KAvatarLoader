@@ -1,12 +1,12 @@
 package com.kohoh.KAvatarLoader.test;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 
 import com.kohoh.gravatar.Gravatar;
 
 
-public class AvatarDownloadFailedTestActivity extends Activity {
+public class AvatarDownloadFailedTestActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kohoh.KAvatarLoader.test">
 
-    <application>
+    <application android:theme="@style/AppTheme">
         <activity android:name=".KAvatarLoaderTestUseActivity" />
         <activity android:name=".ActionBarTestActivity">
             <intent-filter>

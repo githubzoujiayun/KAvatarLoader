@@ -1,8 +1,8 @@
 package com.kohoh.kavatarloader;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
 import android.util.Log;
@@ -16,7 +16,7 @@ import com.kohoh.kavatarloader.test.GravatarConstant;
  * Created by kohoh on 14-7-29.
  */
 public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarLoaderTestUseActivity> {
-    private Activity activity;
+    private ActionBarActivity activity;
     private KAvatarLoader avatar_loader;
     private ImageView iv_size100;
     private ImageView iv_size200;
@@ -99,7 +99,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
     @UiThreadTest
     public void testBindActionBarByEmail() {
-        ActionBar action_bar = activity.getActionBar();
+        ActionBar action_bar = activity.getSupportActionBar();
         avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1, new BindListener() {
             @Override
             public void onBindFinished(BindListener.RESULT_CODE result_code) {
@@ -113,7 +113,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase033 测试KAvatarLoader#bindActionBarByHashCode能否正常工作
     @UiThreadTest
     public void testBindActionBarByHashCode() {
-        ActionBar action_bar = activity.getActionBar();
+        ActionBar action_bar = activity.getSupportActionBar();
         avatar_loader.bindActionBarByHashCode(action_bar, GravatarConstant.EXIST_EMAIL1_HASH_CODE, new BindListener() {
             @Override
             public void onBindFinished(BindListener.RESULT_CODE result_code) {
@@ -125,7 +125,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase034 测试KAvatarLoader#binActionBarByUrl能否正常工作
     @UiThreadTest
     public void testBindActionBarByUrl() {
-        ActionBar action_bar = activity.getActionBar();
+        ActionBar action_bar = activity.getSupportActionBar();
         avatar_loader.bindActionBarByUrl(action_bar, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, new BindListener() {
             @Override
             public void onBindFinished(BindListener.RESULT_CODE result_code) {

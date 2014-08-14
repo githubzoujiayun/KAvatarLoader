@@ -1,6 +1,6 @@
 package com.kohoh.kavatarloader;
 
-import android.app.ActionBar;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.widget.ImageView;
 

@@ -1,8 +1,9 @@
 package com.kohoh.kavatarloader;
 
-import android.app.ActionBar;
+
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
 import android.widget.ImageView;
 
 import java.util.concurrent.Executor;
