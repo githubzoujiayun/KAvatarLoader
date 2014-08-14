@@ -123,8 +123,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         assertEquals("avatar's tag not equal", tag_expect, avatar.getTag());
 
         DefaultAvatar default_avatar = task_parm.getDefaultAvatar();
-        if (default_avatar.equals(DefaultAvatar.HTTP_404) ||
-                default_avatar.equals(DefaultAvatar.CUSTOM_DEFAULT_AVATAR)) {
+        if (default_avatar.equals(DefaultAvatar.HTTP_404)) {
             assertNull("avatar's drawable is not null", avatar.getDrawable());
             assertNull("avatar's bitmap is not null", avatar.getBitmap());
             assertNull("avatar's byte is not null", avatar.getBytes());
@@ -208,7 +207,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     public void testBindImageViewWithCustomDefaultAvatar() {
         AvatarLoadTask task = getAvatarTask();
         TaskParm taskParm = getTaskParm();
-        taskParm.setDefaultAvatar(DefaultAvatar.CUSTOM_DEFAULT_AVATAR);
+        taskParm.setDefaultAvatar(DefaultAvatar.HTTP_404);
         taskParm.getDefaultAvatar().setCustomDefaultAvatar(resources.getCunstomDefaultAvatar());
         taskParm.setTargetView(iv_no_size);
         task.bindTargetViewWithDefaultAvatar(taskParm);

@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
  * Created by kohoh on 14-8-11.
  */
 public enum DefaultAvatar {
-    CUSTOM_DEFAULT_AVATAR,
 
     GRAVATAR_ICON,
 

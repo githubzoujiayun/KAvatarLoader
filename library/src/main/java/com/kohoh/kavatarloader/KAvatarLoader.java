@@ -223,7 +223,7 @@ public class KAvatarLoader {
      * @return KAvatarLoader
      */
     public KAvatarLoader setDefaultAvatar(int default_avatar_resource) {
-        DefaultAvatar default_avatar = DefaultAvatar.CUSTOM_DEFAULT_AVATAR;
+        DefaultAvatar default_avatar = DefaultAvatar.HTTP_404;
         default_avatar.setCustomDefaultAvatar(context.getResources().getDrawable(default_avatar_resource));
         setDefaultAvatar(default_avatar);
         return this;

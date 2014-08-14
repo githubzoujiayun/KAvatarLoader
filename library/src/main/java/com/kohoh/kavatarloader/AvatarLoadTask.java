@@ -81,9 +81,11 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
                 image_view.setImageDrawable(resources.getDrawable(R.drawable.blank));
                 image_view.setTag(tag + GravatarDefaultImage.BLANK.toString());
                 break;
-            case CUSTOM_DEFAULT_AVATAR:
-                image_view.setImageDrawable(default_avatar.getCustomDefaultAvatar());
-                image_view.setTag("custom default avatar");
+            case HTTP_404:
+                if (default_avatar.getCustomDefaultAvatar() != null) {
+                    image_view.setImageDrawable(default_avatar.getCustomDefaultAvatar());
+                    image_view.setTag("custom default avatar");
+                }
                 break;
         }
     }
@@ -111,8 +113,10 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
             case BLANK:
                 action_bar.setLogo(R.drawable.blank);
                 break;
-            case CUSTOM_DEFAULT_AVATAR:
-                action_bar.setLogo(default_avatar.getCustomDefaultAvatar());
+            case HTTP_404:
+                if (default_avatar.getCustomDefaultAvatar() != null) {
+                    action_bar.setLogo(default_avatar.getCustomDefaultAvatar());
+                }
                 break;
         }
     }
@@ -166,11 +170,7 @@ public class AvatarLoadTask extends AsyncTask<Objects, Objects, Avatar> {
 
         gravatar.setSize(task_parm.getAvatarSize());
         gravatar.setRating(GravatarRating.valueOf(task_parm.getAvatarRating().toString()));
-        if (task_parm.getDefaultAvatar().equals(DefaultAvatar.CUSTOM_DEFAULT_AVATAR)) {
-            gravatar.setDefaultImage(GravatarDefaultImage.HTTP_404);
-        } else {
-            gravatar.setDefaultImage(GravatarDefaultImage.valueOf(task_parm.getDefaultAvatar().toString()));
-        }
+        gravatar.setDefaultImage(GravatarDefaultImage.valueOf(task_parm.getDefaultAvatar().toString()));
 
         gravatar.log();
 
