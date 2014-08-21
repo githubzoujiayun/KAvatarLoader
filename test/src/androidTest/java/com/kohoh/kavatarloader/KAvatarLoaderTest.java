@@ -92,7 +92,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         String log_message_wait_for = "testBindImageViewByUrl " + tag_expect;
         avatar_loader.bindImageViewByUrl(image_view, url,
                 new BindImageViewListener(log_message_wait_for));
-        assertBindImageView(image_view,tag_expect,log_message_wait_for);
+        assertBindImageView(image_view, tag_expect, log_message_wait_for);
     }
 
     private void testBindImageViewByEmail(final ImageView image_view, final String email,
@@ -201,27 +201,28 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     //TestCase038 测试当DefaultAvatar被设置为HTTP_404或者CUSTOM_DEFAULT_AVATAR状态时，加载avatar后能否正常工作
-//    @UiThreadTest
-//    public void testSetCustomDefaultAvatarAfterRealLoadFailed() {
-//        avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
-//        final ImageView iv_size100 = this.iv_size100;
-//        avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.DOSENT_EXIST_EMAIL, new BindListener() {
-//            @Override
-//            public void onBindFinished(BindListener.RESULT_CODE result_code) {
-//                assertEquals("result code wrong", BindListener.RESULT_CODE.FAIL, result_code);
-//                assertEquals("tag wrong", "custom default avatar", iv_size100.getTag());
-//            }
-//        });
-//
-//        avatar_loader.setDefaultAvatar(DefaultAvatar.BLANK);
-//        avatar_loader.bindImageViewByEmail(iv_size200, GravatarConstant.DOSENT_EXIST_EMAIL, new BindListener() {
-//            @Override
-//            public void onBindFinished(BindListener.RESULT_CODE result_code) {
-//                assertEquals("result code wrong", BindListener.RESULT_CODE.FAIL, result_code);
-//                assertEquals("tag wrong", "default avatar BLANK", iv_size200.getTag());
-//            }
-//        });
-//    }
+    public void testSetCustomDefaultAvatarAfterRealLoadFailed() {
+        avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
+        final String log_message_wait_for = "testSetCustomDefaultAvatarAfterRealLoadFailed log_message_wait_for";
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.DOSENT_EXIST_EMAIL, new BindListener() {
+                    @Override
+                    public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                        assertEquals("result code wrong", BindListener.RESULT_CODE.FAIL, result_code);
+                        Log.d(TAG, log_message_wait_for);
+                    }
+                });
+            }
+        });
+        if (solo.waitForLogMessage(log_message_wait_for)) {
+            assertEquals("tag wrong", "custom default avatar", iv_size100.getTag());
+            Log.d(TAG, "log wait success");
+        } else {
+            fail("wait log fail");
+        }
+    }
 
     class BindImageViewListener implements BindListener {
         private String log_message_wait_for;
