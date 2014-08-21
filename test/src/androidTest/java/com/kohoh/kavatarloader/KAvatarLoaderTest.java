@@ -89,25 +89,40 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     private void testBindImageViewByUrl(final ImageView image_view, final String url,
                                         final String tag_expect) {
-        String log_message_wait_for = "testBindImageViewByUrl " + tag_expect;
-        avatar_loader.bindImageViewByUrl(image_view, url,
-                new BindImageViewListener(log_message_wait_for));
+        final String log_message_wait_for = "testBindImageViewByUrl " + tag_expect;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                avatar_loader.bindImageViewByUrl(image_view, url,
+                        new BindImageViewListener(log_message_wait_for));
+            }
+        });
         assertBindImageView(image_view, tag_expect, log_message_wait_for);
     }
 
     private void testBindImageViewByEmail(final ImageView image_view, final String email,
                                           final String tag_expect) {
-        String log_message_wait_for = "testBindImageViewByEmail " + tag_expect;
-        avatar_loader.bindImageViewByEmail(image_view, email,
-                new BindImageViewListener(log_message_wait_for));
+        final String log_message_wait_for = "testBindImageViewByEmail " + tag_expect;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                avatar_loader.bindImageViewByEmail(image_view, email,
+                        new BindImageViewListener(log_message_wait_for));
+            }
+        });
         assertBindImageView(image_view, tag_expect, log_message_wait_for);
     }
 
     private void testBindImageViewByHashCode(final ImageView image_view, final String hash_code,
                                              final String tag_expect) {
-        String log_message_wait_for = "testBindImageViewByHashCode " + tag_expect;
-        avatar_loader.bindImageViewByHashCode(image_view, hash_code,
-                new BindImageViewListener(log_message_wait_for));
+        final String log_message_wait_for = "testBindImageViewByHashCode " + tag_expect;
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                avatar_loader.bindImageViewByHashCode(image_view, hash_code,
+                        new BindImageViewListener(log_message_wait_for));
+            }
+        });
         assertBindImageView(image_view, tag_expect, log_message_wait_for);
     }
 
@@ -127,14 +142,18 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
     public void testBindActionBarByEmail() {
         final String log_message_wait_for = "testBindActionBarByEmail log_message_wait_for";
-        avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1, new BindListener() {
+        activity.runOnUiThread(new Runnable() {
             @Override
-            public void onBindFinished(BindListener.RESULT_CODE result_code) {
-                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-                Log.d(TAG, log_message_wait_for);
+            public void run() {
+                avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1, new BindListener() {
+                    @Override
+                    public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                        assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
+                        Log.d(TAG, log_message_wait_for);
+                    }
+                });
             }
         });
-
         boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
         if (!wait_result) {
             fail("wait log fail");
@@ -144,11 +163,16 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase033 测试KAvatarLoader#bindActionBarByHashCode能否正常工作
     public void testBindActionBarByHashCode() {
         final String log_message_wait_for = "testBindActionBarByHashCode log_message_wait_for";
-        avatar_loader.bindActionBarByHashCode(action_bar, GravatarConstant.EXIST_EMAIL1_HASH_CODE, new BindListener() {
+        activity.runOnUiThread(new Runnable() {
             @Override
-            public void onBindFinished(BindListener.RESULT_CODE result_code) {
-                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-                Log.d(TAG, log_message_wait_for);
+            public void run() {
+                avatar_loader.bindActionBarByHashCode(action_bar, GravatarConstant.EXIST_EMAIL1_HASH_CODE, new BindListener() {
+                    @Override
+                    public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                        assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
+                        Log.d(TAG, log_message_wait_for);
+                    }
+                });
             }
         });
         boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
@@ -160,11 +184,16 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase034 测试KAvatarLoader#binActionBarByUrl能否正常工作
     public void testBindActionBarByUrl() {
         final String log_message_wait_for = "testBindActionBarByUrl log_message_wait_for";
-        avatar_loader.bindActionBarByUrl(action_bar, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, new BindListener() {
+        activity.runOnUiThread(new Runnable() {
             @Override
-            public void onBindFinished(BindListener.RESULT_CODE result_code) {
-                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-                Log.d(TAG, log_message_wait_for);
+            public void run() {
+                avatar_loader.bindActionBarByUrl(action_bar, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, new BindListener() {
+                    @Override
+                    public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                        assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
+                        Log.d(TAG, log_message_wait_for);
+                    }
+                });
             }
         });
         boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
