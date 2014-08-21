@@ -125,45 +125,53 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
-//    public void testBindActionBarByEmail() {
-//        final String log_message_wait_for = "testBindActionBarByEmail log_message_wait_for";
-//        avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1, new BindListener() {
-//            @Override
-//            public void onBindFinished(BindListener.RESULT_CODE result_code) {
-//                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-//                Log.d(TAG, log_message_wait_for);
-//            }
-//        });
-//
-//        boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
-//        if (!wait_result) {
-//            fail("wait log fail");
-//        }
-//    }
+    public void testBindActionBarByEmail() {
+        final String log_message_wait_for = "testBindActionBarByEmail log_message_wait_for";
+        avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1, new BindListener() {
+            @Override
+            public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
+                Log.d(TAG, log_message_wait_for);
+            }
+        });
+
+        boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
+        if (!wait_result) {
+            fail("wait log fail");
+        }
+    }
 
     //TestCase033 测试KAvatarLoader#bindActionBarByHashCode能否正常工作
-//    @UiThreadTest
-//    public void testBindActionBarByHashCode() {
-//        ActionBar action_bar = activity.getSupportActionBar();
-//        avatar_loader.bindActionBarByHashCode(action_bar, GravatarConstant.EXIST_EMAIL1_HASH_CODE, new BindListener() {
-//            @Override
-//            public void onBindFinished(BindListener.RESULT_CODE result_code) {
-//                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-//            }
-//        });
-//    }
+    public void testBindActionBarByHashCode() {
+        final String log_message_wait_for = "testBindActionBarByHashCode log_message_wait_for";
+        avatar_loader.bindActionBarByHashCode(action_bar, GravatarConstant.EXIST_EMAIL1_HASH_CODE, new BindListener() {
+            @Override
+            public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
+                Log.d(TAG, log_message_wait_for);
+            }
+        });
+        boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
+        if (!wait_result) {
+            fail("wait log fail");
+        }
+    }
 
     //TestCase034 测试KAvatarLoader#binActionBarByUrl能否正常工作
-//    @UiThreadTest
-//    public void testBindActionBarByUrl() {
-//        ActionBar action_bar = activity.getSupportActionBar();
-//        avatar_loader.bindActionBarByUrl(action_bar, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, new BindListener() {
-//            @Override
-//            public void onBindFinished(BindListener.RESULT_CODE result_code) {
-//                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-//            }
-//        });
-//    }
+    public void testBindActionBarByUrl() {
+        final String log_message_wait_for = "testBindActionBarByUrl log_message_wait_for";
+        avatar_loader.bindActionBarByUrl(action_bar, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, new BindListener() {
+            @Override
+            public void onBindFinished(BindListener.RESULT_CODE result_code) {
+                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
+                Log.d(TAG, log_message_wait_for);
+            }
+        });
+        boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
+        if (!wait_result) {
+            fail("wait log fail");
+        }
+    }
 
     //TestCase036 测试KAvatarLoader能否在加载Avatar之前首先加载默认的Avatar
     @UiThreadTest
