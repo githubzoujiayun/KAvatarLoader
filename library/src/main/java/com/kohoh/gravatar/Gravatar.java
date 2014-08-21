@@ -41,7 +41,6 @@ public final class Gravatar {
     private final static String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
 
     public void log() {
-        Log.d(TAG, "--------------------------------");
         Log.d(TAG, "size= " + size);
         Log.d(TAG, "rating= " + rating);
         Log.d(TAG, "default avatar= " + defaultImage);

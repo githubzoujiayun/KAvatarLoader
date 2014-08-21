@@ -1,7 +1,5 @@
 package com.kohoh.kavatarloader;
 
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
@@ -11,6 +9,7 @@ import android.widget.ImageView;
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.KAvatarLoader.test.R;
 import com.kohoh.kavatarloader.test.GravatarConstant;
+import com.robotium.solo.Solo;
 
 /**
  * Created by kohoh on 14-7-29.
@@ -18,11 +17,14 @@ import com.kohoh.kavatarloader.test.GravatarConstant;
 public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarLoaderTestUseActivity> {
     private ActionBarActivity activity;
     private KAvatarLoader avatar_loader;
+    private Solo solo;
     private ImageView iv_size100;
     private ImageView iv_size200;
     private ImageView iv_no_size;
     private ImageView iv_not_square_size99;
     private ImageView iv_not_square_size222;
+
+    private static String TAG = KAvatarLoaderTest.class.getSimpleName() + "_tag";
 
     public KAvatarLoaderTest() {
         super(KAvatarLoaderTestUseActivity.class);
@@ -33,6 +35,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         super.setUp();
         activity = getActivity();
         avatar_loader = new KAvatarLoader(activity);
+        solo = new Solo(getInstrumentation(), activity);
 
         iv_size100 = (ImageView) activity.findViewById(R.id.iv_size_100);
         iv_size200 = (ImageView) activity.findViewById(R.id.iv_size_200);
@@ -64,11 +67,10 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     //TestCase001 检测KAvatarLoader#bindImageViewByEmail是否正常工作
-//    @UiThreadTest
-//    public void testBindImageViewByEmail() throws InterruptedException {
-//        testBindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-//        testBindImageViewByEmail(iv_size200, GravatarConstant.EXIST_EMAIL2, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
-//    }
+    public void testBindImageViewByEmail() throws InterruptedException {
+        testBindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+        testBindImageViewByEmail(iv_size200, GravatarConstant.EXIST_EMAIL2, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
+    }
 
     //TestCase010 测试KAvatarLoader#bindImageViewByHashCode是否正常工作
 //    @UiThreadTest
@@ -84,17 +86,31 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 //        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
 //    }
 
-    private void testBindImageViewByUrl(final ImageView image_view, final String url, final String tag_expected) {
-        avatar_loader.bindImageViewByUrl(image_view, url, new AssertBindImageViewListener(image_view, tag_expected));
+//    private void testBindImageViewByUrl(final ImageView image_view, final String url, final String tag_expected) {
+//        avatar_loader.bindImageViewByUrl(image_view, url, new BindImageViewListener(image_view, tag_expected));
+//    }
+
+    private void testBindImageViewByEmail(final ImageView image_view, final String email,
+                                          final String tag_expect) {
+        String log_for_wait = "testBindImageViewByEmail " + tag_expect;
+        avatar_loader.bindImageViewByEmail(image_view, email,
+                new BindImageViewListener(log_for_wait));
+
+        boolean wait_result = solo.waitForLogMessage(log_for_wait);
+        if (wait_result) {
+            Log.d(TAG, "wait log success");
+            assertNotNull("drawable is null", image_view.getDrawable());
+            assertNotNull("tag is null", image_view.getTag());
+            assertEquals("tag not right", tag_expect, image_view.getTag());
+        } else {
+            Log.d(TAG, "wait log fail");
+            fail("wait log fail");
+        }
     }
 
-    private void testBindImageViewByEmail(final ImageView image_view, final String email, final String tag_expect) {
-        avatar_loader.bindImageViewByEmail(image_view, email, new AssertBindImageViewListener(image_view, tag_expect));
-    }
-
-    private void testBindImageViewByHashCode(final ImageView image_view, final String hash_code, final String tag_expect) {
-        avatar_loader.bindImageViewByHashCode(image_view, hash_code, new AssertBindImageViewListener(image_view, tag_expect));
-    }
+//    private void testBindImageViewByHashCode(final ImageView image_view, final String hash_code, final String tag_expect) {
+//        avatar_loader.bindImageViewByHashCode(image_view, hash_code, new BindImageViewListener(image_view, tag_expect));
+//    }
 
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
 //    @UiThreadTest
@@ -184,29 +200,17 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 //        });
 //    }
 
-    class AssertBindImageViewListener implements BindListener {
+    class BindImageViewListener implements BindListener {
+        private String log_wait_for;
 
-        private ImageView image_view;
-        private String tag_expect;
-
-        AssertBindImageViewListener(ImageView image_view, String tag_expected) {
-            this.image_view = image_view;
-            this.tag_expect = tag_expected;
-
+        BindImageViewListener(String log_wait_for) {
+            this.log_wait_for = log_wait_for;
         }
 
         @Override
         public void onBindFinished(BindListener.RESULT_CODE result_code) {
-            Log.d("kohoh_tag", "bind finish");
-            Drawable drawable = image_view.getDrawable();
-            assertNotNull("drawable is null", drawable);
-
-            String tag_actural = (String) image_view.getTag();
-            assertEquals("tag not equal", tag_expect, tag_actural);
-
-            assertEquals("bind failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-
-
+            assertEquals("result code is fail", RESULT_CODE.SUCCESS, result_code);
+            Log.d(TAG, log_wait_for);
         }
     }
 }
