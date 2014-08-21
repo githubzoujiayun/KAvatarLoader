@@ -1,5 +1,6 @@
 package com.kohoh.kavatarloader;
 
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
@@ -23,6 +24,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     private ImageView iv_no_size;
     private ImageView iv_not_square_size99;
     private ImageView iv_not_square_size222;
+    private ActionBar action_bar;
 
     private static String TAG = KAvatarLoaderTest.class.getSimpleName() + "_tag";
 
@@ -42,6 +44,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         iv_no_size = (ImageView) activity.findViewById(R.id.iv_no_size);
         iv_not_square_size99 = (ImageView) activity.findViewById(R.id.iv_not_square_size_99);
         iv_not_square_size222 = (ImageView) activity.findViewById(R.id.iv_not_square_size_222);
+        action_bar = activity.getSupportActionBar();
     }
 
 
@@ -73,30 +76,43 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     //TestCase010 测试KAvatarLoader#bindImageViewByHashCode是否正常工作
-//    @UiThreadTest
-//    public void testBindImageViewByHashCode() {
-//        testBindImageViewByHashCode(iv_size100, GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-//        testBindImageViewByHashCode(iv_size200, GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
-//    }
+    public void testBindImageViewByHashCode() {
+        testBindImageViewByHashCode(iv_size100, GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+        testBindImageViewByHashCode(iv_size200, GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
+    }
 
     //TestCase030 测试KAvatarLoader#bindImageViewByUrl能否正常工作
-//    @UiThreadTest
-//    public void testBindImageViewByUrl() {
-//        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-//        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
-//    }
+    public void testBindImageViewByUrl() {
+        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
+    }
 
-//    private void testBindImageViewByUrl(final ImageView image_view, final String url, final String tag_expected) {
-//        avatar_loader.bindImageViewByUrl(image_view, url, new BindImageViewListener(image_view, tag_expected));
-//    }
+    private void testBindImageViewByUrl(final ImageView image_view, final String url,
+                                        final String tag_expect) {
+        String log_message_wait_for = "testBindImageViewByUrl " + tag_expect;
+        avatar_loader.bindImageViewByUrl(image_view, url,
+                new BindImageViewListener(log_message_wait_for));
+        assertBindImageView(image_view,tag_expect,log_message_wait_for);
+    }
 
     private void testBindImageViewByEmail(final ImageView image_view, final String email,
                                           final String tag_expect) {
-        String log_for_wait = "testBindImageViewByEmail " + tag_expect;
+        String log_message_wait_for = "testBindImageViewByEmail " + tag_expect;
         avatar_loader.bindImageViewByEmail(image_view, email,
-                new BindImageViewListener(log_for_wait));
+                new BindImageViewListener(log_message_wait_for));
+        assertBindImageView(image_view, tag_expect, log_message_wait_for);
+    }
 
-        boolean wait_result = solo.waitForLogMessage(log_for_wait);
+    private void testBindImageViewByHashCode(final ImageView image_view, final String hash_code,
+                                             final String tag_expect) {
+        String log_message_wait_for = "testBindImageViewByHashCode " + tag_expect;
+        avatar_loader.bindImageViewByHashCode(image_view, hash_code,
+                new BindImageViewListener(log_message_wait_for));
+        assertBindImageView(image_view, tag_expect, log_message_wait_for);
+    }
+
+    private void assertBindImageView(ImageView image_view, String tag_expect, String log_message_wait_for) {
+        boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
         if (wait_result) {
             Log.d(TAG, "wait log success");
             assertNotNull("drawable is null", image_view.getDrawable());
@@ -108,23 +124,22 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         }
     }
 
-//    private void testBindImageViewByHashCode(final ImageView image_view, final String hash_code, final String tag_expect) {
-//        avatar_loader.bindImageViewByHashCode(image_view, hash_code, new BindImageViewListener(image_view, tag_expect));
-//    }
-
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
-//    @UiThreadTest
 //    public void testBindActionBarByEmail() {
-//        ActionBar action_bar = activity.getSupportActionBar();
+//        final String log_message_wait_for = "testBindActionBarByEmail log_message_wait_for";
 //        avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1, new BindListener() {
 //            @Override
 //            public void onBindFinished(BindListener.RESULT_CODE result_code) {
 //                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
+//                Log.d(TAG, log_message_wait_for);
 //            }
 //        });
+//
+//        boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
+//        if (!wait_result) {
+//            fail("wait log fail");
+//        }
 //    }
-
-    ;
 
     //TestCase033 测试KAvatarLoader#bindActionBarByHashCode能否正常工作
 //    @UiThreadTest
@@ -201,16 +216,16 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 //    }
 
     class BindImageViewListener implements BindListener {
-        private String log_wait_for;
+        private String log_message_wait_for;
 
-        BindImageViewListener(String log_wait_for) {
-            this.log_wait_for = log_wait_for;
+        BindImageViewListener(String log_message_wait_for) {
+            this.log_message_wait_for = log_message_wait_for;
         }
 
         @Override
         public void onBindFinished(BindListener.RESULT_CODE result_code) {
             assertEquals("result code is fail", RESULT_CODE.SUCCESS, result_code);
-            Log.d(TAG, log_wait_for);
+            Log.d(TAG, log_message_wait_for);
         }
     }
 }
