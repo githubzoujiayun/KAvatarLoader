@@ -166,4 +166,11 @@ public class GravatarTest extends AndroidTestCase {
             }
         }
     }
+
+    public void testGetHashCodeByUrl() {
+        String hash_code_expect = GravatarConstant.EXIST_EMAIL1_HASH_CODE;
+        String url = GravatarConstant.EXIST_EMAIL1_DEFAULT_URL;
+        String hash_code_actural = gravatar.getHashCodeByUrl(url);
+        assertEquals("hash code not right", hash_code_expect, hash_code_actural);
+    }
 }

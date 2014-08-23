@@ -90,6 +90,14 @@ public final class Gravatar {
         return GRAVATAR_URL + hash_code + ".jpg" + params;
     }
 
+    public String getHashCodeByUrl(String url) {
+        url=url.replace("http://www.gravatar.com/avatar/", "");
+        int start = url.indexOf(".jpg");
+        String usless = url.substring(start);
+        String hash_code = url.replace(usless, "");
+        return hash_code;
+    }
+
     /**
      * Downloads the gravatar for the given URL using Java {@link URL} and
      * returns a byte array containing the gravatar jpg, returns null if no
