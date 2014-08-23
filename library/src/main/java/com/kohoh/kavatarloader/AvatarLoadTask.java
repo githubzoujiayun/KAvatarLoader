@@ -209,13 +209,17 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         return new Avatar(raw_gravatar, tag);
     }
 
-    public File getSavedAvatarsDir() {
+    File getSavedAvatarsDir() {
         File cache_dir = context.getCacheDir();
         File saved_avatars_dir = new File(cache_dir, saved_avatars_folder_name);
         return saved_avatars_dir;
     }
 
-    void saveAvatar(Avatar avatar) {
+    AvatarLoadTask saveAvatar(Avatar avatar) {
+        if (!isNeedToStore(avatar)) {
+            return this;
+        }
+
         try {
             String avatar_name = Gravatar.getHashCodeByUrl(avatar.getTag());
             File saved_avatars_dir = getSavedAvatarsDir();
@@ -227,7 +231,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
 
             if (avatar_file.exists()) {
                 Log.d(TAG, "save avatar success");
-                return;
+                return this;
             }
 
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(avatar_file));
@@ -240,6 +244,8 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
         }
+
+        return this;
     }
 
     Avatar getSavedAvatar(String hash_code) {
@@ -280,7 +286,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         }
     }
 
-    public AvatarLoadTask clearSavedAvatars() {
+    AvatarLoadTask clearSavedAvatars() {
         File saved_avatars_dir = getSavedAvatarsDir();
         if (saved_avatars_dir.exists()) {
             deleteDir(saved_avatars_dir);
@@ -288,7 +294,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         return this;
     }
 
-    public AvatarLoadTask clearCachedAvatars() {
+    AvatarLoadTask clearCachedAvatars() {
         if (cached_avatars != null) {
             cached_avatars.clear();
         }
@@ -296,8 +302,43 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         return this;
     }
 
-    static Map<String,Avatar> getCachedAvatars() {
+    static Map<String, Avatar> getCachedAvatars() {
         return cached_avatars;
+    }
+
+    AvatarLoadTask cacheAvatar(Avatar avatar) {
+        if (!isNeedToStore(avatar)) {
+            return this;
+        }
+
+        String hash_code = Gravatar.getHashCodeByUrl(avatar.getTag());
+        cached_avatars.put(hash_code, avatar);
+
+        return this;
+    }
+
+    private boolean isNeedToStore(Avatar avatar) {
+        if (avatar == null) {
+            return false;
+        }
+
+        if (avatar.getBytes() == null) {
+            return false;
+        }
+
+        if (avatar.getBytes().length <= 0) {
+            return false;
+        }
+
+        if (avatar.getTag() == null) {
+            return false;
+        }
+
+        if (!avatar.getTag().contains("http://www.gravatar.com/avatar/")) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override

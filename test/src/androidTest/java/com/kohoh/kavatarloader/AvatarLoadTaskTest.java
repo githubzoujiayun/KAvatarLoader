@@ -360,12 +360,15 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         assertTrue("clear cached avatars fail", cached_avatars.isEmpty());
     }
 
-//    public void testCacheAvatar() {
-//        AvatarLoadTask task = new AvatarLoadTask(context, null);
-//
-//
-//        task.cacheAvatar(avatar);
-//    }
+    public void testCacheAvatar() {
+        AvatarLoadTask task = new AvatarLoadTask(context, null);
+        task.clearCachedAvatars();
+        Avatar avatar=task.loadAvatar(AvatarLoadTaskConstant.getTaskParmUseEmail
+                (AvatarLoadTaskConstant.EXIST_EMAIL1));
+        task.cacheAvatar(avatar);
+        Map cached_avatars = task.getCachedAvatars();
+        assertFalse("cached_avatars is empty", cached_avatars.isEmpty());
+    }
 
     static class AvatarLoadTaskConstant {
         public static final String DOSENT_EXIST_EMAIL = "doesntexist@example.com";
