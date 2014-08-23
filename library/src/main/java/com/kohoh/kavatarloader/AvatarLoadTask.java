@@ -13,6 +13,12 @@ import com.kohoh.gravatar.Gravatar;
 import com.kohoh.gravatar.GravatarDefaultImage;
 import com.kohoh.gravatar.GravatarRating;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import static com.kohoh.kavatarloader.TaskParm.getTargetViewSytle;
 import static com.kohoh.kavatarloader.TaskParm.getTaskParmStyle;
 
@@ -26,6 +32,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
     final private Context context;
     final private Gravatar gravatar;
     final private TaskParm task_parm;
+    private static String cache_avatars_folder_name = "avatars";
 
 
     public AvatarLoadTask(Context context, TaskParm task_parm) {
@@ -195,6 +202,39 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         }
 
         return new Avatar(context, raw_gravatar, tag);
+    }
+
+    public File getCacheAvatarsDir() {
+        File cache_dir = context.getCacheDir();
+        File cache_avatars_dir = new File(cache_dir, cache_avatars_folder_name);
+        return cache_avatars_dir;
+    }
+
+    void saveAvatar(Avatar avatar) {
+        try {
+            String avatar_name = Gravatar.getHashCodeByUrl(avatar.getTag());
+            File cache_avatars_dir = getCacheAvatarsDir();
+            File avatar_file = new File(cache_avatars_dir, avatar_name);
+
+            if (!cache_avatars_dir.exists()) {
+                cache_avatars_dir.mkdir();
+            }
+
+            if (avatar_file.exists()) {
+                Log.d(TAG, "save avatar success");
+                return;
+            }
+
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(new FileOutputStream(avatar_file));
+            bufferedOutputStream.write(avatar.getBytes());
+            bufferedOutputStream.flush();
+            bufferedOutputStream.close();
+            Log.d(TAG, "save avatar success");
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e(TAG, "IOException", e);
+        }
     }
 
     @Override

@@ -90,7 +90,7 @@ public final class Gravatar {
         return GRAVATAR_URL + hash_code + ".jpg" + params;
     }
 
-    public String getHashCodeByUrl(String url) {
+    static public String getHashCodeByUrl(String url) {
         url=url.replace("http://www.gravatar.com/avatar/", "");
         int start = url.indexOf(".jpg");
         String usless = url.substring(start);

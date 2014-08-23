@@ -10,8 +10,11 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
+import com.kohoh.gravatar.Gravatar;
 import com.kohoh.kavatarloader.test.Resources;
+import com.robotium.solo.Solo;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -26,6 +29,8 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     private ActionBar action_bar;
     private Resources resources;
 
+    private Solo solo;
+
     public AvatarLoadTaskTest() {
         super(KAvatarLoaderTestUseActivity.class);
     }
@@ -37,6 +42,8 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         this.resources = new Resources(context);
         iv_no_size = (ImageView) activity.findViewById(com.kohoh.KAvatarLoader.test.R.id.iv_no_size);
         action_bar = activity.getSupportActionBar();
+
+        solo = new Solo(getInstrumentation(), activity);
     }
 
     public void testLoadAvatarUesUrl() throws Exception {
@@ -273,6 +280,35 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
             assertNull("bind fail,imgae view 's drawable is not null", image_view.getDrawable());
             assertNull("bind fail,image view 's tag is not null", image_view.getTag());
             Log.d(TAG, "bind finish");
+        }
+    }
+
+    public void testSaveAvatar() {
+        String address = AvatarLoadTaskConstant.EXIST_EMAIL1;
+        AvatarLoadTask task = new AvatarLoadTask(context, null);
+        File cache_avatars_dir = task.getCacheAvatarsDir();
+        TaskParmUseEmail parm = new TaskParmUseEmail();
+        parm.setEmail(address);
+        Avatar avatar = task.loadAvatar(parm);
+        File cache_avatar = new File(cache_avatars_dir, Gravatar.getHashCodeByUrl(avatar.getTag()));
+
+        if (cache_avatars_dir.exists()) {
+            cache_avatars_dir.delete();
+        }
+
+        task.saveAvatar(avatar);
+
+        boolean wait_result = solo.waitForLogMessage("save avatar success");
+        if (wait_result) {
+            if (cache_avatar.exists()) {
+                Log.d(TAG, "testSaveAvatar success");
+            } else {
+                Log.d(TAG, "testSaveAvatar fail");
+                fail("avatar_cache dosent exist,avatar_cache file name = " + address);
+            }
+        } else {
+            Log.d(TAG, "testSaveAvatar fail");
+            fail("wait for log fail");
         }
     }
 
