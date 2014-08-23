@@ -16,6 +16,8 @@ abstract public class TaskParm {
     private DefaultAvatar default_avatar = DefaultAvatar.valueOf(Gravatar.DEFAULT_DEFAULT_IMAGE.toString());
     private AvatarRating avatar_rating = AvatarRating.valueOf(Gravatar.DEFAULT_RATING.toString());
     private Object target_view;
+    private boolean ifUseCachedAvatar = true;
+    private boolean ifUseSavedAvatar = true;
 
     public static TARGET_VIEW_STYLE getTargetViewSytle(Object target_view) {
         boolean isActionBar = ActionBar.class.isInstance(target_view);
@@ -128,6 +130,24 @@ abstract public class TaskParm {
 
     public TaskParm setAvatarRating(AvatarRating avatar_rating) {
         this.avatar_rating = avatar_rating;
+        return this;
+    }
+
+    public boolean isUseCachedAvatar() {
+        return ifUseCachedAvatar;
+    }
+
+    public TaskParm setUseCachedAvatar(boolean ifUseCachedAvatar) {
+        this.ifUseCachedAvatar = ifUseCachedAvatar;
+        return this;
+    }
+
+    public boolean isUseSavedAvatar() {
+        return ifUseSavedAvatar;
+    }
+
+    public TaskParm setUseSavedAvatar(boolean ifUseSavedAvatar) {
+        this.ifUseSavedAvatar = ifUseSavedAvatar;
         return this;
     }
 

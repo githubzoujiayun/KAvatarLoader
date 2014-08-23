@@ -20,25 +20,13 @@ public class KAvatarLoader {
     private DefaultAvatar default_avatar;
     private AvatarRating avatar_rating;
 
+    private static boolean ifUseCachedAvatar = true;
+    private static boolean ifUseSavedAvatar = true;
+
     public KAvatarLoader(Context context) {
         this.context = context;
         this.default_avatar = DefaultAvatar.HTTP_404;
         this.avatar_rating = AvatarRating.GENERAL_AUDIENCES;
-    }
-
-    /**
-     * 设置KAvatarLoader的Execuor。该特性只有API11以上版本拥有。
-     * 通过该方法，可以控制KAvatarLoader的绑定行为。
-     * 如果设置为AsyncTask.SERIAL_EXECUTOR，则每次同时绑定一个容器。
-     * 如果设置为AsyncTask.THREAD_POOL_EXECUTOR,则每次最多同时绑定五个容器。
-     * 当然你也可是使用你自定义的Executor。
-     * 默认的Executor为AsyncTask.SERIAL_EXECUTOR。
-     * 只有API11以上版本支持该功能
-     *
-     * @param executor
-     */
-    static public void setLoadExector(Executor executor) {
-        KAvatarLoader.executor = executor;
     }
 
     int calculateAvatarSize(ImageView imageView) {
@@ -199,7 +187,8 @@ public class KAvatarLoader {
         }
 
         task_parm.setDefaultAvatar(default_avatar).setAvatarRating(avatar_rating).
-                setTargetView(target_view).setBindListner(bind_listener);
+                setTargetView(target_view).setBindListner(bind_listener).
+                setUseCachedAvatar(ifUseCachedAvatar).setUseSavedAvatar(ifUseSavedAvatar);
 
         //该特性只有API11以上版本拥有
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
@@ -255,6 +244,28 @@ public class KAvatarLoader {
         return this;
     }
 
+    /**
+     * 设置KAvatarLoader的Execuor。该特性只有API11以上版本拥有。
+     * 通过该方法，可以控制KAvatarLoader的绑定行为。
+     * 如果设置为AsyncTask.SERIAL_EXECUTOR，则每次同时绑定一个容器。
+     * 如果设置为AsyncTask.THREAD_POOL_EXECUTOR,则每次最多同时绑定五个容器。
+     * 当然你也可是使用你自定义的Executor。
+     * 默认的Executor为AsyncTask.SERIAL_EXECUTOR。
+     * 只有API11以上版本支持该功能
+     *
+     * @param executor
+     */
+    static public void setLoadExector(Executor executor) {
+        KAvatarLoader.executor = executor;
+    }
+
+    public static void setUseCachedAvatar(boolean ifUseCachedAvatar) {
+        KAvatarLoader.ifUseCachedAvatar = ifUseCachedAvatar;
+    }
+
+    public static void setUseSavedAvatar(boolean ifUseSavedAvatar) {
+        KAvatarLoader.ifUseSavedAvatar = ifUseSavedAvatar;
+    }
 }
 
 

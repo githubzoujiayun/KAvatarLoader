@@ -114,7 +114,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
 
     private void testLoadAvatarWhoseAccountExist(TaskParm task_parm, String tag_expect) throws Exception {
         AvatarLoadTask task = getAvatarTask();
-        Avatar avatar = task.loadAvatar(task_parm);
+        Avatar avatar = task.loadAvatarByInternet(task_parm);
         assertNotNull("avatar is null", avatar);
         assertNotNull("avatar's drawable is null", avatar.getDrawable(context.getResources()));
         assertNotNull("avatar's bitmap is null", avatar.getBitmap());
@@ -125,7 +125,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
 
     private void testLoadAvatarWhoseAccountDosentExist(TaskParm task_parm, String tag_expect) throws Exception {
         AvatarLoadTask task = getAvatarTask();
-        Avatar avatar = task.loadAvatar(task_parm);
+        Avatar avatar = task.loadAvatarByInternet(task_parm);
 
         assertNotNull("avatar is null", avatar);
         assertNotNull("avatar's tag is null", avatar.getTag());
@@ -313,7 +313,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
 
     private File saveAvatar(TaskParm parm) {
         AvatarLoadTask task = new AvatarLoadTask(context, null);
-        Avatar avatar = task.loadAvatar(parm);
+        Avatar avatar = task.loadAvatarByInternet(parm);
 
         File saved_avatar_file = new File(task.getSavedAvatarsDir(), Gravatar.getHashCodeByUrl(avatar.getTag()));
         if (saved_avatar_file.exists()) {
@@ -370,7 +370,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
 
     private Avatar cacheAvatar(TaskParm parm) {
         AvatarLoadTask task = new AvatarLoadTask(context, null);
-        Avatar avatar = task.loadAvatar(parm);
+        Avatar avatar = task.loadAvatarByInternet(parm);
         task.cacheAvatar(avatar);
         return avatar;
     }

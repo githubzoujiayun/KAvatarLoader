@@ -38,6 +38,8 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         super.setUp();
         activity = getActivity();
         avatar_loader = new KAvatarLoader(activity);
+        avatar_loader.setUseCachedAvatar(false);
+        avatar_loader.setUseSavedAvatar(false);
         solo = new Solo(getInstrumentation(), activity);
 
         iv_size100 = (ImageView) activity.findViewById(R.id.iv_size_100);
@@ -112,13 +114,17 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         boolean wait_result = solo.waitForCondition(bind_condition, 10000);
         if (wait_result) {
             Log.d(TAG, "bind ImageView success " + task_parm_style);
-            assertNotNull("drawable is null", image_view.getDrawable());
-            assertNotNull("tag is null", image_view.getTag());
-            assertEquals("tag not right", tag_expect, image_view.getTag());
+            assertBindImageView(image_view, tag_expect);
         } else {
             Log.d(TAG, "bind ImageView fail " + task_parm_style);
             fail("wait condition fail");
         }
+    }
+
+    private void assertBindImageView(ImageView image_view, String tag_expect) {
+        assertNotNull("drawable is null", image_view.getDrawable());
+        assertNotNull("tag is null", image_view.getTag());
+        assertEquals("tag not right", tag_expect, image_view.getTag());
     }
 
     class BindCondition implements com.robotium.solo.Condition {
@@ -219,7 +225,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     public void testSetCustomDefaultAvatarAfterRealLoadFailed() {
         avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
         final BindCondition bind_condition = new BindCondition();
-        final BindListener listener=new BindListener() {
+        final BindListener listener = new BindListener() {
             @Override
             public void onBindFinished(RESULT_CODE result_code) {
                 assertEquals("result code wrong", BindListener.RESULT_CODE.FAIL, result_code);
@@ -230,16 +236,62 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
             @Override
             public void run() {
                 avatar_loader.bindImageViewByEmail(iv_size100,
-                        GravatarConstant.DOSENT_EXIST_EMAIL,listener);
+                        GravatarConstant.DOSENT_EXIST_EMAIL, listener);
             }
         });
-        boolean wait_result = solo.waitForCondition(bind_condition,10000);
+        boolean wait_result = solo.waitForCondition(bind_condition, 10000);
         if (wait_result) {
             assertEquals("tag wrong", "custom default avatar", iv_size100.getTag());
             Log.d(TAG, "testSetCustomDefaultAvatarAfterRealLoadFailed success");
         } else {
             Log.d(TAG, "testSetCustomDefaultAvatarAfterRealLoadFailed fail");
             fail("wait log fail");
+        }
+    }
+
+    public void testBindImageViewByCacheAvatar() {
+        final BindCondition condition1 = new BindCondition();
+        final BindListener listener1 = new BindListener() {
+            @Override
+            public void onBindFinished(RESULT_CODE result_code) {
+                assertEquals("result_code not right", RESULT_CODE.SUCCESS, result_code);
+                condition1.setBindFinished(true);
+            }
+        };
+
+        final BindCondition condition2 = new BindCondition();
+        final BindListener listener2 = new BindListener() {
+            @Override
+            public void onBindFinished(RESULT_CODE result_code) {
+                assertEquals("result_code not right", RESULT_CODE.SUCCESS, result_code);
+                condition2.setBindFinished(true);
+            }
+        };
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, listener1);
+            }
+        });
+
+        if (solo.waitForCondition(condition1, 10000)) {
+            assertBindImageView(iv_size100, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
+
+            avatar_loader.setUseCachedAvatar(true);
+
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, listener2);
+
+                }
+            });
+
+            if (solo.waitForCondition(condition2, 10000)) {
+                assertBindImageView(iv_size100,"cached avatar,HashCode = "
+                        +GravatarConstant.EXIST_EMAIL1_HASH_CODE);
+            }
         }
     }
 }

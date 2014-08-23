@@ -37,8 +37,8 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
     final private Gravatar gravatar;
     final private TaskParm task_parm;
     private static String saved_avatars_folder_name = "avatars";
-
     private static Map<String, Avatar> cached_avatars = new HashMap<String, Avatar>();
+    static private Object cached_avatar_lock = new Object();
 
     public AvatarLoadTask(Context context, TaskParm task_parm) {
         this.context = context;
@@ -175,7 +175,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         }
     }
 
-    Avatar loadAvatar(TaskParm task_parm) {
+    Avatar loadAvatarByInternet(TaskParm task_parm) {
         byte[] raw_gravatar = null;
         String tag = null;
 
@@ -206,9 +206,55 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
                 Log.e(TAG, "style 必须是TASK_PARM_USE_URL，TASK_PARM_USE_EMAIL，TASK_PARM_USE_HASH_CODE之一");
         }
 
-        return new Avatar(raw_gravatar, tag);
+        Avatar avatar = new Avatar(raw_gravatar, tag);
+
+        if (task_parm.isUseCachedAvatar()) {
+            cacheAvatar(avatar);
+        }
+
+        if (task_parm.isUseSavedAvatar()) {
+            saveAvatar(avatar);
+        }
+
+        return avatar;
     }
 
+    Avatar loadAvatarByCachedAvatar(TaskParm task_parm) {
+        Avatar avatar = null;
+        if (!task_parm.isUseCachedAvatar()) {
+            return avatar;
+        }
+
+        avatar = getCachedAvatar(getHashCode(task_parm));
+        return avatar;
+    }
+
+    Avatar loadAvatarBySavedAvatar(TaskParm task_parm) {
+        Avatar avatar = null;
+        if (!task_parm.isUseSavedAvatar()) {
+            return avatar;
+        }
+
+        avatar = getSavedAvatar(getHashCode(task_parm));
+        return avatar;
+    }
+
+    private String getHashCode(TaskParm task_parm) {
+        String hash_code = null;
+        switch (getTaskParmStyle(task_parm)) {
+            case TASK_PARM_USE_HASH_CODE:
+                hash_code = ((TaskParmUseHashCode) task_parm).getHashCode();
+                break;
+            case TASK_PARM_USE_URL:
+                hash_code = Gravatar.getHashCodeByUrl(((TaskParmUseUrl) task_parm).getUrl());
+                break;
+            case TASK_PARM_USE_EMAIL:
+                hash_code = Gravatar.getHashCodeByEmail(((TaskParmUseEmail) task_parm).getEmail());
+                break;
+        }
+        return hash_code;
+    }
+   
     File getSavedAvatarsDir() {
         File cache_dir = context.getCacheDir();
         File saved_avatars_dir = new File(cache_dir, saved_avatars_folder_name);
@@ -296,7 +342,9 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
 
     AvatarLoadTask clearCachedAvatars() {
         if (cached_avatars != null) {
-            cached_avatars.clear();
+            synchronized (cached_avatar_lock) {
+                cached_avatars.clear();
+            }
         }
 
         return this;
@@ -312,8 +360,10 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         }
 
         String hash_code = Gravatar.getHashCodeByUrl(avatar.getTag());
-        cached_avatars.put(hash_code, new Avatar(avatar.getBytes(), "cached avatar,HashCode = " + hash_code));
-
+        synchronized (cached_avatar_lock) {
+            cached_avatars.put(hash_code, new Avatar(avatar.getBytes(),
+                    "cached avatar,HashCode = " + hash_code));
+        }
         return this;
     }
 
@@ -342,7 +392,11 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
     }
 
     Avatar getCachedAvatar(String hash_code) {
-        return cached_avatars.get(hash_code);
+        Avatar avatar = null;
+        synchronized (cached_avatar_lock) {
+            avatar = cached_avatars.get(hash_code);
+        }
+        return avatar;
     }
 
     @Override
@@ -354,7 +408,28 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
     @Override
     protected Avatar doInBackground(Object... params) {
         Log.d(TAG, "-----START LOAD AVATAR------");
-        Avatar avatar = loadAvatar(task_parm);
+
+        boolean isLoadFinished = false;
+        Avatar avatar = null;
+
+        if (!isLoadFinished) {
+            avatar = loadAvatarByCachedAvatar(task_parm);
+            if (avatar != null) {
+                isLoadFinished = true;
+            }
+        }
+
+        if (!isLoadFinished) {
+            avatar = loadAvatarBySavedAvatar(task_parm);
+            if (avatar != null) {
+                isLoadFinished = true;
+            }
+        }
+
+        if (!isLoadFinished) {
+            avatar = loadAvatarByInternet(task_parm);
+        }
+
         Log.d(TAG, "avatar's raw_bytes " + (avatar.getBytes() == null ? "is null" : "not null"));
         Log.d(TAG, "avatar's tag " + (avatar.getTag() == null ? "is null" : "is " + avatar.getTag()));
         Log.d(TAG, "------LOAD FINISH------");
