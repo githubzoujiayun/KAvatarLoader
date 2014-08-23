@@ -284,31 +284,37 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     }
 
     public void testSaveAvatar() {
-        String address = AvatarLoadTaskConstant.EXIST_EMAIL1;
+        TaskParmUseEmail parmUseEmail = new TaskParmUseEmail();
+        parmUseEmail.setEmail(AvatarLoadTaskConstant.EXIST_EMAIL1);
+        testSaveAvatar(parmUseEmail);
+
+        TaskParmUseHashCode parmUseHashCode = new TaskParmUseHashCode();
+        parmUseHashCode.setHashCode(AvatarLoadTaskConstant.EXIST_EMAIL2_HASH_CODE);
+        testSaveAvatar(parmUseHashCode);
+    }
+
+    private void testSaveAvatar(TaskParm parm) {
         AvatarLoadTask task = new AvatarLoadTask(context, null);
         File cache_avatars_dir = task.getCacheAvatarsDir();
-        TaskParmUseEmail parm = new TaskParmUseEmail();
-        parm.setEmail(address);
         Avatar avatar = task.loadAvatar(parm);
-        File cache_avatar = new File(cache_avatars_dir, Gravatar.getHashCodeByUrl(avatar.getTag()));
+        File cache_avatar_file = new File(cache_avatars_dir, Gravatar.getHashCodeByUrl(avatar.getTag()));
 
-        if (cache_avatars_dir.exists()) {
-            cache_avatars_dir.delete();
+        if (cache_avatar_file.exists()) {
+            cache_avatar_file.delete();
         }
-
         task.saveAvatar(avatar);
 
         boolean wait_result = solo.waitForLogMessage("save avatar success");
         if (wait_result) {
-            if (cache_avatar.exists()) {
-                Log.d(TAG, "testSaveAvatar success");
+            if (cache_avatar_file.exists()) {
+                Log.d(TAG, "testSaveAvatar success,avatar_cache file name = " + cache_avatar_file.getPath());
             } else {
                 Log.d(TAG, "testSaveAvatar fail");
-                fail("avatar_cache dosent exist,avatar_cache file name = " + address);
+                fail("avatar_cache dosent exist,avatar_cache file name = " + cache_avatar_file.getPath());
             }
         } else {
             Log.d(TAG, "testSaveAvatar fail");
-            fail("wait for log fail");
+            fail("wait for log fail,avatar_cache file name = " + cache_avatar_file.getPath());
         }
     }
 
