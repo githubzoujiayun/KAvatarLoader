@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.KAvatarLoader.test.R;
+import com.kohoh.kavatarloader.TaskParm.TASK_PARM_STYLE;
 import com.kohoh.kavatarloader.test.GravatarConstant;
 import com.robotium.solo.Solo;
 
@@ -89,41 +90,40 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     private void testBindImageViewByUrl(final ImageView image_view, final String url,
                                         final String tag_expect) {
-        final BindCondition bind_condition = new BindCondition();
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                avatar_loader.bindImageViewByUrl(image_view, url,
-                        new BindImageViewListener(bind_condition));
-            }
-        });
-        assertBindImageView(image_view, tag_expect, bind_condition);
+        testBindImageView(image_view, url, tag_expect, TASK_PARM_STYLE.TASK_PARM_USE_URL);
     }
 
     private void testBindImageViewByEmail(final ImageView image_view, final String email,
                                           final String tag_expect) {
-        final BindCondition bind_codition = new BindCondition();
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                avatar_loader.bindImageViewByEmail(image_view, email,
-                        new BindImageViewListener(bind_codition));
-            }
-        });
-        assertBindImageView(image_view, tag_expect, bind_codition);
+        testBindImageView(image_view, email, tag_expect, TASK_PARM_STYLE.TASK_PARM_USE_EMAIL);
     }
 
     private void testBindImageViewByHashCode(final ImageView image_view, final String hash_code,
                                              final String tag_expect) {
+        testBindImageView(image_view, hash_code, tag_expect, TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE);
+    }
+
+    private void testBindImageView(final ImageView imageView, final String address, final String tag_expect,
+                                   final TASK_PARM_STYLE task_parm_style) {
         final BindCondition bind_condition = new BindCondition();
+        final BindImageViewListener listener = new BindImageViewListener(bind_condition);
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                avatar_loader.bindImageViewByHashCode(image_view, hash_code,
-                        new BindImageViewListener(bind_condition));
+                switch (task_parm_style) {
+                    case TASK_PARM_USE_EMAIL:
+                        avatar_loader.bindImageViewByEmail(imageView, address, listener);
+                        break;
+                    case TASK_PARM_USE_URL:
+                        avatar_loader.bindImageViewByUrl(imageView, address, listener);
+                        break;
+                    case TASK_PARM_USE_HASH_CODE:
+                        avatar_loader.bindImageViewByHashCode(imageView, address, listener);
+                        break;
+                }
             }
         });
-        assertBindImageView(image_view, tag_expect, bind_condition);
+        assertBindImageView(imageView, tag_expect, bind_condition);
     }
 
     class BindCondition implements com.robotium.solo.Condition {
