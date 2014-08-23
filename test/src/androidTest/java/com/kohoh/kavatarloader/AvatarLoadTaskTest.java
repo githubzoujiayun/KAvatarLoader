@@ -17,6 +17,7 @@ import com.robotium.solo.Solo;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * Created by kohoh on 14-8-12.
@@ -294,19 +295,19 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     }
 
     private void testSaveAvatar(TaskParm parm) {
-        File cache_avatar_file = saveAvatar(parm);
+        File saved_avatar_file = saveAvatar(parm);
 
         boolean wait_result = solo.waitForLogMessage("save avatar success");
         if (wait_result) {
-            if (cache_avatar_file.exists()) {
-                Log.d(TAG, "testSaveAvatar success,avatar_cache file name = " + cache_avatar_file.getPath());
+            if (saved_avatar_file.exists()) {
+                Log.d(TAG, "testSaveAvatar success,avatar_save file name = " + saved_avatar_file.getPath());
             } else {
                 Log.d(TAG, "testSaveAvatar fail");
-                fail("avatar_cache dosent exist,avatar_cache file name = " + cache_avatar_file.getPath());
+                fail("avatar_save dosent exist,avatar_save file name = " + saved_avatar_file.getPath());
             }
         } else {
             Log.d(TAG, "testSaveAvatar fail");
-            fail("wait for log fail,avatar_cache file name = " + cache_avatar_file.getPath());
+            fail("wait for log fail,avatar_save file name = " + saved_avatar_file.getPath());
         }
     }
 
@@ -314,13 +315,13 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         AvatarLoadTask task = new AvatarLoadTask(context, null);
         Avatar avatar = task.loadAvatar(parm);
 
-        File cache_avatar_file = new File(task.getCacheAvatarsDir(), Gravatar.getHashCodeByUrl(avatar.getTag()));
-        if (cache_avatar_file.exists()) {
-            cache_avatar_file.delete();
+        File saved_avatar_file = new File(task.getSavedAvatarsDir(), Gravatar.getHashCodeByUrl(avatar.getTag()));
+        if (saved_avatar_file.exists()) {
+            saved_avatar_file.delete();
         }
         task.saveAvatar(avatar);
 
-        return cache_avatar_file;
+        return saved_avatar_file;
     }
 
     public void testGetSavedAvatar() {
@@ -348,8 +349,15 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
 
         AvatarLoadTask task = new AvatarLoadTask(context, null);
         task.clearSavedAvatars();
-        File cache_avatars_dir = task.getCacheAvatarsDir();
-        assertFalse("cache avatars dir is not null", cache_avatars_dir.exists());
+        File saved_avatars_dir = task.getSavedAvatarsDir();
+        assertFalse("save avatars dir is not null", saved_avatars_dir.exists());
+    }
+
+    public void testClearCachedAvatars() {
+        AvatarLoadTask task = new AvatarLoadTask(context, null);
+        task.clearCachedAvatars();
+        Map cached_avatars = AvatarLoadTask.getCachedAvatars();
+        assertTrue("clear cached avatars fail", cached_avatars.isEmpty());
     }
 
 //    public void testCacheAvatar() {

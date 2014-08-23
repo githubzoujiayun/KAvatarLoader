@@ -20,6 +20,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.kohoh.kavatarloader.TaskParm.getTargetViewSytle;
 import static com.kohoh.kavatarloader.TaskParm.getTaskParmStyle;
@@ -34,8 +36,9 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
     final private Context context;
     final private Gravatar gravatar;
     final private TaskParm task_parm;
-    private static String cache_avatars_folder_name = "avatars";
+    private static String saved_avatars_folder_name = "avatars";
 
+    private static Map<String, Avatar> cached_avatars = new HashMap<String, Avatar>();
 
     public AvatarLoadTask(Context context, TaskParm task_parm) {
         this.context = context;
@@ -206,20 +209,20 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         return new Avatar(raw_gravatar, tag);
     }
 
-    public File getCacheAvatarsDir() {
+    public File getSavedAvatarsDir() {
         File cache_dir = context.getCacheDir();
-        File cache_avatars_dir = new File(cache_dir, cache_avatars_folder_name);
-        return cache_avatars_dir;
+        File saved_avatars_dir = new File(cache_dir, saved_avatars_folder_name);
+        return saved_avatars_dir;
     }
 
     void saveAvatar(Avatar avatar) {
         try {
             String avatar_name = Gravatar.getHashCodeByUrl(avatar.getTag());
-            File cache_avatars_dir = getCacheAvatarsDir();
-            File avatar_file = new File(cache_avatars_dir, avatar_name);
+            File saved_avatars_dir = getSavedAvatarsDir();
+            File avatar_file = new File(saved_avatars_dir, avatar_name);
 
-            if (!cache_avatars_dir.exists()) {
-                cache_avatars_dir.mkdir();
+            if (!saved_avatars_dir.exists()) {
+                saved_avatars_dir.mkdir();
             }
 
             if (avatar_file.exists()) {
@@ -243,10 +246,10 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         Avatar avatar = null;
 
         try {
-            File cache_avatar_file = new File(getCacheAvatarsDir(), hash_code);
-            if (cache_avatar_file.exists()) {
+            File saved_avatar_file = new File(getSavedAvatarsDir(), hash_code);
+            if (saved_avatar_file.exists()) {
                 BufferedInputStream bufferedInputStream = new BufferedInputStream(
-                        new FileInputStream(cache_avatar_file));
+                        new FileInputStream(saved_avatar_file));
 
                 byte[] raw_avatar = new byte[bufferedInputStream.available()];
                 bufferedInputStream.read(raw_avatar);
@@ -278,11 +281,23 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
     }
 
     public AvatarLoadTask clearSavedAvatars() {
-        File cache_avatars_dir = getCacheAvatarsDir();
-        if (cache_avatars_dir.exists()) {
-            deleteDir(cache_avatars_dir);
+        File saved_avatars_dir = getSavedAvatarsDir();
+        if (saved_avatars_dir.exists()) {
+            deleteDir(saved_avatars_dir);
         }
         return this;
+    }
+
+    public AvatarLoadTask clearCachedAvatars() {
+        if (cached_avatars != null) {
+            cached_avatars.clear();
+        }
+
+        return this;
+    }
+
+    static Map<String,Avatar> getCachedAvatars() {
+        return cached_avatars;
     }
 
     @Override
