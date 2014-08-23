@@ -1,6 +1,5 @@
 package com.kohoh.kavatarloader;
 
-import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.test.ActivityInstrumentationTestCase2;
@@ -93,27 +92,42 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         testBindImageView(image_view, hash_code, tag_expect, TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE);
     }
 
-    private void testBindImageView(final ImageView imageView, final String address, final String tag_expect,
+    private void testBindImageView(final ImageView image_view, final String address, final String tag_expect,
                                    final TASK_PARM_STYLE task_parm_style) {
         final BindCondition bind_condition = new BindCondition();
-        final BindImageViewListener listener = new BindImageViewListener(bind_condition);
+        final BindListener listener = new BindListener() {
+            @Override
+            public void onBindFinished(RESULT_CODE result_code) {
+                assertEquals("result code is fail", RESULT_CODE.SUCCESS, result_code);
+                bind_condition.setBindFinished(true);
+            }
+        };
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 switch (task_parm_style) {
                     case TASK_PARM_USE_EMAIL:
-                        avatar_loader.bindImageViewByEmail(imageView, address, listener);
+                        avatar_loader.bindImageViewByEmail(image_view, address, listener);
                         break;
                     case TASK_PARM_USE_URL:
-                        avatar_loader.bindImageViewByUrl(imageView, address, listener);
+                        avatar_loader.bindImageViewByUrl(image_view, address, listener);
                         break;
                     case TASK_PARM_USE_HASH_CODE:
-                        avatar_loader.bindImageViewByHashCode(imageView, address, listener);
+                        avatar_loader.bindImageViewByHashCode(image_view, address, listener);
                         break;
                 }
             }
         });
-        assertBindImageView(imageView, tag_expect, bind_condition);
+        boolean wait_result = solo.waitForCondition(bind_condition, 10000);
+        if (wait_result) {
+            Log.d(TAG, "bind ImageView success " + task_parm_style);
+            assertNotNull("drawable is null", image_view.getDrawable());
+            assertNotNull("tag is null", image_view.getTag());
+            assertEquals("tag not right", tag_expect, image_view.getTag());
+        } else {
+            Log.d(TAG, "bind ImageView fail " + task_parm_style);
+            fail("wait condition fail");
+        }
     }
 
     class BindCondition implements com.robotium.solo.Condition {
@@ -127,19 +141,6 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         @Override
         public boolean isSatisfied() {
             return isBindFinished;
-        }
-    }
-
-    private void assertBindImageView(ImageView image_view, String tag_expect, BindCondition bind_condition) {
-        boolean wait_result = solo.waitForCondition(bind_condition, 10000);
-        if (wait_result) {
-            Log.d(TAG, "wait condition success");
-            assertNotNull("drawable is null", image_view.getDrawable());
-            assertNotNull("tag is null", image_view.getTag());
-            assertEquals("tag not right", tag_expect, image_view.getTag());
-        } else {
-            Log.d(TAG, "wait condition fail");
-            fail("wait condition fail");
         }
     }
 
@@ -163,7 +164,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     private void testBindActionBar(final ActionBar action_bar, final String address, final TASK_PARM_STYLE task_parm_style) {
         final BindCondition bind_condition = new BindCondition();
-        final BindListener listener=new BindListener() {
+        final BindListener listener = new BindListener() {
             @Override
             public void onBindFinished(RESULT_CODE result_code) {
                 assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
@@ -186,7 +187,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
                 }
             }
         });
-        boolean wait_result = solo.waitForCondition(bind_condition,10000);
+        boolean wait_result = solo.waitForCondition(bind_condition, 10000);
         if (wait_result) {
             Log.d(TAG, "bind ActionBar success " + task_parm_style);
 
@@ -244,22 +245,6 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
             Log.d(TAG, "log wait success");
         } else {
             fail("wait log fail");
-        }
-    }
-
-    class BindImageViewListener implements BindListener {
-        private BindCondition bind_condition;
-
-        BindImageViewListener(BindCondition bind_condition) {
-            this.bind_condition = bind_condition;
-        }
-
-        @Override
-        public void onBindFinished(BindListener.RESULT_CODE result_code) {
-            assertEquals("result code is fail", RESULT_CODE.SUCCESS, result_code);
-            if (bind_condition != null) {
-                bind_condition.setBindFinished(true);
-            }
         }
     }
 }
