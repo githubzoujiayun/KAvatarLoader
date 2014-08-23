@@ -218,23 +218,27 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase038 测试当DefaultAvatar被设置为HTTP_404或者CUSTOM_DEFAULT_AVATAR状态时，加载avatar后能否正常工作
     public void testSetCustomDefaultAvatarAfterRealLoadFailed() {
         avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
-        final String log_message_wait_for = "testSetCustomDefaultAvatarAfterRealLoadFailed log_message_wait_for";
+        final BindCondition bind_condition = new BindCondition();
+        final BindListener listener=new BindListener() {
+            @Override
+            public void onBindFinished(RESULT_CODE result_code) {
+                assertEquals("result code wrong", BindListener.RESULT_CODE.FAIL, result_code);
+                bind_condition.setBindFinished(true);
+            }
+        };
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                avatar_loader.bindImageViewByEmail(iv_size100, GravatarConstant.DOSENT_EXIST_EMAIL, new BindListener() {
-                    @Override
-                    public void onBindFinished(BindListener.RESULT_CODE result_code) {
-                        assertEquals("result code wrong", BindListener.RESULT_CODE.FAIL, result_code);
-                        Log.d(TAG, log_message_wait_for);
-                    }
-                });
+                avatar_loader.bindImageViewByEmail(iv_size100,
+                        GravatarConstant.DOSENT_EXIST_EMAIL,listener);
             }
         });
-        if (solo.waitForLogMessage(log_message_wait_for)) {
+        boolean wait_result = solo.waitForCondition(bind_condition,10000);
+        if (wait_result) {
             assertEquals("tag wrong", "custom default avatar", iv_size100.getTag());
-            Log.d(TAG, "log wait success");
+            Log.d(TAG, "testSetCustomDefaultAvatarAfterRealLoadFailed success");
         } else {
+            Log.d(TAG, "testSetCustomDefaultAvatarAfterRealLoadFailed fail");
             fail("wait log fail");
         }
     }
