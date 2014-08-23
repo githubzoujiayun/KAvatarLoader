@@ -363,11 +363,33 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     public void testCacheAvatar() {
         AvatarLoadTask task = new AvatarLoadTask(context, null);
         task.clearCachedAvatars();
-        Avatar avatar=task.loadAvatar(AvatarLoadTaskConstant.getTaskParmUseEmail
-                (AvatarLoadTaskConstant.EXIST_EMAIL1));
-        task.cacheAvatar(avatar);
+        cacheAvatar(AvatarLoadTaskConstant.getTaskParmUseEmail(AvatarLoadTaskConstant.EXIST_EMAIL1));
         Map cached_avatars = task.getCachedAvatars();
         assertFalse("cached_avatars is empty", cached_avatars.isEmpty());
+    }
+
+    private Avatar cacheAvatar(TaskParm parm) {
+        AvatarLoadTask task = new AvatarLoadTask(context, null);
+        Avatar avatar = task.loadAvatar(parm);
+        task.cacheAvatar(avatar);
+        return avatar;
+    }
+
+    public void testGetCachedAvatar() {
+        testGetCachedAvatar(AvatarLoadTaskConstant.EXIST_EMAIL1);
+        testGetCachedAvatar(AvatarLoadTaskConstant.EXIST_EMAIL2);
+    }
+
+    private void testGetCachedAvatar(String email) {
+        cacheAvatar(AvatarLoadTaskConstant.getTaskParmUseEmail(email));
+        AvatarLoadTask task = new AvatarLoadTask(context, null);
+        String hash_code = Gravatar.getHashCodeByEmail(email);
+        Avatar avatar = task.getCachedAvatar(hash_code);
+
+        assertNotNull("avatar is null", avatar);
+        assertNotNull("avatar's bytes is null", avatar.getBytes());
+        assertNotNull("avatar's tag is null", avatar.getTag());
+        assertEquals("avatar's tag not right", "cached avatar,HashCode = " + hash_code, avatar.getTag());
     }
 
     static class AvatarLoadTaskConstant {

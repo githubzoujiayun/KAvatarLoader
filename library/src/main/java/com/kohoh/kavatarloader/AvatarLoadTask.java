@@ -312,7 +312,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         }
 
         String hash_code = Gravatar.getHashCodeByUrl(avatar.getTag());
-        cached_avatars.put(hash_code, avatar);
+        cached_avatars.put(hash_code, new Avatar(avatar.getBytes(), "cached avatar,HashCode = " + hash_code));
 
         return this;
     }
@@ -339,6 +339,10 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         }
 
         return true;
+    }
+
+    Avatar getCachedAvatar(String hash_code) {
+        return cached_avatars.get(hash_code);
     }
 
     @Override
