@@ -13,8 +13,10 @@ import com.kohoh.gravatar.Gravatar;
 import com.kohoh.gravatar.GravatarDefaultImage;
 import com.kohoh.gravatar.GravatarRating;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -235,6 +237,28 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         } catch (IOException e) {
             Log.e(TAG, "IOException", e);
         }
+    }
+
+    Avatar getSavedAvatar(String hash_code) {
+        Avatar avatar = null;
+
+        try {
+            File cache_avatar_file = new File(getCacheAvatarsDir(), hash_code);
+            if (cache_avatar_file.exists()) {
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(
+                        new FileInputStream(cache_avatar_file));
+
+                byte[] raw_avatar = new byte[bufferedInputStream.available()];
+                bufferedInputStream.read(raw_avatar);
+                avatar = new Avatar(context, raw_avatar, "saved avatar,HashCode = " + hash_code);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return avatar;
     }
 
     @Override

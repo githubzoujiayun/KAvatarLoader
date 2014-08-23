@@ -98,6 +98,10 @@ public final class Gravatar {
         return hash_code;
     }
 
+    static public String getHashCodeByEmail(String email) {
+        return MD5Util.md5Hex(email.toLowerCase().trim());
+    }
+
     /**
      * Downloads the gravatar for the given URL using Java {@link URL} and
      * returns a byte array containing the gravatar jpg, returns null if no

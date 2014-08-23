@@ -294,15 +294,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     }
 
     private void testSaveAvatar(TaskParm parm) {
-        AvatarLoadTask task = new AvatarLoadTask(context, null);
-        File cache_avatars_dir = task.getCacheAvatarsDir();
-        Avatar avatar = task.loadAvatar(parm);
-        File cache_avatar_file = new File(cache_avatars_dir, Gravatar.getHashCodeByUrl(avatar.getTag()));
-
-        if (cache_avatar_file.exists()) {
-            cache_avatar_file.delete();
-        }
-        task.saveAvatar(avatar);
+        File cache_avatar_file = saveAvatar(parm);
 
         boolean wait_result = solo.waitForLogMessage("save avatar success");
         if (wait_result) {
@@ -316,6 +308,38 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
             Log.d(TAG, "testSaveAvatar fail");
             fail("wait for log fail,avatar_cache file name = " + cache_avatar_file.getPath());
         }
+    }
+
+    private File saveAvatar(TaskParm parm) {
+        AvatarLoadTask task = new AvatarLoadTask(context, null);
+        Avatar avatar = task.loadAvatar(parm);
+
+        File cache_avatar_file = new File(task.getCacheAvatarsDir(), Gravatar.getHashCodeByUrl(avatar.getTag()));
+        if (cache_avatar_file.exists()) {
+            cache_avatar_file.delete();
+        }
+        task.saveAvatar(avatar);
+
+        return cache_avatar_file;
+    }
+
+    public void testGetSavedAvatar() {
+        testGetSavedAvatar(AvatarLoadTaskConstant.EXIST_EMAIL1_HASH_CODE);
+        testGetSavedAvatar(AvatarLoadTaskConstant.EXIST_EMAIL2_HASH_CODE);
+    }
+
+    private void testGetSavedAvatar(String hash_code) {
+        TaskParmUseHashCode parm = new TaskParmUseHashCode();
+        parm.setHashCode(hash_code);
+        saveAvatar(parm);
+
+        AvatarLoadTask task = new AvatarLoadTask(context, null);
+        Avatar avatar = task.getSavedAvatar(hash_code);
+
+        assertNotNull("avatar is null", avatar);
+        assertEquals("tag not right", "saved avatar,HashCode = " + hash_code, avatar.getTag());
+        assertNotNull("avatar bytes is null", avatar.getBytes());
+        Log.d(TAG, "testGetSavedAvatar success,avatar'tag = " + avatar.getTag());
     }
 
     class AvatarLoadTaskConstant {
