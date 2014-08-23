@@ -61,35 +61,26 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     //TestCase001 检测KAvatarLoader#bindImageViewByEmail是否正常工作
     public void testBindImageViewByEmail() throws InterruptedException {
-        testBindImageViewByEmail(iv_size100, GravatarConstant.EXIST_EMAIL1, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-        testBindImageViewByEmail(iv_size200, GravatarConstant.EXIST_EMAIL2, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
+        testBindImageView(iv_size100, GravatarConstant.EXIST_EMAIL1,
+                GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, TASK_PARM_STYLE.TASK_PARM_USE_EMAIL);
+        testBindImageView(iv_size200, GravatarConstant.EXIST_EMAIL2,
+                GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, TASK_PARM_STYLE.TASK_PARM_USE_EMAIL);
     }
 
     //TestCase010 测试KAvatarLoader#bindImageViewByHashCode是否正常工作
     public void testBindImageViewByHashCode() {
-        testBindImageViewByHashCode(iv_size100, GravatarConstant.EXIST_EMAIL1_HASH_CODE, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-        testBindImageViewByHashCode(iv_size200, GravatarConstant.EXIST_EMAIL2_HASH_CODE, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
+        testBindImageView(iv_size100, GravatarConstant.EXIST_EMAIL1_HASH_CODE,
+                GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE);
+        testBindImageView(iv_size200, GravatarConstant.EXIST_EMAIL2_HASH_CODE,
+                GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE);
     }
 
     //TestCase030 测试KAvatarLoader#bindImageViewByUrl能否正常工作
     public void testBindImageViewByUrl() {
-        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL);
-        testBindImageViewByUrl(iv_size100, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL);
-    }
-
-    private void testBindImageViewByUrl(final ImageView image_view, final String url,
-                                        final String tag_expect) {
-        testBindImageView(image_view, url, tag_expect, TASK_PARM_STYLE.TASK_PARM_USE_URL);
-    }
-
-    private void testBindImageViewByEmail(final ImageView image_view, final String email,
-                                          final String tag_expect) {
-        testBindImageView(image_view, email, tag_expect, TASK_PARM_STYLE.TASK_PARM_USE_EMAIL);
-    }
-
-    private void testBindImageViewByHashCode(final ImageView image_view, final String hash_code,
-                                             final String tag_expect) {
-        testBindImageView(image_view, hash_code, tag_expect, TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE);
+        testBindImageView(iv_size100, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL,
+                GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, TASK_PARM_STYLE.TASK_PARM_USE_URL);
+        testBindImageView(iv_size100, GravatarConstant.EXIST_EMAIL2_SIZE_200_URL,
+                GravatarConstant.EXIST_EMAIL2_SIZE_200_URL, TASK_PARM_STYLE.TASK_PARM_USE_URL);
     }
 
     private void testBindImageView(final ImageView image_view, final String address, final String tag_expect,
