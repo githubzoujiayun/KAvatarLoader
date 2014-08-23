@@ -89,53 +89,67 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     private void testBindImageViewByUrl(final ImageView image_view, final String url,
                                         final String tag_expect) {
-        final String log_message_wait_for = "testBindImageViewByUrl " + tag_expect;
+        final BindCondition bind_condition = new BindCondition();
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 avatar_loader.bindImageViewByUrl(image_view, url,
-                        new BindImageViewListener(log_message_wait_for));
+                        new BindImageViewListener(bind_condition));
             }
         });
-        assertBindImageView(image_view, tag_expect, log_message_wait_for);
+        assertBindImageView(image_view, tag_expect, bind_condition);
     }
 
     private void testBindImageViewByEmail(final ImageView image_view, final String email,
                                           final String tag_expect) {
-        final String log_message_wait_for = "testBindImageViewByEmail " + tag_expect;
+        final BindCondition bind_codition = new BindCondition();
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 avatar_loader.bindImageViewByEmail(image_view, email,
-                        new BindImageViewListener(log_message_wait_for));
+                        new BindImageViewListener(bind_codition));
             }
         });
-        assertBindImageView(image_view, tag_expect, log_message_wait_for);
+        assertBindImageView(image_view, tag_expect, bind_codition);
     }
 
     private void testBindImageViewByHashCode(final ImageView image_view, final String hash_code,
                                              final String tag_expect) {
-        final String log_message_wait_for = "testBindImageViewByHashCode " + tag_expect;
+        final BindCondition bind_condition = new BindCondition();
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 avatar_loader.bindImageViewByHashCode(image_view, hash_code,
-                        new BindImageViewListener(log_message_wait_for));
+                        new BindImageViewListener(bind_condition));
             }
         });
-        assertBindImageView(image_view, tag_expect, log_message_wait_for);
+        assertBindImageView(image_view, tag_expect, bind_condition);
     }
 
-    private void assertBindImageView(ImageView image_view, String tag_expect, String log_message_wait_for) {
-        boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
+    class BindCondition implements com.robotium.solo.Condition {
+
+        private boolean isBindFinished = false;
+
+        public void setBindFinished(boolean isBindFinished) {
+            this.isBindFinished = isBindFinished;
+        }
+
+        @Override
+        public boolean isSatisfied() {
+            return isBindFinished;
+        }
+    }
+
+    private void assertBindImageView(ImageView image_view, String tag_expect, BindCondition bind_condition) {
+        boolean wait_result = solo.waitForCondition(bind_condition, 10000);
         if (wait_result) {
-            Log.d(TAG, "wait log success");
+            Log.d(TAG, "wait condition success");
             assertNotNull("drawable is null", image_view.getDrawable());
             assertNotNull("tag is null", image_view.getTag());
             assertEquals("tag not right", tag_expect, image_view.getTag());
         } else {
-            Log.d(TAG, "wait log fail");
-            fail("wait log fail");
+            Log.d(TAG, "wait condition fail");
+            fail("wait condition fail");
         }
     }
 
@@ -254,16 +268,18 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     class BindImageViewListener implements BindListener {
-        private String log_message_wait_for;
+        private BindCondition bind_condition;
 
-        BindImageViewListener(String log_message_wait_for) {
-            this.log_message_wait_for = log_message_wait_for;
+        BindImageViewListener(BindCondition bind_condition) {
+            this.bind_condition = bind_condition;
         }
 
         @Override
         public void onBindFinished(BindListener.RESULT_CODE result_code) {
             assertEquals("result code is fail", RESULT_CODE.SUCCESS, result_code);
-            Log.d(TAG, log_message_wait_for);
+            if (bind_condition != null) {
+                bind_condition.setBindFinished(true);
+            }
         }
     }
 }
