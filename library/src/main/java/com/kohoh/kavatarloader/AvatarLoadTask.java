@@ -261,6 +261,30 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         return avatar;
     }
 
+    private void deleteDir(File dir) {
+        if (!dir.exists()) {
+            return;
+        }
+
+        if (dir.isFile()) {
+            dir.delete();
+        } else if (dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                deleteDir(files[i]);
+            }
+            dir.delete();
+        }
+    }
+
+    public AvatarLoadTask clearSavedAvatars() {
+        File cache_avatars_dir = getCacheAvatarsDir();
+        if (cache_avatars_dir.exists()) {
+            deleteDir(cache_avatars_dir);
+        }
+        return this;
+    }
+
     @Override
     protected void onPreExecute() {
         task_parm.log();

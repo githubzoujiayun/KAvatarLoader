@@ -342,7 +342,24 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         Log.d(TAG, "testGetSavedAvatar success,avatar'tag = " + avatar.getTag());
     }
 
-    class AvatarLoadTaskConstant {
+    public void testClearSavedAvatar() {
+        saveAvatar(AvatarLoadTaskConstant.getTaskParmUseEmail(AvatarLoadTaskConstant.EXIST_EMAIL1));
+        saveAvatar(AvatarLoadTaskConstant.getTaskParmUseEmail(AvatarLoadTaskConstant.EXIST_EMAIL2));
+
+        AvatarLoadTask task = new AvatarLoadTask(context, null);
+        task.clearSavedAvatars();
+        File cache_avatars_dir = task.getCacheAvatarsDir();
+        assertFalse("cache avatars dir is not null", cache_avatars_dir.exists());
+    }
+
+//    public void testCacheAvatar() {
+//        AvatarLoadTask task = new AvatarLoadTask(context, null);
+//
+//
+//        task.cacheAvatar(avatar);
+//    }
+
+    static class AvatarLoadTaskConstant {
         public static final String DOSENT_EXIST_EMAIL = "doesntexist@example.com";
         public static final String EXIST_EMAIL1 = "kavatarloader1@126.com";
         public static final String EXIST_EMAIL2 = "kavatarloader2@126.com";
@@ -360,6 +377,13 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         public static final String DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_WAVATAR_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=wavatar";
 
         public static final String EXIST_EMAIL1_SIZE_100_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=100&d=404";
+
+        public static TaskParmUseEmail getTaskParmUseEmail(String email) {
+            TaskParmUseEmail parm = new TaskParmUseEmail();
+            parm.setEmail(email);
+            return parm;
+        }
     }
+
 
 }
