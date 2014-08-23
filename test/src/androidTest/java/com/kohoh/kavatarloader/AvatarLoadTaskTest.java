@@ -115,7 +115,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         AvatarLoadTask task = getAvatarTask();
         Avatar avatar = task.loadAvatar(task_parm);
         assertNotNull("avatar is null", avatar);
-        assertNotNull("avatar's drawable is null", avatar.getDrawable());
+        assertNotNull("avatar's drawable is null", avatar.getDrawable(context.getResources()));
         assertNotNull("avatar's bitmap is null", avatar.getBitmap());
         assertNotNull("avatar's byte is null", avatar.getBytes());
         assertNotNull("avatar's tag is null", avatar.getTag());
@@ -132,11 +132,11 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
 
         DefaultAvatar default_avatar = task_parm.getDefaultAvatar();
         if (default_avatar.equals(DefaultAvatar.HTTP_404)) {
-            assertNull("avatar's drawable is not null", avatar.getDrawable());
+            assertNull("avatar's drawable is not null", avatar.getDrawable(context.getResources()));
             assertNull("avatar's bitmap is not null", avatar.getBitmap());
             assertNull("avatar's byte is not null", avatar.getBytes());
         } else {
-            assertNotNull("avatar's drawable is null", avatar.getDrawable());
+            assertNotNull("avatar's drawable is null", avatar.getDrawable(context.getResources()));
             assertNotNull("avatar's bitmap is null", avatar.getBitmap());
             assertNotNull("avatar's byte is null", avatar.getBytes());
         }
@@ -177,12 +177,12 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         byte[] raw_bytes = new byte[input_stream.available()];
         input_stream.read(raw_bytes);
         input_stream.close();
-        Avatar avatar = new Avatar(context, raw_bytes, AvatarLoadTaskConstant.EXIST_EMAIL1_SIZE_100_URL);
+        Avatar avatar = new Avatar(raw_bytes, AvatarLoadTaskConstant.EXIST_EMAIL1_SIZE_100_URL);
         return avatar;
     }
 
     private Avatar getAvatarWhoseByteIsNull() {
-        return new Avatar(context, null, AvatarLoadTaskConstant.EXIST_EMAIL1_SIZE_100_URL);
+        return new Avatar(null, AvatarLoadTaskConstant.EXIST_EMAIL1_SIZE_100_URL);
     }
 
     private AvatarLoadTask getAvatarTask() {

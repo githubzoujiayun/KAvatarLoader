@@ -141,7 +141,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
             return;
         }
 
-        Drawable avatar_drawable = avatar.getDrawable();
+        Drawable avatar_drawable = avatar.getDrawable(context.getResources());
         String avatar_tag = avatar.getTag();
 
         try {
@@ -203,7 +203,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
                 Log.e(TAG, "style 必须是TASK_PARM_USE_URL，TASK_PARM_USE_EMAIL，TASK_PARM_USE_HASH_CODE之一");
         }
 
-        return new Avatar(context, raw_gravatar, tag);
+        return new Avatar(raw_gravatar, tag);
     }
 
     public File getCacheAvatarsDir() {
@@ -250,7 +250,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
 
                 byte[] raw_avatar = new byte[bufferedInputStream.available()];
                 bufferedInputStream.read(raw_avatar);
-                avatar = new Avatar(context, raw_avatar, "saved avatar,HashCode = " + hash_code);
+                avatar = new Avatar(raw_avatar, "saved avatar,HashCode = " + hash_code);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

@@ -1,6 +1,6 @@
 package com.kohoh.kavatarloader;
 
-import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -13,20 +13,17 @@ public class Avatar {
     final private String tag;
     final private byte[] raw_avatar;
 
-    private Context context;
-
-    public Avatar(Context context, byte[] raw_avatar, String TAG) {
-        this.context = context;
+    public Avatar(byte[] raw_avatar, String tag) {
         this.raw_avatar = raw_avatar;
-        this.tag = TAG;
+        this.tag = tag;
     }
 
-    public Drawable getDrawable() {
+    public Drawable getDrawable(Resources resources) {
         if (raw_avatar == null) {
             return null;
         }
 
-        return new BitmapDrawable(context.getResources(), getBitmap());
+        return new BitmapDrawable(resources, getBitmap());
     }
 
     public Bitmap getBitmap() {
