@@ -1,5 +1,6 @@
 package com.kohoh.kavatarloader;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.test.ActivityInstrumentationTestCase2;
@@ -47,17 +48,6 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         iv_not_square_size222 = (ImageView) activity.findViewById(R.id.iv_not_square_size_222);
         action_bar = activity.getSupportActionBar();
     }
-
-
-    private void assertLoadAvatar(Avatar avatar, String tag_expect) {
-        assertNotNull("avatar is null", avatar);
-        assertNotNull("avatar's drawable is null", avatar.getDrawable());
-        assertNotNull("avatar's bitmap is null", avatar.getBitmap());
-        assertNotNull("avatar's byte is null", avatar.getBytes());
-        assertNotNull("avatar's tag is null", avatar.getTag());
-        assertEquals("avatar's tag not equal", tag_expect, avatar.getTag());
-    }
-
 
     //    TestCase029 测试是否能够根据ImageView计算出正确的AvatarSize
     public void testCalculateAvatarSize() {
@@ -155,64 +145,54 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
     public void testBindActionBarByEmail() {
-        final String log_message_wait_for = "testBindActionBarByEmail log_message_wait_for";
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                avatar_loader.bindActionBarByEmail(action_bar, GravatarConstant.EXIST_EMAIL1, new BindListener() {
-                    @Override
-                    public void onBindFinished(BindListener.RESULT_CODE result_code) {
-                        assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-                        Log.d(TAG, log_message_wait_for);
-                    }
-                });
-            }
-        });
-        boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
-        if (!wait_result) {
-            fail("wait log fail");
-        }
+        testBindActionBar(action_bar, GravatarConstant.EXIST_EMAIL1,
+                TASK_PARM_STYLE.TASK_PARM_USE_EMAIL);
     }
 
     //TestCase033 测试KAvatarLoader#bindActionBarByHashCode能否正常工作
     public void testBindActionBarByHashCode() {
-        final String log_message_wait_for = "testBindActionBarByHashCode log_message_wait_for";
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                avatar_loader.bindActionBarByHashCode(action_bar, GravatarConstant.EXIST_EMAIL1_HASH_CODE, new BindListener() {
-                    @Override
-                    public void onBindFinished(BindListener.RESULT_CODE result_code) {
-                        assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-                        Log.d(TAG, log_message_wait_for);
-                    }
-                });
-            }
-        });
-        boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
-        if (!wait_result) {
-            fail("wait log fail");
-        }
+        testBindActionBar(action_bar, GravatarConstant.EXIST_EMAIL1_HASH_CODE,
+                TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE);
     }
 
     //TestCase034 测试KAvatarLoader#binActionBarByUrl能否正常工作
     public void testBindActionBarByUrl() {
-        final String log_message_wait_for = "testBindActionBarByUrl log_message_wait_for";
+        testBindActionBar(action_bar, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL,
+                TASK_PARM_STYLE.TASK_PARM_USE_URL);
+    }
+
+    private void testBindActionBar(final ActionBar action_bar, final String address, final TASK_PARM_STYLE task_parm_style) {
+        final BindCondition bind_condition = new BindCondition();
+        final BindListener listener=new BindListener() {
+            @Override
+            public void onBindFinished(RESULT_CODE result_code) {
+                assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
+                bind_condition.setBindFinished(true);
+            }
+        };
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                avatar_loader.bindActionBarByUrl(action_bar, GravatarConstant.EXIST_EMAIL1_SIZE_100_URL, new BindListener() {
-                    @Override
-                    public void onBindFinished(BindListener.RESULT_CODE result_code) {
-                        assertEquals("bind actionbar failed", BindListener.RESULT_CODE.SUCCESS, result_code);
-                        Log.d(TAG, log_message_wait_for);
-                    }
-                });
+                switch (task_parm_style) {
+                    case TASK_PARM_USE_EMAIL:
+                        avatar_loader.bindActionBarByEmail(action_bar, address, listener);
+                        break;
+                    case TASK_PARM_USE_URL:
+                        avatar_loader.bindActionBarByUrl(action_bar, address, listener);
+                        break;
+                    case TASK_PARM_USE_HASH_CODE:
+                        avatar_loader.bindActionBarByHashCode(action_bar, address, listener);
+                        break;
+                }
             }
         });
-        boolean wait_result = solo.waitForLogMessage(log_message_wait_for);
-        if (!wait_result) {
-            fail("wait log fail");
+        boolean wait_result = solo.waitForCondition(bind_condition,10000);
+        if (wait_result) {
+            Log.d(TAG, "bind ActionBar success " + task_parm_style);
+
+        } else {
+            Log.d(TAG, "bind ActionBar fail " + task_parm_style);
+            fail("wait condition fail");
         }
     }
 
