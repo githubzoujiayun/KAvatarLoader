@@ -36,7 +36,9 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
     final private Context context;
     final private Gravatar gravatar;
     final private TaskParm task_parm;
-    static private File saved_avatars_dir;
+    final private File default_saved_avatars_dir;
+    static private File custom_saved_avatars_dir;
+    static private Object custom_saved_avatars_dir_lock = new Object();
     static private Map<String, Avatar> cached_avatars = new HashMap<String, Avatar>();
     static private Object cached_avatar_lock = new Object();
 
@@ -44,19 +46,31 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         this.context = context;
         this.gravatar = new Gravatar();
         this.task_parm = task_parm;
+        this.default_saved_avatars_dir = new File(context.getCacheDir(), "avatars");
         setCustomSavedAvatasrDir(task_parm);
     }
 
     void setCustomSavedAvatasrDir(TaskParm task_parm) {
-        File custom_saved_avatars_dir = task_parm.getCustomSavedAvatarsDir();
-        if (custom_saved_avatars_dir != null && !custom_saved_avatars_dir.equals(saved_avatars_dir)) {
-            deleteDir(saved_avatars_dir);
-            saved_avatars_dir = custom_saved_avatars_dir;
-        } else {
-            File old_avatars_dir = saved_avatars_dir;
-            saved_avatars_dir = new File(context.getCacheDir(), "avatars");
-            if (!saved_avatars_dir.equals(old_avatars_dir)) {
-                deleteDir(old_avatars_dir);
+        synchronized (custom_saved_avatars_dir_lock) {
+            File parm_custom_saved_avatars_dir = task_parm.getCustomSavedAvatarsDir();
+
+            boolean equal = false;
+
+            if (custom_saved_avatars_dir == null && parm_custom_saved_avatars_dir == null) {
+                equal = true;
+            }
+
+            if (custom_saved_avatars_dir != null && custom_saved_avatars_dir.equals(parm_custom_saved_avatars_dir)) {
+                equal = true;
+            }
+
+            if (parm_custom_saved_avatars_dir != null && parm_custom_saved_avatars_dir.equals(custom_saved_avatars_dir)) {
+                equal = true;
+            }
+
+            if (!equal) {
+                deleteDir(custom_saved_avatars_dir);
+                custom_saved_avatars_dir = parm_custom_saved_avatars_dir;
             }
         }
     }
@@ -268,8 +282,18 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         return hash_code;
     }
 
-    static File getSavedAvatarsDir() {
-        return saved_avatars_dir;
+    File getSavedAvatarsDir() {
+        File dir = null;
+        synchronized (custom_saved_avatars_dir_lock) {
+            if (custom_saved_avatars_dir != null) {
+                deleteDir(default_saved_avatars_dir);
+                dir = custom_saved_avatars_dir;
+            } else {
+                deleteDir(custom_saved_avatars_dir);
+                dir = default_saved_avatars_dir;
+            }
+        }
+        return dir;
     }
 
     AvatarLoadTask saveAvatar(Avatar avatar) {

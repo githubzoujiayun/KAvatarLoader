@@ -14,6 +14,8 @@ import com.kohoh.kavatarloader.AvatarRating;
 import com.kohoh.kavatarloader.DefaultAvatar;
 import com.kohoh.kavatarloader.KAvatarLoader;
 
+import java.io.File;
+
 public class SingleBindImageViewActivity extends ActionBarActivity {
 
     private ImageView iv_avatar_no_size;
@@ -55,6 +57,18 @@ public class SingleBindImageViewActivity extends ActionBarActivity {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR1) {
             avatar_loader.setLoadExector(AsyncTask.SERIAL_EXECUTOR);
         }
+        //设置是否缓存头像到运行内存中
+        //如果设置为缓存头像，被加载的头像会缓存在运行内存中，以便重复使用。
+        //默认为缓存头像
+        avatar_loader.setUseCachedAvatar(true);
+        //设置是否保存头像
+        //如果设置为保存头像，被加载的头像会缓存在设备中，以便重复使用。在失去网络的情况下，仍旧可以加载头像。
+        //默认为保存头像
+        avatar_loader.setUseSavedAvatar(true);
+        //设置保存头像的位置
+        //通过该方法，你可以指定头像的存储位置。
+        //默认的头像会保存在app相应文件的cache文件夹下
+        avatar_loader.setCustomSavedAvatarsDir(new File(this.getExternalFilesDir(null), "avatars"));
 
         iv_avatar_no_size = (ImageView) findViewById(R.id.iv_avatar_no_size);
         iv_avatar_small_size = (ImageView) findViewById(R.id.iv_avatar_small_size);

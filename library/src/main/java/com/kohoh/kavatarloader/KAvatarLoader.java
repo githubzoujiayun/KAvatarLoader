@@ -337,6 +337,7 @@ public class KAvatarLoader {
     /**
      * 设置是否缓存头像到运行内存中
      * 如果设置为缓存头像，被加载的头像会缓存在运行内存中，以便重复使用。
+     * 默认为缓存头像
      * @param ifUseCachedAvatar true 缓存头像，false 不缓存头像
      * @return KAvatarLoader
      */
@@ -348,6 +349,7 @@ public class KAvatarLoader {
     /**
      * 设置是否保存头像
      * 如果设置为保存头像，被加载的头像会缓存在设备中，以便重复使用。在失去网络的情况下，仍旧可以加载头像。
+     * 默认为保存头像
      * @param ifUseSavedAvatar true 保存头像，false 不保存头像
      * @return KAvatarLoader
      */
@@ -358,7 +360,8 @@ public class KAvatarLoader {
 
     /**
      * 设置保存头像的位置
-     * 默认的头像会保存在app相应文件的cache文件夹下。通过该方法，你可以指定特殊的存储位置。
+     * 通过该方法，你可以指定头像的存储位置。
+     * 默认的头像会保存在app相应文件的cache文件夹下
      * @param dir 头像保存的位置
      * @return KAvatarLoader
      */
