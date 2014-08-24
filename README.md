@@ -73,6 +73,8 @@ avatar_loader.bindActionBarByEmail(action_bar, "kavatarloader2@126.com", bind_li
 
 20140814 兼容API11以下版本
 
+20140824 实现缓存和保存头像的功能
+
 ##待完成功能
 
 + 实现头像的滤镜功能
