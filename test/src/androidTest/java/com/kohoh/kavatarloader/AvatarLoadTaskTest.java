@@ -6,7 +6,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.UiThreadTest;
-import android.util.Log;
 import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
@@ -142,8 +141,12 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         final TaskParm mock_task_parm = Utils.getMockTaskParm(iv_no_size, new BindListener() {
             @Override
             public void onBindFinished(RESULT_CODE result_code) {
-                assertOnBindImageViewFinished(RESULT_CODE.SUCCESS, iv_no_size,
-                        Constant.EXIST_EMAIL1_D_404_URL);
+                assertEquals("bind fail,result code is fail", BindListener.RESULT_CODE.SUCCESS, result_code);
+                assertNotNull("bind fail,image view is null", iv_no_size);
+                assertNotNull("bind fail,imgae view 's drawable is null", iv_no_size.getDrawable());
+                assertNotNull("bind fail,image view 's tag is null", iv_no_size.getTag());
+                assertEquals("bind fail,image view 's tag is wrong", Constant.EXIST_EMAIL1_D_404_URL,
+                        iv_no_size.getTag());
                 condition.setBindFinished(true);
             }
         });
@@ -325,16 +328,6 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         } else {
             assertTrue(AvatarLoadTask.getCachedAvatars().isEmpty());
         }
-    }
-
-    private void assertOnBindImageViewFinished(BindListener.RESULT_CODE result_code, ImageView image_view,
-                                               String tag_expect) {
-        assertEquals("bind fail,result code is fail", BindListener.RESULT_CODE.SUCCESS, result_code);
-        assertNotNull("bind fail,image view is null", image_view);
-        assertNotNull("bind fail,imgae view 's drawable is null", image_view.getDrawable());
-        assertNotNull("bind fail,image view 's tag is null", image_view.getTag());
-        assertEquals("bind fail,image view 's tag is wrong", tag_expect, image_view.getTag());
-        Log.d(TAG, "testOnBindImagViewFinished success");
     }
 
 
