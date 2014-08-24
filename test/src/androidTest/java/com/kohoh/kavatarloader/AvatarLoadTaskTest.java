@@ -13,6 +13,7 @@ import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.gravatar.Gravatar;
 import com.kohoh.kavatarloader.test.Resources;
 import com.robotium.solo.Solo;
+import com.kohoh.kavatarloader.TaskParm.TASK_PARM_STYLE;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,11 +27,11 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     public final static String TAG = AvatarLoadTaskTest.class.getSimpleName() + "_tag";
     private Context context;
     private ActionBarActivity activity;
+    private Solo solo;
+    private Resources resources;
     private ImageView iv_no_size;
     private ActionBar action_bar;
-    private Resources resources;
 
-    private Solo solo;
 
     public AvatarLoadTaskTest() {
         super(KAvatarLoaderTestUseActivity.class);
@@ -41,78 +42,71 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         this.activity = getActivity();
         this.context = this.activity;
         this.resources = new Resources(context);
+        this.solo = new Solo(getInstrumentation(), activity);
         iv_no_size = (ImageView) activity.findViewById(com.kohoh.KAvatarLoader.test.R.id.iv_no_size);
         action_bar = activity.getSupportActionBar();
-
-        solo = new Solo(getInstrumentation(), activity);
     }
 
     public void testLoadAvatarUesUrl() throws Exception {
-        testLoadAvatarWhoseAccountExist(getTaskParmUseUrl(AvatarLoadTaskConstant.EXIST_EMAIL1_DEFAULT_URL),
-                AvatarLoadTaskConstant.EXIST_EMAIL1_DEFAULT_URL);
+        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_URL,
+                        Constant.EXIST_EMAIL1_D_404_URL, DefaultAvatar.HTTP_404),
+                Constant.EXIST_EMAIL1_D_404_URL);
 
-        testLoadAvatarWhoseAccountExist(getTaskParmUseUrl(AvatarLoadTaskConstant.EXIST_EMAIL2_DEFAULT_URL),
-                AvatarLoadTaskConstant.EXIST_EMAIL2_DEFAULT_URL);
+        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_URL,
+                        Constant.EXIST_EMAIL2_D_404_URL, DefaultAvatar.HTTP_404),
+                Constant.EXIST_EMAIL2_D_404_URL);
     }
 
     public void testLoadAvatarUseEmail() throws Exception {
-        testLoadAvatarWhoseAccountExist(getTaskParmUseEmail(AvatarLoadTaskConstant.EXIST_EMAIL1),
-                AvatarLoadTaskConstant.EXIST_EMAIL1_DEFAULT_URL);
+        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                        Constant.EXIST_EMAIL1, DefaultAvatar.HTTP_404),
+                Constant.EXIST_EMAIL1_D_404_URL);
 
-        testLoadAvatarWhoseAccountExist(getTaskParmUseEmail(AvatarLoadTaskConstant.EXIST_EMAIL2),
-                AvatarLoadTaskConstant.EXIST_EMAIL2_DEFAULT_URL);
+        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                        Constant.EXIST_EMAIL2,DefaultAvatar.HTTP_404),
+                Constant.EXIST_EMAIL2_D_404_URL);
     }
 
     public void testLoadAvatarUseHashCode() throws Exception {
-        testLoadAvatarWhoseAccountExist(getTaskParmUseHashCode(AvatarLoadTaskConstant.EXIST_EMAIL1_HASH_CODE),
-                AvatarLoadTaskConstant.EXIST_EMAIL1_DEFAULT_URL);
+        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE,
+                        Constant.EXIST_EMAIL1_HASH_CODE, DefaultAvatar.HTTP_404),
+                Constant.EXIST_EMAIL1_D_404_URL);
 
-        testLoadAvatarWhoseAccountExist(getTaskParmUseHashCode(AvatarLoadTaskConstant.EXIST_EMAIL2_HASH_CODE),
-                AvatarLoadTaskConstant.EXIST_EMAIL2_DEFAULT_URL);
+        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE,
+                        Constant.EXIST_EMAIL2_HASH_CODE, DefaultAvatar.HTTP_404),
+                Constant.EXIST_EMAIL2_D_404_URL);
     }
 
-    public void testLoadAvatarWhoseAccountDosentExist() throws Exception {
-        testLoadAvatarWhoseAccountDosentExist(getTaskParmUseUrl(AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL_DEFAULT_RUL),
-                AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL_DEFAULT_RUL);
+    //测试加载不存在账户的头像
+    public void testLoadAvatarAccountDosentExist() throws Exception {
+        //默认头像被设置为HTTP_404
+        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_URL,
+                Constant.DOSENT_EXIST_EMAIL_D_404_RUL,DefaultAvatar.HTTP_404),
+                Constant.DOSENT_EXIST_EMAIL_D_404_RUL);
 
-        testLoadAvatarWhoseAccountDosentExist(getTaskParmUseEmail(AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL),
-                AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL_DEFAULT_RUL);
+        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                Constant.DOSENT_EXIST_EMAIL,DefaultAvatar.HTTP_404),
+                Constant.DOSENT_EXIST_EMAIL_D_404_RUL);
 
-        testLoadAvatarWhoseAccountDosentExist(getTaskParmUseHashCode(AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL_HASH_CODE),
-                AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL_DEFAULT_RUL);
+        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE,
+                Constant.DOSENT_EXIST_EMAIL_HASH_CODE,DefaultAvatar.HTTP_404),
+                Constant.DOSENT_EXIST_EMAIL_D_404_RUL);
 
-        TaskParm task_parm = getTaskParmUseUrl(AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_MONSTERID_RUL);
-        task_parm.setDefaultAvatar(DefaultAvatar.MONSTERID);
-        testLoadAvatarWhoseAccountDosentExist(task_parm, AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_MONSTERID_RUL);
+        //默认头像被设置为非HTTP_404
+        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                Constant.DOSENT_EXIST_EMAIL,DefaultAvatar.MONSTERID),
+                Constant.DOSENT_EXIST_EMAIL_D_MONSTERID_RUL);
 
-        task_parm = getTaskParmUseEmail(AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL);
-        task_parm.setDefaultAvatar(DefaultAvatar.IDENTICON);
-        testLoadAvatarWhoseAccountDosentExist(task_parm, AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_IDENTICON_RUL);
+        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                        Constant.DOSENT_EXIST_EMAIL,DefaultAvatar.IDENTICON),
+                Constant.DOSENT_EXIST_EMAIL_D_IDENTICON_RUL);
 
-        task_parm = getTaskParmUseHashCode(AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL_HASH_CODE);
-        task_parm.setDefaultAvatar(DefaultAvatar.WAVATAR);
-        testLoadAvatarWhoseAccountDosentExist(task_parm, AvatarLoadTaskConstant.DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_WAVATAR_RUL);
+        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                        Constant.DOSENT_EXIST_EMAIL,DefaultAvatar.WAVATAR),
+                Constant.DOSENT_EXIST_EMAIL_D_WAVATAR_RUL);
     }
 
-    private TaskParmUseHashCode getTaskParmUseHashCode(String hash_code) {
-        TaskParmUseHashCode task_parm = new TaskParmUseHashCode();
-        task_parm.setHashCode(hash_code);
-        return task_parm;
-    }
-
-    private TaskParmUseEmail getTaskParmUseEmail(String email) {
-        TaskParmUseEmail task_parm = new TaskParmUseEmail();
-        task_parm.setEmail(email);
-        return task_parm;
-    }
-
-    private TaskParmUseUrl getTaskParmUseUrl(String url) {
-        TaskParmUseUrl task_parm = new TaskParmUseUrl();
-        task_parm.setUrl(url);
-        return task_parm;
-    }
-
-    private void testLoadAvatarWhoseAccountExist(TaskParm task_parm, String tag_expect) throws Exception {
+    private void testLoadAvatarAccountExist(TaskParm task_parm, String tag_expect) throws Exception {
         AvatarLoadTask task = getAvatarTask();
         Avatar avatar = task.loadAvatarByInternet(task_parm);
         assertNotNull("avatar is null", avatar);
@@ -123,7 +117,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         assertEquals("avatar's tag not equal", tag_expect, avatar.getTag());
     }
 
-    private void testLoadAvatarWhoseAccountDosentExist(TaskParm task_parm, String tag_expect) throws Exception {
+    private void testLoadAvatarAccountDosentExist(TaskParm task_parm, String tag_expect) throws Exception {
         AvatarLoadTask task = getAvatarTask();
         Avatar avatar = task.loadAvatarByInternet(task_parm);
 
@@ -178,12 +172,12 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         byte[] raw_bytes = new byte[input_stream.available()];
         input_stream.read(raw_bytes);
         input_stream.close();
-        Avatar avatar = new Avatar(raw_bytes, AvatarLoadTaskConstant.EXIST_EMAIL1_SIZE_100_URL);
+        Avatar avatar = new Avatar(raw_bytes, Constant.EXIST_EMAIL1_SIZE_100_URL);
         return avatar;
     }
 
     private Avatar getAvatarWhoseByteIsNull() {
-        return new Avatar(null, AvatarLoadTaskConstant.EXIST_EMAIL1_SIZE_100_URL);
+        return new Avatar(null, Constant.EXIST_EMAIL1_SIZE_100_URL);
     }
 
     private AvatarLoadTask getAvatarTask() {
@@ -286,11 +280,11 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
 
     public void testSaveAvatar() {
         TaskParmUseEmail parmUseEmail = new TaskParmUseEmail();
-        parmUseEmail.setEmail(AvatarLoadTaskConstant.EXIST_EMAIL1);
+        parmUseEmail.setEmail(Constant.EXIST_EMAIL1);
         testSaveAvatar(parmUseEmail);
 
         TaskParmUseHashCode parmUseHashCode = new TaskParmUseHashCode();
-        parmUseHashCode.setHashCode(AvatarLoadTaskConstant.EXIST_EMAIL2_HASH_CODE);
+        parmUseHashCode.setHashCode(Constant.EXIST_EMAIL2_HASH_CODE);
         testSaveAvatar(parmUseHashCode);
     }
 
@@ -325,8 +319,8 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     }
 
     public void testGetSavedAvatar() {
-        testGetSavedAvatar(AvatarLoadTaskConstant.EXIST_EMAIL1_HASH_CODE);
-        testGetSavedAvatar(AvatarLoadTaskConstant.EXIST_EMAIL2_HASH_CODE);
+        testGetSavedAvatar(Constant.EXIST_EMAIL1_HASH_CODE);
+        testGetSavedAvatar(Constant.EXIST_EMAIL2_HASH_CODE);
     }
 
     private void testGetSavedAvatar(String hash_code) {
@@ -344,8 +338,8 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     }
 
     public void testClearSavedAvatar() {
-        saveAvatar(AvatarLoadTaskConstant.getTaskParmUseEmail(AvatarLoadTaskConstant.EXIST_EMAIL1));
-        saveAvatar(AvatarLoadTaskConstant.getTaskParmUseEmail(AvatarLoadTaskConstant.EXIST_EMAIL2));
+        saveAvatar(Constant.getTaskParmUseEmail(Constant.EXIST_EMAIL1));
+        saveAvatar(Constant.getTaskParmUseEmail(Constant.EXIST_EMAIL2));
 
         AvatarLoadTask task = new AvatarLoadTask(context, null);
         task.clearSavedAvatars();
@@ -363,7 +357,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     public void testCacheAvatar() {
         AvatarLoadTask task = new AvatarLoadTask(context, null);
         task.clearCachedAvatars();
-        cacheAvatar(AvatarLoadTaskConstant.getTaskParmUseEmail(AvatarLoadTaskConstant.EXIST_EMAIL1));
+        cacheAvatar(Constant.getTaskParmUseEmail(Constant.EXIST_EMAIL1));
         Map cached_avatars = task.getCachedAvatars();
         assertFalse("cached_avatars is empty", cached_avatars.isEmpty());
     }
@@ -376,12 +370,12 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     }
 
     public void testGetCachedAvatar() {
-        testGetCachedAvatar(AvatarLoadTaskConstant.EXIST_EMAIL1);
-        testGetCachedAvatar(AvatarLoadTaskConstant.EXIST_EMAIL2);
+        testGetCachedAvatar(Constant.EXIST_EMAIL1);
+        testGetCachedAvatar(Constant.EXIST_EMAIL2);
     }
 
     private void testGetCachedAvatar(String email) {
-        cacheAvatar(AvatarLoadTaskConstant.getTaskParmUseEmail(email));
+        cacheAvatar(Constant.getTaskParmUseEmail(email));
         AvatarLoadTask task = new AvatarLoadTask(context, null);
         String hash_code = Gravatar.getHashCodeByEmail(email);
         Avatar avatar = task.getCachedAvatar(hash_code);
@@ -392,7 +386,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         assertEquals("avatar's tag not right", "cached avatar,HashCode = " + hash_code, avatar.getTag());
     }
 
-    static class AvatarLoadTaskConstant {
+    static class Constant {
         public static final String DOSENT_EXIST_EMAIL = "doesntexist@example.com";
         public static final String EXIST_EMAIL1 = "kavatarloader1@126.com";
         public static final String EXIST_EMAIL2 = "kavatarloader2@126.com";
@@ -401,13 +395,13 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         public static final String EXIST_EMAIL2_HASH_CODE = "228ff1d1d1910536d99790691eb45882";
         public static final String DOSENT_EXIST_EMAIL_HASH_CODE = "628df4c8f4d7c3bed231df493987e808";
 
-        public static final String EXIST_EMAIL1_DEFAULT_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404";
-        public static final String EXIST_EMAIL2_DEFAULT_URL = "http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404";
-        public static final String DOSENT_EXIST_EMAIL_DEFAULT_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=404";
+        public static final String EXIST_EMAIL1_D_404_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404";
+        public static final String EXIST_EMAIL2_D_404_URL = "http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404";
+        public static final String DOSENT_EXIST_EMAIL_D_404_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=404";
 
-        public static final String DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_MONSTERID_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=monsterid";
-        public static final String DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_IDENTICON_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=identicon";
-        public static final String DOSENT_EXIST_EMAIL_DEFAULT_IMAGE_WAVATAR_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=wavatar";
+        public static final String DOSENT_EXIST_EMAIL_D_MONSTERID_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=monsterid";
+        public static final String DOSENT_EXIST_EMAIL_D_IDENTICON_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=identicon";
+        public static final String DOSENT_EXIST_EMAIL_D_WAVATAR_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=wavatar";
 
         public static final String EXIST_EMAIL1_SIZE_100_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=100&d=404";
 
@@ -416,6 +410,73 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
             parm.setEmail(email);
             return parm;
         }
+    }
+
+    static class Utils {
+
+        static public TaskParm getTaskParm(TASK_PARM_STYLE task_parm_style, String address,
+                                           DefaultAvatar default_avatar, AvatarRating avatar_rating,
+                                           Integer size, Boolean use_cached_avatar,
+                                           Boolean use_saved_avatar, Object target_view,
+                                           BindListener bind_listener) {
+            TaskParm parm = null;
+            switch (task_parm_style) {
+                case TASK_PARM_USE_URL:
+                    parm = new TaskParmUseUrl();
+                    ((TaskParmUseUrl) parm).setUrl(address);
+                    break;
+                case TASK_PARM_USE_EMAIL:
+                    parm = new TaskParmUseEmail();
+                    ((TaskParmUseEmail) parm).setEmail(address);
+                    break;
+                case TASK_PARM_USE_HASH_CODE:
+                    parm = new TaskParmUseHashCode();
+                    ((TaskParmUseHashCode) parm).setHashCode(address);
+                    break;
+            }
+
+            if (default_avatar != null) {
+                parm.setDefaultAvatar(default_avatar);
+            }
+
+            if (avatar_rating != null) {
+                parm.setAvatarRating(avatar_rating);
+
+            }
+
+            if (size != null) {
+                parm.setAvatarSize(size);
+            }
+
+            if (use_cached_avatar != null) {
+                parm.setUseCachedAvatar(use_cached_avatar);
+            }
+
+            if (use_saved_avatar != null) {
+                parm.setUseSavedAvatar(use_saved_avatar);
+            }
+
+            if (target_view != null) {
+                parm.setTargetView(target_view);
+            }
+
+            if (bind_listener != null) {
+                parm.setBindListner(bind_listener);
+            }
+
+            return parm;
+        }
+
+        static public TaskParm getTaskParm(TASK_PARM_STYLE task_parm_style, String address) {
+            return getTaskParm(task_parm_style, address, null, null, null, null, null, null, null);
+        }
+
+        static public TaskParm getTaskParm(TASK_PARM_STYLE task_parm_style, String address,
+                                           DefaultAvatar defaultAvatar) {
+            return getTaskParm(task_parm_style, address, defaultAvatar, null, null, null, null, null, null);
+        }
+
+
     }
 
 
