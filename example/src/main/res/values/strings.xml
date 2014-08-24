@@ -2,5 +2,4 @@
 <resources>
     <string name="app_name">KAvatarLaoder Example</string>
     <string name="single_bind_image_view_activity_lable">绑定ImageView和ActionBar演示</string>
-    <string name="title_activity_load_avatar_by_cached_or_saved">使用缓存或保存的头像加载示例</string>
 </resources>
