@@ -14,10 +14,10 @@ import com.kohoh.gravatar.Gravatar;
 import com.kohoh.kavatarloader.test.Resources;
 import com.robotium.solo.Solo;
 import com.kohoh.kavatarloader.TaskParm.TASK_PARM_STYLE;
+import com.kohoh.kavatarloader.Utils.BindCondition;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Map;
 
 /**
@@ -48,31 +48,31 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     }
 
     public void testLoadAvatarUesUrl() throws Exception {
-        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_URL,
+        testLoadAvatarAccountExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_URL,
                         Constant.EXIST_EMAIL1_D_404_URL, DefaultAvatar.HTTP_404),
                 Constant.EXIST_EMAIL1_D_404_URL);
 
-        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_URL,
+        testLoadAvatarAccountExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_URL,
                         Constant.EXIST_EMAIL2_D_404_URL, DefaultAvatar.HTTP_404),
                 Constant.EXIST_EMAIL2_D_404_URL);
     }
 
     public void testLoadAvatarUseEmail() throws Exception {
-        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+        testLoadAvatarAccountExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
                         Constant.EXIST_EMAIL1, DefaultAvatar.HTTP_404),
                 Constant.EXIST_EMAIL1_D_404_URL);
 
-        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
-                        Constant.EXIST_EMAIL2,DefaultAvatar.HTTP_404),
+        testLoadAvatarAccountExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                        Constant.EXIST_EMAIL2, DefaultAvatar.HTTP_404),
                 Constant.EXIST_EMAIL2_D_404_URL);
     }
 
     public void testLoadAvatarUseHashCode() throws Exception {
-        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE,
+        testLoadAvatarAccountExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE,
                         Constant.EXIST_EMAIL1_HASH_CODE, DefaultAvatar.HTTP_404),
                 Constant.EXIST_EMAIL1_D_404_URL);
 
-        testLoadAvatarAccountExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE,
+        testLoadAvatarAccountExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE,
                         Constant.EXIST_EMAIL2_HASH_CODE, DefaultAvatar.HTTP_404),
                 Constant.EXIST_EMAIL2_D_404_URL);
     }
@@ -80,29 +80,29 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     //测试加载不存在账户的头像
     public void testLoadAvatarAccountDosentExist() throws Exception {
         //默认头像被设置为HTTP_404
-        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_URL,
-                Constant.DOSENT_EXIST_EMAIL_D_404_RUL,DefaultAvatar.HTTP_404),
+        testLoadAvatarAccountDosentExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_URL,
+                        Constant.DOSENT_EXIST_EMAIL_D_404_RUL, DefaultAvatar.HTTP_404),
                 Constant.DOSENT_EXIST_EMAIL_D_404_RUL);
 
-        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
-                Constant.DOSENT_EXIST_EMAIL,DefaultAvatar.HTTP_404),
+        testLoadAvatarAccountDosentExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                        Constant.DOSENT_EXIST_EMAIL, DefaultAvatar.HTTP_404),
                 Constant.DOSENT_EXIST_EMAIL_D_404_RUL);
 
-        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE,
-                Constant.DOSENT_EXIST_EMAIL_HASH_CODE,DefaultAvatar.HTTP_404),
+        testLoadAvatarAccountDosentExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE,
+                        Constant.DOSENT_EXIST_EMAIL_HASH_CODE, DefaultAvatar.HTTP_404),
                 Constant.DOSENT_EXIST_EMAIL_D_404_RUL);
 
         //默认头像被设置为非HTTP_404
-        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
-                Constant.DOSENT_EXIST_EMAIL,DefaultAvatar.MONSTERID),
+        testLoadAvatarAccountDosentExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                        Constant.DOSENT_EXIST_EMAIL, DefaultAvatar.MONSTERID),
                 Constant.DOSENT_EXIST_EMAIL_D_MONSTERID_RUL);
 
-        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
-                        Constant.DOSENT_EXIST_EMAIL,DefaultAvatar.IDENTICON),
+        testLoadAvatarAccountDosentExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                        Constant.DOSENT_EXIST_EMAIL, DefaultAvatar.IDENTICON),
                 Constant.DOSENT_EXIST_EMAIL_D_IDENTICON_RUL);
 
-        testLoadAvatarAccountDosentExist(Utils.getTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
-                        Constant.DOSENT_EXIST_EMAIL,DefaultAvatar.WAVATAR),
+        testLoadAvatarAccountDosentExist(Utils.getMockTaskParm(TASK_PARM_STYLE.TASK_PARM_USE_EMAIL,
+                        Constant.DOSENT_EXIST_EMAIL, DefaultAvatar.WAVATAR),
                 Constant.DOSENT_EXIST_EMAIL_D_WAVATAR_RUL);
     }
 
@@ -137,47 +137,53 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         }
     }
 
-    @UiThreadTest
     public void testOnBindImageViewFinished() throws Exception {
-        AvatarLoadTask task = getAvatarTask();
-        Avatar avatar = getAvatar();
-        TaskParm task_parm = getTaskParm();
-        task_parm.setTargetView(iv_no_size);
-        task_parm.setBindListner(new AssertOnBindImageViewFinished(iv_no_size, avatar.getTag()));
-        task.onBindTargetViewFinished(task_parm, avatar);
+        final BindCondition condition = Utils.getBindCondition();
+        final AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        final Avatar mock_avatar = Utils.getMockAvatarSize100Email1(context);
+        final TaskParm mock_task_parm = Utils.getMockTaskParm(iv_no_size, new BindListener() {
+            @Override
+            public void onBindFinished(RESULT_CODE result_code) {
+                assertOnBindImageViewFinished(RESULT_CODE.SUCCESS, iv_no_size,
+                        Constant.EXIST_EMAIL1_D_404_URL);
+                condition.setBindFinished(true);
+            }
+        });
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mock_task.onBindTargetViewFinished(mock_task_parm, mock_avatar);
+            }
+        });
+
+        if (!solo.waitForCondition(condition,10000)) {
+            fail("wait for condition fail");
+        }
     }
 
-    @UiThreadTest
     public void testOnBindActionBarFinished() throws IOException {
-        AvatarLoadTask task = getAvatarTask();
-        Avatar avatar = getAvatar();
-        TaskParm task_parm = getTaskParm();
-        task_parm.setTargetView(action_bar);
-        task_parm.setBindListner(new AssertOnBindActionBarFinished(action_bar));
-        task.onBindTargetViewFinished(task_parm, avatar);
-    }
+        final BindCondition condition = com.kohoh.kavatarloader.Utils.getBindCondition();
+        final AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        final Avatar mock_avatar = Utils.getMockAvatarSize100Email1(context);
+        final TaskParm mock_task_parm = Utils.getMockTaskParm(action_bar, new BindListener() {
+            @Override
+            public void onBindFinished(RESULT_CODE result_code) {
+                assertEquals("result code not right", RESULT_CODE.SUCCESS, result_code);
+                condition.setBindFinished(true);
+            }
+        });
 
-    @UiThreadTest
-    public void testOnBindTargetViewFinisheFailed() throws IOException {
-        AvatarLoadTask task = getAvatarTask();
-        Avatar avatar = getAvatarWhoseByteIsNull();
-        TaskParm task_parm = getTaskParm();
-        task_parm.setTargetView(iv_no_size);
-        task_parm.setBindListner(new AssertOnBindImageViewFinishedFailed(iv_no_size));
-        task.onBindTargetViewFinished(task_parm, avatar);
-    }
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mock_task.onBindTargetViewFinished(mock_task_parm, mock_avatar);
+            }
+        });
 
-    private Avatar getAvatar() throws IOException {
-        InputStream input_stream = context.getResources().getAssets().open("kavatarloader1@126.com_size100_bytes");
-        byte[] raw_bytes = new byte[input_stream.available()];
-        input_stream.read(raw_bytes);
-        input_stream.close();
-        Avatar avatar = new Avatar(raw_bytes, Constant.EXIST_EMAIL1_SIZE_100_URL);
-        return avatar;
-    }
-
-    private Avatar getAvatarWhoseByteIsNull() {
-        return new Avatar(null, Constant.EXIST_EMAIL1_SIZE_100_URL);
+        if (!solo.waitForCondition(condition,10000)) {
+            fail("wait for condition fail");
+        }
     }
 
     private AvatarLoadTask getAvatarTask() {
@@ -224,59 +230,6 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         return new TaskParmUseEmail();
     }
 
-    class AssertOnBindImageViewFinished implements BindListener {
-
-        private ImageView image_view;
-        private String tag_expect;
-
-        public AssertOnBindImageViewFinished(ImageView image_view, String tag_expect) {
-            this.image_view = image_view;
-            this.tag_expect = tag_expect;
-        }
-
-        @Override
-        public void onBindFinished(RESULT_CODE result_code) {
-            assertEquals("bind fail,result code is fail", RESULT_CODE.SUCCESS, result_code);
-            assertNotNull("bind fail,image view is null", image_view);
-            assertNotNull("bind fail,imgae view 's drawable is null", image_view.getDrawable());
-            assertNotNull("bind fail,image view 's tag is null", image_view.getTag());
-            assertEquals("bind fail,image view 's tag is wrong", tag_expect, image_view.getTag());
-            Log.d(TAG, "bind finish");
-        }
-    }
-
-    class AssertOnBindActionBarFinished implements BindListener {
-        private ActionBar action_bar;
-
-        public AssertOnBindActionBarFinished(ActionBar action_bar) {
-            this.action_bar = action_bar;
-        }
-
-        @Override
-        public void onBindFinished(RESULT_CODE result_code) {
-            assertEquals("bind fail,result code is fail", RESULT_CODE.SUCCESS, result_code);
-            assertNotNull("bind fail,image view is null", action_bar);
-            Log.d(TAG, "bind finish");
-        }
-    }
-
-    class AssertOnBindImageViewFinishedFailed implements BindListener {
-
-        private ImageView image_view;
-
-        public AssertOnBindImageViewFinishedFailed(ImageView image_view) {
-            this.image_view = image_view;
-        }
-
-        @Override
-        public void onBindFinished(RESULT_CODE result_code) {
-            assertEquals("bind fail,result code is fail", RESULT_CODE.FAIL, result_code);
-            assertNotNull("bind fail,image view is null", image_view);
-            assertNull("bind fail,imgae view 's drawable is not null", image_view.getDrawable());
-            assertNull("bind fail,image view 's tag is not null", image_view.getTag());
-            Log.d(TAG, "bind finish");
-        }
-    }
 
     public void testSaveAvatar() {
         TaskParmUseEmail parmUseEmail = new TaskParmUseEmail();
@@ -386,97 +339,14 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
         assertEquals("avatar's tag not right", "cached avatar,HashCode = " + hash_code, avatar.getTag());
     }
 
-    static class Constant {
-        public static final String DOSENT_EXIST_EMAIL = "doesntexist@example.com";
-        public static final String EXIST_EMAIL1 = "kavatarloader1@126.com";
-        public static final String EXIST_EMAIL2 = "kavatarloader2@126.com";
-
-        public static final String EXIST_EMAIL1_HASH_CODE = "79494f79a67ea995a8f128b8331b3306";
-        public static final String EXIST_EMAIL2_HASH_CODE = "228ff1d1d1910536d99790691eb45882";
-        public static final String DOSENT_EXIST_EMAIL_HASH_CODE = "628df4c8f4d7c3bed231df493987e808";
-
-        public static final String EXIST_EMAIL1_D_404_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?d=404";
-        public static final String EXIST_EMAIL2_D_404_URL = "http://www.gravatar.com/avatar/228ff1d1d1910536d99790691eb45882.jpg?d=404";
-        public static final String DOSENT_EXIST_EMAIL_D_404_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=404";
-
-        public static final String DOSENT_EXIST_EMAIL_D_MONSTERID_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=monsterid";
-        public static final String DOSENT_EXIST_EMAIL_D_IDENTICON_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=identicon";
-        public static final String DOSENT_EXIST_EMAIL_D_WAVATAR_RUL = "http://www.gravatar.com/avatar/628df4c8f4d7c3bed231df493987e808.jpg?d=wavatar";
-
-        public static final String EXIST_EMAIL1_SIZE_100_URL = "http://www.gravatar.com/avatar/79494f79a67ea995a8f128b8331b3306.jpg?s=100&d=404";
-
-        public static TaskParmUseEmail getTaskParmUseEmail(String email) {
-            TaskParmUseEmail parm = new TaskParmUseEmail();
-            parm.setEmail(email);
-            return parm;
-        }
-    }
-
-    static class Utils {
-
-        static public TaskParm getTaskParm(TASK_PARM_STYLE task_parm_style, String address,
-                                           DefaultAvatar default_avatar, AvatarRating avatar_rating,
-                                           Integer size, Boolean use_cached_avatar,
-                                           Boolean use_saved_avatar, Object target_view,
-                                           BindListener bind_listener) {
-            TaskParm parm = null;
-            switch (task_parm_style) {
-                case TASK_PARM_USE_URL:
-                    parm = new TaskParmUseUrl();
-                    ((TaskParmUseUrl) parm).setUrl(address);
-                    break;
-                case TASK_PARM_USE_EMAIL:
-                    parm = new TaskParmUseEmail();
-                    ((TaskParmUseEmail) parm).setEmail(address);
-                    break;
-                case TASK_PARM_USE_HASH_CODE:
-                    parm = new TaskParmUseHashCode();
-                    ((TaskParmUseHashCode) parm).setHashCode(address);
-                    break;
-            }
-
-            if (default_avatar != null) {
-                parm.setDefaultAvatar(default_avatar);
-            }
-
-            if (avatar_rating != null) {
-                parm.setAvatarRating(avatar_rating);
-
-            }
-
-            if (size != null) {
-                parm.setAvatarSize(size);
-            }
-
-            if (use_cached_avatar != null) {
-                parm.setUseCachedAvatar(use_cached_avatar);
-            }
-
-            if (use_saved_avatar != null) {
-                parm.setUseSavedAvatar(use_saved_avatar);
-            }
-
-            if (target_view != null) {
-                parm.setTargetView(target_view);
-            }
-
-            if (bind_listener != null) {
-                parm.setBindListner(bind_listener);
-            }
-
-            return parm;
-        }
-
-        static public TaskParm getTaskParm(TASK_PARM_STYLE task_parm_style, String address) {
-            return getTaskParm(task_parm_style, address, null, null, null, null, null, null, null);
-        }
-
-        static public TaskParm getTaskParm(TASK_PARM_STYLE task_parm_style, String address,
-                                           DefaultAvatar defaultAvatar) {
-            return getTaskParm(task_parm_style, address, defaultAvatar, null, null, null, null, null, null);
-        }
-
-
+    private void assertOnBindImageViewFinished(BindListener.RESULT_CODE result_code,ImageView image_view,
+                                              String tag_expect) {
+        assertEquals("bind fail,result code is fail", BindListener.RESULT_CODE.SUCCESS, result_code);
+        assertNotNull("bind fail,image view is null", image_view);
+        assertNotNull("bind fail,imgae view 's drawable is null", image_view.getDrawable());
+        assertNotNull("bind fail,image view 's tag is null", image_view.getTag());
+        assertEquals("bind fail,image view 's tag is wrong", tag_expect, image_view.getTag());
+        Log.d(TAG, "testOnBindImagViewFinished success");
     }
 
 

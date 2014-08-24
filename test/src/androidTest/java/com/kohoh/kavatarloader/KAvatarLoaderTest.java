@@ -11,6 +11,7 @@ import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.KAvatarLoader.test.R;
 import com.kohoh.kavatarloader.TaskParm.TASK_PARM_STYLE;
 import com.kohoh.kavatarloader.test.GravatarConstant;
+import com.kohoh.kavatarloader.Utils.BindCondition;
 import com.robotium.solo.Solo;
 
 /**
@@ -87,7 +88,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
 
     private void testBindImageView(final ImageView image_view, final String address, final String tag_expect,
                                    final TASK_PARM_STYLE task_parm_style) {
-        final BindCondition bind_condition = new BindCondition();
+        final BindCondition bind_condition = Utils.getBindCondition();
         final BindListener listener = new BindListener() {
             @Override
             public void onBindFinished(RESULT_CODE result_code) {
@@ -127,19 +128,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         assertEquals("tag not right", tag_expect, image_view.getTag());
     }
 
-    class BindCondition implements com.robotium.solo.Condition {
 
-        private boolean isBindFinished = false;
-
-        public void setBindFinished(boolean isBindFinished) {
-            this.isBindFinished = isBindFinished;
-        }
-
-        @Override
-        public boolean isSatisfied() {
-            return isBindFinished;
-        }
-    }
 
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
     public void testBindActionBarByEmail() {
@@ -160,7 +149,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     private void testBindActionBar(final ActionBar action_bar, final String address, final TASK_PARM_STYLE task_parm_style) {
-        final BindCondition bind_condition = new BindCondition();
+        final BindCondition bind_condition = Utils.getBindCondition();
         final BindListener listener = new BindListener() {
             @Override
             public void onBindFinished(RESULT_CODE result_code) {
@@ -224,7 +213,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     //TestCase038 测试当DefaultAvatar被设置为HTTP_404或者CUSTOM_DEFAULT_AVATAR状态时，加载avatar后能否正常工作
     public void testSetCustomDefaultAvatarAfterRealLoadFailed() {
         avatar_loader.setDefaultAvatar(R.drawable.custom_default_avatar);
-        final BindCondition bind_condition = new BindCondition();
+        final BindCondition bind_condition = Utils.getBindCondition();
         final BindListener listener = new BindListener() {
             @Override
             public void onBindFinished(RESULT_CODE result_code) {
@@ -250,7 +239,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
     }
 
     public void testBindImageViewByCacheAvatar() {
-        final BindCondition condition1 = new BindCondition();
+        final BindCondition condition1 = Utils.getBindCondition();
         final BindListener listener1 = new BindListener() {
             @Override
             public void onBindFinished(RESULT_CODE result_code) {
@@ -259,7 +248,7 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
             }
         };
 
-        final BindCondition condition2 = new BindCondition();
+        final BindCondition condition2 = Utils.getBindCondition();
         final BindListener listener2 = new BindListener() {
             @Override
             public void onBindFinished(RESULT_CODE result_code) {
