@@ -34,6 +34,12 @@ avatar_loader.setAvatarRating(AvatarRating.GENERAL_AUDIENCES);
 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR1) {
     avatar_loader.setLoadExector(AsyncTask.SERIAL_EXECUTOR);
 }
+//设置是否缓存头像到运行内存中
+avatar_loader.setUseCachedAvatar(true);
+//设置是否保存头像到设备中
+avatar_loader.setUseSavedAvatar(true);
+//设置保存头像的位置
+avatar_loader.setCustomSavedAvatarsDir(new File(this.getExternalFilesDir(null), "avatars"));
 ```
 
 通过`KavatarLoade#setDefaultAvatar`设置默认头像。在加载头像之前，容器会被绑定为默认的头像。如果加载失败，默认头像会始终与容器绑定。项目中提供了`GRAVATAR_ICON`，`MYSTERY_MEN，IDENTICON`，`WAVATAR`等，由Gravatar提供的默认头像。如果默认头像被设置为`HTTP_404`,则不会绑定默认头像。此时如果加载失败，你会在log中发现一条Error。当然，你还以使用`KAvatarLoader#setDefaultAvatar(int default_avatar_resource)`设置自定义的默认头像。
@@ -41,6 +47,12 @@ if (Build.VERSION.SDK_INT > Build.VERSION_CODES.HONEYCOMB_MR1) {
 通过`KavatarLoade#setAvatarRating`设置头像的等级。Gravatar将头像定义为`GENERAL_AUDIENCES`，`PARENTAL_GUIDANCE_SUGGESTED`，`RESTRICTED`，`XPLICIT`四个等级。默认的等级为GENERAL_AUDIENCES。
 
 通过`KavatarLoade#setLoadExector`设置KAvatarLoader的Execuor。通过该方法，可以控制KAvatarLoader的绑定行为。如果设置为`AsyncTask.SERIAL_EXECUTOR`，则每次同时绑定一个容器。如果设置为`AsyncTask.THREAD_POOL_EXECUTOR`,则每次最多同时绑定五个容器。当然你也可是使用你自定义的Executor。默认的Executor为`AsyncTask.SERIAL_EXECUTOR`。只有API11以上版本支持该功能。
+
+通过`KavatarLoade#setUseCachedAvatar`设置是否缓存头像到运行内存中。如果设置为缓存头像，被加载的头像会缓存在运行内存中，以便重复使用。默认为缓存头像。
+
+通过`KavatarLoade#setUseSavedAvatar`设置是否保存头像到设备中。如果设置为保存头像，被加载的头像会缓存在设备中，以便重复使用。在失去网络的情况下，仍旧可以加载头像。默认为保存头像。
+
+通过`KavatarLoade#setCustomSavedAvatarsDir`设置保存头像的位置。设置保存头像的位置。默认的头像会保存在app相应文件的cache文件夹下。
 
 ####STEP3 绑定容器
 ```
@@ -63,6 +75,4 @@ avatar_loader.bindActionBarByEmail(action_bar, "kavatarloader2@126.com", bind_li
 
 ##待完成功能
 
-+ 将下载的头像本地缓存，减少网络访问。
-+ 将加载的头像缓存到运行内存，减少不必要的资源损耗。
-+ 实现SSL加载头像，使加载变得更加安全。
++ 实现头像的滤镜功能

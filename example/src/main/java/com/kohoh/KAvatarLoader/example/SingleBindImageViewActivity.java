@@ -61,7 +61,7 @@ public class SingleBindImageViewActivity extends ActionBarActivity {
         //如果设置为缓存头像，被加载的头像会缓存在运行内存中，以便重复使用。
         //默认为缓存头像
         avatar_loader.setUseCachedAvatar(true);
-        //设置是否保存头像
+        //设置是否保存头像到设备中
         //如果设置为保存头像，被加载的头像会缓存在设备中，以便重复使用。在失去网络的情况下，仍旧可以加载头像。
         //默认为保存头像
         avatar_loader.setUseSavedAvatar(true);
