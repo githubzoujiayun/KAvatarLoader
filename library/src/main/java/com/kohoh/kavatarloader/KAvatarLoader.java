@@ -66,6 +66,10 @@ public class KAvatarLoader {
         return this;
     }
 
+    public KAvatarLoader bindImageViewByEmail(final ImageView image_view, final String email) {
+        return bindImageViewByEmail(image_view, email, null);
+    }
+
     /**
      * 将指定的Gravatar头像绑定到指定的ImageView上
      * bind_listener实现了BindListener接口的对象。当完成对容器的绑定之后，
@@ -83,6 +87,10 @@ public class KAvatarLoader {
         loadAvatar(image_view, bind_listener, TaskParm.TASK_PARM_STYLE.TASK_PARM_USE_HASH_CODE, hash_code);
 
         return this;
+    }
+
+    public KAvatarLoader bindImageViewByHashCode(final ImageView image_view, final String hash_code) {
+        return bindImageViewByHashCode(image_view, hash_code,null);
     }
 
     /**
@@ -104,6 +112,9 @@ public class KAvatarLoader {
         return this;
     }
 
+    public KAvatarLoader bindImageViewByUrl(final ImageView image_view, final String url) {
+        return bindImageViewByUrl(image_view, url,null);
+    }
 
     /**
      * 将指定的Gravatar头像绑定到指定的ActionBar上
@@ -122,6 +133,10 @@ public class KAvatarLoader {
         loadAvatar(action_bar, bind_listener, TaskParm.TASK_PARM_STYLE.TASK_PARM_USE_EMAIL, email);
 
         return this;
+    }
+
+    public KAvatarLoader bindActionBarByEmail(final ActionBar action_bar, final String email) {
+        return bindActionBarByEmail(action_bar, email,null);
     }
 
     /**
@@ -143,6 +158,10 @@ public class KAvatarLoader {
         return this;
     }
 
+    public KAvatarLoader bindActionBarByHashCode(final ActionBar action_bar, final String hash_code) {
+        return bindActionBarByHashCode(action_bar, hash_code, null);
+    }
+
     /**
      * 将指定的Gravatar头像绑定到指定的ActionBar上
      * bind_listener实现了BindListener接口的对象。当完成对容器的绑定之后，
@@ -160,6 +179,10 @@ public class KAvatarLoader {
         loadAvatar(action_bar, bind_listener, TaskParm.TASK_PARM_STYLE.TASK_PARM_USE_URL, url);
 
         return this;
+    }
+
+    public KAvatarLoader bindActionBarByUrl(final ActionBar action_bar, final String url) {
+        return bindActionBarByHashCode(action_bar, url, null);
     }
 
     @TargetApi(11)
