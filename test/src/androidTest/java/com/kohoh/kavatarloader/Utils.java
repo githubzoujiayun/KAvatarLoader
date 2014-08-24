@@ -102,7 +102,7 @@ public class Utils {
     }
 
     static public AvatarLoadTask getMockAvatarLoadTask(Context context) {
-        return new AvatarLoadTask(context, null);
+        return new AvatarLoadTask(context, new TaskParmUseEmail());
     }
 
     static Avatar getMockAvatarSize100Email1(Context context) {
