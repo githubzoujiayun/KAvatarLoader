@@ -221,25 +221,23 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
 
     Avatar loadAvatarByCachedAvatar(TaskParm task_parm) {
         Avatar avatar = null;
-        if (!task_parm.isUseCachedAvatar()) {
-            return avatar;
+        if (task_parm.isUseCachedAvatar()) {
+            avatar = getCachedAvatar(getHashCodeFromTaskParm(task_parm));
         }
 
-        avatar = getCachedAvatar(getHashCode(task_parm));
         return avatar;
     }
 
     Avatar loadAvatarBySavedAvatar(TaskParm task_parm) {
         Avatar avatar = null;
-        if (!task_parm.isUseSavedAvatar()) {
-            return avatar;
+        if (task_parm.isUseSavedAvatar()) {
+            avatar = getSavedAvatar(getHashCodeFromTaskParm(task_parm));
         }
 
-        avatar = getSavedAvatar(getHashCode(task_parm));
         return avatar;
     }
 
-    private String getHashCode(TaskParm task_parm) {
+    private String getHashCodeFromTaskParm(TaskParm task_parm) {
         String hash_code = null;
         switch (getTaskParmStyle(task_parm)) {
             case TASK_PARM_USE_HASH_CODE:
