@@ -53,7 +53,11 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
             deleteDir(saved_avatars_dir);
             saved_avatars_dir = custom_saved_avatars_dir;
         } else {
+            File old_avatars_dir = saved_avatars_dir;
             saved_avatars_dir = new File(context.getCacheDir(), "avatars");
+            if (!saved_avatars_dir.equals(old_avatars_dir)) {
+                deleteDir(old_avatars_dir);
+            }
         }
     }
 
@@ -330,7 +334,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
     }
 
     private void deleteDir(File dir) {
-        if (!dir.exists()) {
+        if (dir == null || !dir.exists()) {
             return;
         }
 
