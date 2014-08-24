@@ -9,9 +9,10 @@ import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.KAvatarLoader.test.R;
+import com.kohoh.gravatar.Gravatar;
 import com.kohoh.kavatarloader.TaskParm.TASK_PARM_STYLE;
-import com.kohoh.kavatarloader.test.GravatarConstant;
 import com.kohoh.kavatarloader.Utils.BindCondition;
+import com.kohoh.kavatarloader.test.GravatarConstant;
 import com.robotium.solo.Solo;
 
 /**
@@ -127,8 +128,6 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
         assertNotNull("tag is null", image_view.getTag());
         assertEquals("tag not right", tag_expect, image_view.getTag());
     }
-
-
 
     //TestCase032 测试KAvatarLoader#bindActionBarByEmail能否正常工作
     public void testBindActionBarByEmail() {
@@ -278,9 +277,52 @@ public class KAvatarLoaderTest extends ActivityInstrumentationTestCase2<KAvatarL
             });
 
             if (solo.waitForCondition(condition2, 10000)) {
-                assertBindImageView(iv_size100,"cached avatar,HashCode = "
-                        +GravatarConstant.EXIST_EMAIL1_HASH_CODE);
+                assertBindImageView(iv_size100, "cached avatar,HashCode = "
+                        + GravatarConstant.EXIST_EMAIL1_HASH_CODE);
             }
+        }
+    }
+
+    public void testBindImageViewBySavedAvatar() {
+        final BindCondition condition = Utils.getBindCondition();
+
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                avatar_loader.bindImageViewByEmail(iv_size100, Constant.EXIST_EMAIL1, new BindListener() {
+                    @Override
+                    public void onBindFinished(RESULT_CODE result_code) {
+                        assertEquals(RESULT_CODE.SUCCESS, result_code);
+                        condition.setBindFinished(true);
+                    }
+                });
+            }
+        });
+
+        if (solo.waitForCondition(condition, 10000)) {
+            avatar_loader.setUseSavedAvatar(true);
+            condition.setBindFinished(false);
+            activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    avatar_loader.bindImageViewByEmail(iv_size200, Constant.EXIST_EMAIL1, new BindListener() {
+                        @Override
+                        public void onBindFinished(RESULT_CODE result_code) {
+                            assertEquals(RESULT_CODE.SUCCESS, result_code);
+                            condition.setBindFinished(true);
+                        }
+                    });
+                }
+            });
+        } else {
+            fail("wait for condition fail");
+        }
+
+        if (solo.waitForCondition(condition, 10000)) {
+            assertBindImageView(iv_size200, "saved avatar,HashCode = " +
+                    Gravatar.getHashCodeByEmail(Constant.EXIST_EMAIL1));
+        } else {
+            fail("wait for condition fail");
         }
     }
 }
