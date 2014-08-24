@@ -11,14 +11,13 @@ import android.widget.ImageView;
 
 import com.kohoh.KAvatarLoader.test.KAvatarLoaderTestUseActivity;
 import com.kohoh.gravatar.Gravatar;
-import com.kohoh.kavatarloader.test.Resources;
-import com.robotium.solo.Solo;
 import com.kohoh.kavatarloader.TaskParm.TASK_PARM_STYLE;
 import com.kohoh.kavatarloader.Utils.BindCondition;
+import com.kohoh.kavatarloader.test.Resources;
+import com.robotium.solo.Solo;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * Created by kohoh on 14-8-12.
@@ -31,7 +30,6 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     private Resources resources;
     private ImageView iv_no_size;
     private ActionBar action_bar;
-
 
     public AvatarLoadTaskTest() {
         super(KAvatarLoaderTestUseActivity.class);
@@ -107,8 +105,8 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     }
 
     private void testLoadAvatarAccountExist(TaskParm task_parm, String tag_expect) throws Exception {
-        AvatarLoadTask task = getAvatarTask();
-        Avatar avatar = task.loadAvatarByInternet(task_parm);
+        AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        Avatar avatar = mock_task.loadAvatarByInternet(task_parm);
         assertNotNull("avatar is null", avatar);
         assertNotNull("avatar's drawable is null", avatar.getDrawable(context.getResources()));
         assertNotNull("avatar's bitmap is null", avatar.getBitmap());
@@ -118,8 +116,8 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
     }
 
     private void testLoadAvatarAccountDosentExist(TaskParm task_parm, String tag_expect) throws Exception {
-        AvatarLoadTask task = getAvatarTask();
-        Avatar avatar = task.loadAvatarByInternet(task_parm);
+        AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        Avatar avatar = mock_task.loadAvatarByInternet(task_parm);
 
         assertNotNull("avatar is null", avatar);
         assertNotNull("avatar's tag is null", avatar.getTag());
@@ -157,7 +155,7 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
             }
         });
 
-        if (!solo.waitForCondition(condition,10000)) {
+        if (!solo.waitForCondition(condition, 10000)) {
             fail("wait for condition fail");
         }
     }
@@ -181,22 +179,16 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
             }
         });
 
-        if (!solo.waitForCondition(condition,10000)) {
+        if (!solo.waitForCondition(condition, 10000)) {
             fail("wait for condition fail");
         }
     }
 
-    private AvatarLoadTask getAvatarTask() {
-        return new AvatarLoadTask(context, null);
-    }
-
     @UiThreadTest
     public void testbindImageViewWithDefaultAvatar() {
-        AvatarLoadTask task = getAvatarTask();
-        TaskParm taskParm = getTaskParm();
-        taskParm.setDefaultAvatar(DefaultAvatar.WAVATAR);
-        taskParm.setTargetView(iv_no_size);
-        task.bindTargetViewWithDefaultAvatar(taskParm);
+        AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        TaskParm mock_task_parm = Utils.getMockTaskParm(iv_no_size, DefaultAvatar.WAVATAR);
+        mock_task.bindTargetViewWithDefaultAvatar(mock_task_parm);
 
         assertNotNull("bind failed", iv_no_size.getDrawable());
         assertNotNull("bind failed", iv_no_size.getTag());
@@ -205,142 +197,138 @@ public class AvatarLoadTaskTest extends ActivityInstrumentationTestCase2<KAvatar
 
     @UiThreadTest
     public void testBindActionBarWithDefauleAvatar() {
-        AvatarLoadTask task = getAvatarTask();
-        TaskParm taskParm = getTaskParm();
-        taskParm.setDefaultAvatar(DefaultAvatar.GRAVATAR_ICON);
-        taskParm.setTargetView(action_bar);
-        task.bindTargetViewWithDefaultAvatar(taskParm);
+        AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        TaskParm mock_task_parm = Utils.getMockTaskParm(action_bar, DefaultAvatar.GRAVATAR_ICON);
+        mock_task.bindTargetViewWithDefaultAvatar(mock_task_parm);
+        mock_task.bindTargetViewWithDefaultAvatar(mock_task_parm);
     }
 
     @UiThreadTest
     public void testBindImageViewWithCustomDefaultAvatar() {
-        AvatarLoadTask task = getAvatarTask();
-        TaskParm taskParm = getTaskParm();
-        taskParm.setDefaultAvatar(DefaultAvatar.HTTP_404);
-        taskParm.getDefaultAvatar().setCustomDefaultAvatar(resources.getCunstomDefaultAvatar());
-        taskParm.setTargetView(iv_no_size);
-        task.bindTargetViewWithDefaultAvatar(taskParm);
+        AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        TaskParm mock_task_parm = Utils.getMockTaskParm(iv_no_size, DefaultAvatar.HTTP_404);
+        mock_task_parm.getDefaultAvatar().setCustomDefaultAvatar(resources.getCunstomDefaultAvatar());
+        mock_task.bindTargetViewWithDefaultAvatar(mock_task_parm);
 
         assertNotNull("bind failed", iv_no_size.getDrawable());
         assertNotNull("bind failed", iv_no_size.getTag());
         assertEquals("bind failed", "custom default avatar", iv_no_size.getTag());
     }
 
-    private TaskParm getTaskParm() {
-        return new TaskParmUseEmail();
-    }
-
-
     public void testSaveAvatar() {
-        TaskParmUseEmail parmUseEmail = new TaskParmUseEmail();
-        parmUseEmail.setEmail(Constant.EXIST_EMAIL1);
-        testSaveAvatar(parmUseEmail);
+        Avatar mock_avatar = Utils.getMockAvatarSize100Email1(context);
+        String hash_code = Gravatar.getHashCodeByUrl(mock_avatar.getTag());
+        AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
 
-        TaskParmUseHashCode parmUseHashCode = new TaskParmUseHashCode();
-        parmUseHashCode.setHashCode(Constant.EXIST_EMAIL2_HASH_CODE);
-        testSaveAvatar(parmUseHashCode);
-    }
-
-    private void testSaveAvatar(TaskParm parm) {
-        File saved_avatar_file = saveAvatar(parm);
+        mock_task.clearSavedAvatars();
+        mock_task.saveAvatar(mock_avatar);
+        Avatar avatar = mock_task.getSavedAvatar(hash_code);
 
         boolean wait_result = solo.waitForLogMessage("save avatar success");
         if (wait_result) {
-            if (saved_avatar_file.exists()) {
-                Log.d(TAG, "testSaveAvatar success,avatar_save file name = " + saved_avatar_file.getPath());
-            } else {
-                Log.d(TAG, "testSaveAvatar fail");
-                fail("avatar_save dosent exist,avatar_save file name = " + saved_avatar_file.getPath());
-            }
+            assertNotNull(avatar);
+            assertNotNull(avatar.getBytes());
+            assertNotNull(avatar.getTag());
+            assertEquals("saved avatar,HashCode = " + hash_code, avatar.getTag());
         } else {
-            Log.d(TAG, "testSaveAvatar fail");
-            fail("wait for log fail,avatar_save file name = " + saved_avatar_file.getPath());
+            fail("wait for log fail");
         }
-    }
-
-    private File saveAvatar(TaskParm parm) {
-        AvatarLoadTask task = new AvatarLoadTask(context, null);
-        Avatar avatar = task.loadAvatarByInternet(parm);
-
-        File saved_avatar_file = new File(task.getSavedAvatarsDir(), Gravatar.getHashCodeByUrl(avatar.getTag()));
-        if (saved_avatar_file.exists()) {
-            saved_avatar_file.delete();
-        }
-        task.saveAvatar(avatar);
-
-        return saved_avatar_file;
     }
 
     public void testGetSavedAvatar() {
-        testGetSavedAvatar(Constant.EXIST_EMAIL1_HASH_CODE);
-        testGetSavedAvatar(Constant.EXIST_EMAIL2_HASH_CODE);
-    }
+        Avatar mock_avatar = Utils.getMockAvatarSize100Email1(context);
+        AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        String hash_code = Gravatar.getHashCodeByUrl(mock_avatar.getTag());
 
-    private void testGetSavedAvatar(String hash_code) {
-        TaskParmUseHashCode parm = new TaskParmUseHashCode();
-        parm.setHashCode(hash_code);
-        saveAvatar(parm);
+        mock_task.clearSavedAvatars();
+        mock_task.saveAvatar(mock_avatar);
 
-        AvatarLoadTask task = new AvatarLoadTask(context, null);
-        Avatar avatar = task.getSavedAvatar(hash_code);
+        Avatar avatar = mock_task.getSavedAvatar(hash_code);
 
-        assertNotNull("avatar is null", avatar);
-        assertEquals("tag not right", "saved avatar,HashCode = " + hash_code, avatar.getTag());
-        assertNotNull("avatar bytes is null", avatar.getBytes());
-        Log.d(TAG, "testGetSavedAvatar success,avatar'tag = " + avatar.getTag());
+        if (solo.waitForLogMessage("get saved avatar,HashCode = " + hash_code)) {
+            assertNotNull("avatar is null", avatar);
+            assertEquals("tag not right", "saved avatar,HashCode = " + hash_code, avatar.getTag());
+            assertNotNull("avatar bytes is null", avatar.getBytes());
+        } else {
+            fail("wait for log fail");
+        }
+
+        mock_task.getSavedAvatar("ehdihe879879");
+        if (!solo.waitForLogMessage("saved avatar dosen't exist,HashCode = ehdihe879879")) {
+            fail("wait for log fail");
+        }
     }
 
     public void testClearSavedAvatar() {
-        saveAvatar(Constant.getTaskParmUseEmail(Constant.EXIST_EMAIL1));
-        saveAvatar(Constant.getTaskParmUseEmail(Constant.EXIST_EMAIL2));
+        AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        mock_task.clearSavedAvatars();
 
-        AvatarLoadTask task = new AvatarLoadTask(context, null);
-        task.clearSavedAvatars();
-        File saved_avatars_dir = task.getSavedAvatarsDir();
-        assertFalse("save avatars dir is not null", saved_avatars_dir.exists());
-    }
-
-    public void testClearCachedAvatars() {
-        AvatarLoadTask task = new AvatarLoadTask(context, null);
-        task.clearCachedAvatars();
-        Map cached_avatars = AvatarLoadTask.getCachedAvatars();
-        assertTrue("clear cached avatars fail", cached_avatars.isEmpty());
+        if (solo.waitForLogMessage("clear saved avatars success")) {
+            File saved_avatars_dir = mock_task.getSavedAvatarsDir();
+            assertTrue(!saved_avatars_dir.exists());
+        } else {
+            fail("wait for log fail");
+        }
     }
 
     public void testCacheAvatar() {
-        AvatarLoadTask task = new AvatarLoadTask(context, null);
-        task.clearCachedAvatars();
-        cacheAvatar(Constant.getTaskParmUseEmail(Constant.EXIST_EMAIL1));
-        Map cached_avatars = task.getCachedAvatars();
-        assertFalse("cached_avatars is empty", cached_avatars.isEmpty());
-    }
+        AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        AvatarLoadTask.clearCachedAvatars();
+        Avatar mock_avatar = Utils.getMockAvatarSize100Email1(context);
+        String hash_code = Gravatar.getHashCodeByUrl(mock_avatar.getTag());
 
-    private Avatar cacheAvatar(TaskParm parm) {
-        AvatarLoadTask task = new AvatarLoadTask(context, null);
-        Avatar avatar = task.loadAvatarByInternet(parm);
-        task.cacheAvatar(avatar);
-        return avatar;
+        mock_task.cacheAvatar(mock_avatar);
+
+        if (solo.waitForLogMessage("cache avatar success,HashCode = " + hash_code)) {
+            Avatar avatar = mock_task.getCachedAvatar(hash_code);
+            assertNotNull(avatar);
+            assertNotNull(avatar.getBytes());
+            assertNotNull(avatar.getTag());
+            assertEquals("cached avatar,HashCode = " + hash_code, avatar.getTag());
+        } else {
+            fail("wait for log fail");
+        }
     }
 
     public void testGetCachedAvatar() {
-        testGetCachedAvatar(Constant.EXIST_EMAIL1);
-        testGetCachedAvatar(Constant.EXIST_EMAIL2);
-    }
-
-    private void testGetCachedAvatar(String email) {
-        cacheAvatar(Constant.getTaskParmUseEmail(email));
-        AvatarLoadTask task = new AvatarLoadTask(context, null);
+        String email = Constant.EXIST_EMAIL1;
+        AvatarLoadTask mock_task = Utils.getMockAvatarLoadTask(context);
+        Avatar mock_avatar = Utils.getMockAvatarSize100Email1(context);
         String hash_code = Gravatar.getHashCodeByEmail(email);
-        Avatar avatar = task.getCachedAvatar(hash_code);
+        AvatarLoadTask.clearCachedAvatars();
+        mock_task.cacheAvatar(mock_avatar);
 
-        assertNotNull("avatar is null", avatar);
-        assertNotNull("avatar's bytes is null", avatar.getBytes());
-        assertNotNull("avatar's tag is null", avatar.getTag());
-        assertEquals("avatar's tag not right", "cached avatar,HashCode = " + hash_code, avatar.getTag());
+        Avatar avatar = mock_task.getCachedAvatar(hash_code);
+
+        if (!solo.waitForLogMessage("get cached avatar,HashCode = " + hash_code)) {
+            fail("wait for log fail");
+        } else {
+            assertNotNull(avatar);
+            assertNotNull(avatar.getBytes());
+            assertNotNull(avatar.getTag());
+            assertEquals("cached avatar,HashCode = " + hash_code, avatar.getTag());
+        }
+
+        //不存在的hashcode
+        mock_task.getCachedAvatar("dhaiusdhiuw7897879");
+        if (!solo.waitForLogMessage("cached avatar not exist,HashCode = dhaiusdhiuw7897879")) {
+            fail("wait for log fail");
+        }
     }
 
-    private void assertOnBindImageViewFinished(BindListener.RESULT_CODE result_code,ImageView image_view,
-                                              String tag_expect) {
+    public void testClearCachedAvatars() {
+        AvatarLoadTask.clearCachedAvatars();
+
+        boolean wait_result = solo.waitForLogMessage("clear cached avatars success");
+        if (!wait_result) {
+            fail("wait for log fail");
+        } else {
+            assertTrue(AvatarLoadTask.getCachedAvatars().isEmpty());
+        }
+    }
+
+    private void assertOnBindImageViewFinished(BindListener.RESULT_CODE result_code, ImageView image_view,
+                                               String tag_expect) {
         assertEquals("bind fail,result code is fail", BindListener.RESULT_CODE.SUCCESS, result_code);
         assertNotNull("bind fail,image view is null", image_view);
         assertNotNull("bind fail,imgae view 's drawable is null", image_view.getDrawable());

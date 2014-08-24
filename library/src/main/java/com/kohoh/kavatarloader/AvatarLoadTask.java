@@ -254,7 +254,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         }
         return hash_code;
     }
-   
+
     File getSavedAvatarsDir() {
         File cache_dir = context.getCacheDir();
         File saved_avatars_dir = new File(cache_dir, saved_avatars_folder_name);
@@ -313,6 +313,12 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
             e.printStackTrace();
         }
 
+        if (avatar != null) {
+            Log.d(TAG, "get saved avatar,HashCode = " + hash_code);
+        } else {
+            Log.d(TAG, "saved avatar dosen't exist,HashCode = " + hash_code);
+        }
+
         return avatar;
     }
 
@@ -337,17 +343,20 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         if (saved_avatars_dir.exists()) {
             deleteDir(saved_avatars_dir);
         }
+
+        Log.d(TAG, "clear saved avatars success");
+
         return this;
     }
 
-    AvatarLoadTask clearCachedAvatars() {
+    static void clearCachedAvatars() {
         if (cached_avatars != null) {
             synchronized (cached_avatar_lock) {
                 cached_avatars.clear();
             }
         }
 
-        return this;
+        Log.d(TAG, "clear cached avatars success");
     }
 
     static Map<String, Avatar> getCachedAvatars() {
@@ -364,6 +373,8 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
             cached_avatars.put(hash_code, new Avatar(avatar.getBytes(),
                     "cached avatar,HashCode = " + hash_code));
         }
+
+        Log.d(TAG, "cache avatar success,HashCode = " + hash_code);
         return this;
     }
 
@@ -396,6 +407,13 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         synchronized (cached_avatar_lock) {
             avatar = cached_avatars.get(hash_code);
         }
+
+        if (avatar != null) {
+            Log.d(TAG, "get cached avatar,HashCode = " + hash_code);
+        } else {
+            Log.d(TAG, "cached avatar not exist,HashCode = " + hash_code);
+        }
+
         return avatar;
     }
 

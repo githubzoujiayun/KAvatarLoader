@@ -96,6 +96,11 @@ public class Utils {
         return getMockTaskParm(null, null, null, null, null, null, null, target_view, bind_listener);
     }
 
+    static public TaskParm getMockTaskParm(Object target_view, DefaultAvatar default_avatar) {
+
+        return getMockTaskParm(null, null, default_avatar, null, null, null, null, target_view, null);
+    }
+
     static public AvatarLoadTask getMockAvatarLoadTask(Context context) {
         return new AvatarLoadTask(context, null);
     }
