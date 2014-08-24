@@ -6,6 +6,8 @@ import android.widget.ImageView;
 
 import com.kohoh.gravatar.Gravatar;
 
+import java.io.File;
+
 /**
  * Created by kohoh on 14-8-12.
  */
@@ -16,8 +18,9 @@ abstract public class TaskParm {
     private DefaultAvatar default_avatar = DefaultAvatar.valueOf(Gravatar.DEFAULT_DEFAULT_IMAGE.toString());
     private AvatarRating avatar_rating = AvatarRating.valueOf(Gravatar.DEFAULT_RATING.toString());
     private Object target_view;
-    private boolean ifUseCachedAvatar = true;
-    private boolean ifUseSavedAvatar = true;
+    private boolean if_use_cached_avatar = true;
+    private boolean if_use_saved_avatar = true;
+    private File custom_saved_avatars_dir = null;
 
     public static TARGET_VIEW_STYLE getTargetViewSytle(Object target_view) {
         boolean isActionBar = ActionBar.class.isInstance(target_view);
@@ -73,6 +76,8 @@ abstract public class TaskParm {
         Log.d(TAG, "default avatar = " + default_avatar);
         Log.d(TAG, "bind_listener " + (bind_listner == null ? "is null" : "not null"));
         Log.d(TAG, "target_view = " + getTargetViewSytle(target_view).toString());
+        Log.d(TAG, "custom saved avatars dir = " + (custom_saved_avatars_dir == null ?
+                " is null" : custom_saved_avatars_dir.getPath()));
 
         switch (getTaskParmStyle(this)) {
             case TASK_PARM_USE_EMAIL:
@@ -134,21 +139,29 @@ abstract public class TaskParm {
     }
 
     public boolean isUseCachedAvatar() {
-        return ifUseCachedAvatar;
+        return if_use_cached_avatar;
     }
 
     public TaskParm setUseCachedAvatar(boolean ifUseCachedAvatar) {
-        this.ifUseCachedAvatar = ifUseCachedAvatar;
+        this.if_use_cached_avatar = ifUseCachedAvatar;
         return this;
     }
 
     public boolean isUseSavedAvatar() {
-        return ifUseSavedAvatar;
+        return if_use_saved_avatar;
     }
 
     public TaskParm setUseSavedAvatar(boolean ifUseSavedAvatar) {
-        this.ifUseSavedAvatar = ifUseSavedAvatar;
+        this.if_use_saved_avatar = ifUseSavedAvatar;
         return this;
+    }
+
+    public File getCustomSavedAvatarsDir() {
+        return custom_saved_avatars_dir;
+    }
+
+    public void setCustomSavedAvatarsDir(File custom_saved_avatars_dir) {
+        this.custom_saved_avatars_dir = custom_saved_avatars_dir;
     }
 
     public enum TARGET_VIEW_STYLE {ACTION_BAR, IMAGE_VIEW;}

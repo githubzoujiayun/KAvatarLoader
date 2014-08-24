@@ -8,6 +8,7 @@ import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.concurrent.Executor;
 
 /**
@@ -22,6 +23,7 @@ public class KAvatarLoader {
 
     private static boolean ifUseCachedAvatar = true;
     private static boolean ifUseSavedAvatar = true;
+    private static File custom_saved_avatars_dir = null;
 
     public KAvatarLoader(Context context) {
         this.context = context;
@@ -188,7 +190,8 @@ public class KAvatarLoader {
 
         task_parm.setDefaultAvatar(default_avatar).setAvatarRating(avatar_rating).
                 setTargetView(target_view).setBindListner(bind_listener).
-                setUseCachedAvatar(ifUseCachedAvatar).setUseSavedAvatar(ifUseSavedAvatar);
+                setUseCachedAvatar(ifUseCachedAvatar).setUseSavedAvatar(ifUseSavedAvatar).
+                setCustomSavedAvatarsDir(custom_saved_avatars_dir);
 
         //该特性只有API11以上版本拥有
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB_MR1) {
@@ -255,16 +258,24 @@ public class KAvatarLoader {
      *
      * @param executor
      */
-    static public void setLoadExector(Executor executor) {
+    public KAvatarLoader setLoadExector(Executor executor) {
         KAvatarLoader.executor = executor;
+        return this;
     }
 
-    public static void setUseCachedAvatar(boolean ifUseCachedAvatar) {
+    public KAvatarLoader setUseCachedAvatar(boolean ifUseCachedAvatar) {
         KAvatarLoader.ifUseCachedAvatar = ifUseCachedAvatar;
+        return this;
     }
 
-    public static void setUseSavedAvatar(boolean ifUseSavedAvatar) {
+    public KAvatarLoader setUseSavedAvatar(boolean ifUseSavedAvatar) {
         KAvatarLoader.ifUseSavedAvatar = ifUseSavedAvatar;
+        return this;
+    }
+
+    public KAvatarLoader setCustomSavedAvatarsDir(File file) {
+        KAvatarLoader.custom_saved_avatars_dir = file;
+        return this;
     }
 }
 

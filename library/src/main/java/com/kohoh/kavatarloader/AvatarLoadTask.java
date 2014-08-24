@@ -36,14 +36,25 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
     final private Context context;
     final private Gravatar gravatar;
     final private TaskParm task_parm;
-    private static String saved_avatars_folder_name = "avatars";
-    private static Map<String, Avatar> cached_avatars = new HashMap<String, Avatar>();
+    static private File saved_avatars_dir;
+    static private Map<String, Avatar> cached_avatars = new HashMap<String, Avatar>();
     static private Object cached_avatar_lock = new Object();
 
     public AvatarLoadTask(Context context, TaskParm task_parm) {
         this.context = context;
         this.gravatar = new Gravatar();
         this.task_parm = task_parm;
+        setCustomSavedAvatasrDir(task_parm);
+    }
+
+    void setCustomSavedAvatasrDir(TaskParm task_parm) {
+        File custom_saved_avatars_dir = task_parm.getCustomSavedAvatarsDir();
+        if (custom_saved_avatars_dir != null && !custom_saved_avatars_dir.equals(saved_avatars_dir)) {
+            deleteDir(saved_avatars_dir);
+            saved_avatars_dir = custom_saved_avatars_dir;
+        } else {
+            saved_avatars_dir = new File(context.getCacheDir(), "avatars");
+        }
     }
 
     void bindTargetViewWithDefaultAvatar(TaskParm task_parm) {
@@ -253,9 +264,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         return hash_code;
     }
 
-    File getSavedAvatarsDir() {
-        File cache_dir = context.getCacheDir();
-        File saved_avatars_dir = new File(cache_dir, saved_avatars_folder_name);
+    static File getSavedAvatarsDir() {
         return saved_avatars_dir;
     }
 
