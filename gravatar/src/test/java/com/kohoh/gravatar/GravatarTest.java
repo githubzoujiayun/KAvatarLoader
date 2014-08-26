@@ -8,9 +8,7 @@ import org.junit.Test;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 /**
  * Created by kohoh on 14-8-1.
