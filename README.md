@@ -7,7 +7,7 @@ KAvatarLoader是一个工具。通过她你可以简单高效将Gravatar上的�
 
 ##使用指南
 
-####STEP0 导项目
+####STEP0 导入项目
 你只需将项目中的library文件复制到你的项目中，并在你的gradle配置文件中设置相应的依赖。你可以通过参考example模块的build.gradle得到更多信息。
 
 <b>注意：</b>需要在gradle配置文件中加入下面内容，否则会出现构建错误。  
