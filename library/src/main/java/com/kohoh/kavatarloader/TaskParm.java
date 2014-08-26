@@ -4,7 +4,8 @@ import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.widget.ImageView;
 
-import com.kohoh.gravatar.Gravatar;
+import com.kohoh.gravatar.GravatarDefaultImage.GravatarProvideImage;
+import com.kohoh.gravatar.GravatarRating;
 
 import java.io.File;
 
@@ -14,9 +15,9 @@ import java.io.File;
 abstract public class TaskParm {
     public final static String TAG = TaskParm.class.getSimpleName() + "_tag";
     private BindListener bind_listner;
-    private Integer avatar_size = Gravatar.DEFAULT_SIZE;
-    private DefaultAvatar default_avatar = DefaultAvatar.valueOf(Gravatar.DEFAULT_DEFAULT_IMAGE.toString());
-    private AvatarRating avatar_rating = AvatarRating.valueOf(Gravatar.DEFAULT_RATING.toString());
+    private Integer avatar_size = 80;
+    private DefaultAvatar default_avatar = DefaultAvatar.valueOf(GravatarProvideImage.HTTP_404.toString());
+    private AvatarRating avatar_rating = AvatarRating.valueOf(GravatarRating.GENERAL_AUDIENCES.toString());
     private Object target_view;
     private boolean if_use_cached_avatar = true;
     private boolean if_use_saved_avatar = true;

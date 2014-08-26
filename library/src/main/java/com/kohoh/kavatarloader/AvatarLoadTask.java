@@ -10,7 +10,7 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.kohoh.gravatar.Gravatar;
-import com.kohoh.gravatar.GravatarDefaultImage;
+import com.kohoh.gravatar.GravatarDefaultImage.GravatarProvideImage;
 import com.kohoh.gravatar.GravatarRating;
 
 import java.io.BufferedInputStream;
@@ -95,31 +95,31 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
         switch (default_avatar) {
             case GRAVATAR_ICON:
                 image_view.setImageDrawable(resources.getDrawable(R.drawable.gravatar_icon));
-                image_view.setTag(tag + GravatarDefaultImage.GRAVATAR_ICON.toString());
+                image_view.setTag(tag + GravatarProvideImage.GRAVATAR_ICON.toString());
                 break;
             case IDENTICON:
                 image_view.setImageDrawable(resources.getDrawable(R.drawable.identicon));
-                image_view.setTag(tag + GravatarDefaultImage.IDENTICON.toString());
+                image_view.setTag(tag + GravatarProvideImage.IDENTICON.toString());
                 break;
             case MONSTERID:
                 image_view.setImageDrawable(resources.getDrawable(R.drawable.monsterid));
-                image_view.setTag(tag + GravatarDefaultImage.MONSTERID.toString());
+                image_view.setTag(tag + GravatarProvideImage.MONSTERID.toString());
                 break;
             case WAVATAR:
                 image_view.setImageDrawable(resources.getDrawable(R.drawable.wavatar));
-                image_view.setTag(tag + GravatarDefaultImage.WAVATAR.toString());
+                image_view.setTag(tag + GravatarProvideImage.WAVATAR.toString());
                 break;
             case MYSTERY_MEN:
                 image_view.setImageDrawable(resources.getDrawable(R.drawable.mystery_men));
-                image_view.setTag(tag + GravatarDefaultImage.MYSTERY_MEN.toString());
+                image_view.setTag(tag + GravatarProvideImage.MYSTERY_MEN.toString());
                 break;
             case RETRO:
                 image_view.setImageDrawable(resources.getDrawable(R.drawable.retro));
-                image_view.setTag(tag + GravatarDefaultImage.RETRO.toString());
+                image_view.setTag(tag + GravatarProvideImage.RETRO.toString());
                 break;
             case BLANK:
                 image_view.setImageDrawable(resources.getDrawable(R.drawable.blank));
-                image_view.setTag(tag + GravatarDefaultImage.BLANK.toString());
+                image_view.setTag(tag + GravatarProvideImage.BLANK.toString());
                 break;
             case HTTP_404:
                 if (default_avatar.getCustomDefaultAvatar() != null) {
@@ -210,9 +210,7 @@ public class AvatarLoadTask extends AsyncTask<Object, Object, Avatar> {
 
         gravatar.setSize(task_parm.getAvatarSize());
         gravatar.setRating(GravatarRating.valueOf(task_parm.getAvatarRating().toString()));
-        gravatar.setDefaultImage(GravatarDefaultImage.valueOf(task_parm.getDefaultAvatar().toString()));
-
-        gravatar.log();
+        gravatar.setDefaultImage(GravatarProvideImage.valueOf(task_parm.getDefaultAvatar().toString()));
 
         TaskParm.TASK_PARM_STYLE style = getTaskParmStyle(task_parm);
         switch (style) {
